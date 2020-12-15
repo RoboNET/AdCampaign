@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using AdCampaign.Authetication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AdCampaign.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AdCampaign.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,9 +23,15 @@ namespace AdCampaign.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity is {IsAuthenticated:true})
+            {
+                ViewBag.Login = User.GetLogin()!;
+            }
+
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();
