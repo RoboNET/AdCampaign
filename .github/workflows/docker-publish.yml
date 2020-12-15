@@ -87,6 +87,6 @@ jobs:
             docker pull docker.pkg.github.com/robonet/adcampaign/image:latest
             docker stop adcampaign
             docker rm adcampaign
-            docker run --name=adcampaign --restart=always -p 8087:80 -d docker.pkg.github.com/robonet/adcampaign/image:latest
+            docker run --name=adcampaign --restart=always -p 8087:80 --env ConnectionStrings__AdCampaignContext=Host=${{ secrets.DB_HOST }};Port=${{ secrets.DB_POR }};Username=${{ secrets.DB_USERNAME }};Password=${{ secrets.DB_PASSWORD }};Database=${{ secrets.DB_NAME }} -d docker.pkg.github.com/robonet/adcampaign/image:latest
 
 
