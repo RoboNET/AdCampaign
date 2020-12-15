@@ -74,7 +74,7 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-          - name: executing remote ssh commands using password
+            
       - name: executing remote ssh commands using password 
         uses: appleboy/ssh-action@master
         with:
