@@ -83,5 +83,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
+            ls /
             docker pull docker.pkg.github.com/robonet/adcampaign/image:latest
 
