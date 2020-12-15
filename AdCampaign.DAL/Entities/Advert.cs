@@ -21,11 +21,13 @@ namespace AdCampaign.DAL.Entities
         public bool IsBlocked { get; set; }
         public virtual User BlockedBy { get; set; }
         public long? BlockedById { get; set; }
-        public DateTime BlockedDate { get; set; }
+        public DateTime? BlockedDate { get; set; }
 
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 
         public virtual ICollection<AdvertStatistic> AdvertStatistics { get; set; }
+        public virtual ICollection<Application> Applications { get; set; }
+
     }
 }

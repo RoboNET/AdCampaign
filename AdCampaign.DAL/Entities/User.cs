@@ -19,7 +19,7 @@ namespace AdCampaign.DAL.Entities
         public bool IsBlocked { get; set; }
         public virtual User BlockedBy { get; set; }
         public long? BlockedById { get; set; }
-        public DateTime BlockedDate { get; set; }
+        public DateTime? BlockedDate { get; set; }
 
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
