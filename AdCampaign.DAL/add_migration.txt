@@ -1,0 +1,1 @@
+﻿dotnet ef migrations add <migration name> -s ../AdCampaign.Web/AdCampaign.Web.csproj

@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdCampaign", "AdCampaign\AdCampaign.csproj", "{615998B0-96A0-42B0-BE27-7D145004EBEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdCampaign.Web", "AdCampaign.Web\AdCampaign.Web.csproj", "{615998B0-96A0-42B0-BE27-7D145004EBEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdCampaign.DAL", "AdCampaign.DAL\AdCampaign.DAL.csproj", "{2A3AB7A7-5045-4787-9E89-9092D1AA1374}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +14,9 @@ Global
 		{615998B0-96A0-42B0-BE27-7D145004EBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{615998B0-96A0-42B0-BE27-7D145004EBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{615998B0-96A0-42B0-BE27-7D145004EBEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A3AB7A7-5045-4787-9E89-9092D1AA1374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A3AB7A7-5045-4787-9E89-9092D1AA1374}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A3AB7A7-5045-4787-9E89-9092D1AA1374}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A3AB7A7-5045-4787-9E89-9092D1AA1374}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
