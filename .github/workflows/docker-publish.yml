@@ -85,4 +85,8 @@ jobs:
           script: |
             export PATH=/usr/local/bin:$PATH
             docker pull docker.pkg.github.com/robonet/adcampaign/image:latest
+            docker stop adcampaign
+            docker rm adcampaign
+            docker run --name=adcampaign --restart=always -p 8087:80 -d docker.pkg.github.com/robonet/adcampaign/image:latest
+
 
