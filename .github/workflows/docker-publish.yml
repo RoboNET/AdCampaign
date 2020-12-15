@@ -83,5 +83,5 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            echo ${{ secrets.PASSWORD }} | sudo -S docker pull docker.pkg.github.com/robonet/adcampaign/image:latest
+            echo ${{ secrets.SUDO_PASSWORD }} | sudo -S docker pull docker.pkg.github.com/robonet/adcampaign/image:latest
 
