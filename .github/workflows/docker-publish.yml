@@ -82,4 +82,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: whoami
+          script: |
+            echo ${{ secrets.PASSWORD }} | sudo -S docker pull docker.pkg.github.com/robonet/adcampaign/image:latest
+
