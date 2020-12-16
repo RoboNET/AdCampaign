@@ -26,6 +26,12 @@ namespace AdCampaign.DAL.Entities
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 
+        public DateTime ImpressingDateFrom { get; set; }
+        public DateTime ImpressingDateTo { get; set; }
+
+        public TimeSpan ImpressingTimeFrom { get; set; }
+        public TimeSpan ImpressingTimeTo { get; set; }
+        
         public virtual ICollection<AdvertStatistic> AdvertStatistics { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
 
