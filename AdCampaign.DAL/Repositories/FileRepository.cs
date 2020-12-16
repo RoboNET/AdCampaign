@@ -12,12 +12,12 @@ namespace AdCampaign.DAL.Repositories
             _db = db;
         }
         
-        public async Task Create(string fileName, long size, byte[] content)
+        public async Task Create(string fileName, byte[] content)
         {
             var file = new File
             {
                 Name = fileName,
-                Size = size,
+                Size = content.Length,
                 Content = content
             };
 
