@@ -14,6 +14,7 @@ namespace AdCampaign.DAL
         public DbSet<Advert> Adverts { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<AdvertStatistic> AdvertsStatistics { get; set; }
+        public DbSet<File> Files { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
