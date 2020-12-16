@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AdCampaign.BLL.Common;
 using AdCampaign.DAL;
 using AdCampaign.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -20,22 +21,25 @@ namespace AdCampaign.Authetication
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<ClaimsPrincipal?> CreatePrincipal(string username, string password)
+        public async Task<Result<ClaimsPrincipal>> CreatePrincipal(string username, string password)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == username);
+            var user = await _db.Users.Include(u => u.BlockedBy).FirstOrDefaultAsync(u => u.Email == username);
             if (user == null)
-                return null;
+                return AuthError.InvalidCredentials();
 
             var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
             if (passwordVerification == PasswordVerificationResult.Failed)
-                return null;
+                return AuthError.InvalidCredentials();
+
+            if (user.IsBlocked)
+                return AuthError.UserIsBlocked(user.BlockedBy?.Name);
 
             var claimsIdentity = new ClaimsIdentity(new List<Claim>
             {
                 new(ClaimTypes.Name, user.Name),
                 new(ClaimTypes.Email, user.Email),
                 new(ClaimTypes.Role, user.Role.ToString())
-            },"Login");
+            }, "Login");
             return new ClaimsPrincipal(claimsIdentity);
         }
     }

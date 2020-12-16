@@ -22,14 +22,17 @@ namespace AdCampaign.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string username, string password, string returnUrl)
+        public async Task<IActionResult> Index(string username, string password, string returnUrl)
         {
-            var principal = await _service.CreatePrincipal(username, password);
-            if (principal == null)
+            var principalResult = await _service.CreatePrincipal(username, password);
+            if (!principalResult.Ok)
+            {
+                ViewData["Errors"] = principalResult.Errors;
                 return View("Index");
+            }
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                principal);
+                principalResult.Unwrap());
             return Redirect(returnUrl ?? "/Home");
         }
 

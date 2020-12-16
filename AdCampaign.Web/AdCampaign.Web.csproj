@@ -16,7 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AdCampaign.DAL\AdCampaign.DAL.csproj"/>
+        <ProjectReference Include="..\AdCampaign.BLL\AdCampaign.BLL.csproj" />
+        <ProjectReference Include="..\AdCampaign.DAL\AdCampaign.DAL.csproj" />
     </ItemGroup>
 
 </Project>

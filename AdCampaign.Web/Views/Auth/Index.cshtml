@@ -1,9 +1,18 @@
+@using AdCampaign.BLL.Common
+
 <h1>Войди же</h1>
 
 <div>
-    <form method="post" asp-controller="Auth" asp-action="Login">
+    <form method="post">
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
         <button>Sign in</button>
     </form>
 </div>
+@if (ViewData["Errors"] is Error[] errors)
+{
+    foreach (var error in errors)
+    {
+        <h3>@error.Message</h3>
+    }
+}
