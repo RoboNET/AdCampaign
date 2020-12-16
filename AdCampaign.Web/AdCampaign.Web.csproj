@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>AdCampaign</RootNamespace>
+        <LangVersion>9.0</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,7 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AdCampaign.DAL\AdCampaign.DAL.csproj"/>
+        <ProjectReference Include="..\AdCampaign.BLL\AdCampaign.BLL.csproj" />
+        <ProjectReference Include="..\AdCampaign.DAL\AdCampaign.DAL.csproj" />
     </ItemGroup>
 
 </Project>

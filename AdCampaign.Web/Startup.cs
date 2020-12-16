@@ -2,10 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdCampaign.Authetication;
 using AdCampaign.DAL;
+using AdCampaign.DAL.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +29,19 @@ namespace AdCampaign
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddScoped<AuthenticationService>();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Auth";
+                });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".Cookies";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.SlidingExpiration = true;
+            });
             services.AddDbContext<AdCampaignContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("AdCampaignContext")));
 
@@ -35,7 +52,7 @@ namespace AdCampaign
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AdCampaignContext dbContext)
         {
             dbContext.Database.Migrate();
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,6 +69,7 @@ namespace AdCampaign
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
