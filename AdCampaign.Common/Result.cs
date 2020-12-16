@@ -1,7 +1,7 @@
 #nullable enable
 using System;
 
-namespace AdCampaign.BLL.Common
+namespace AdCampaign.Common
 {
     public record Result(Error[]? Errors = null)
     {
