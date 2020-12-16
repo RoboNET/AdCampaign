@@ -18,9 +18,15 @@ namespace AdCampaign.Controllers
         [Route("{id}")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<FileResult> Get(long id)
+        [ResponseCache(Duration = 604800)]
+        public async Task<IActionResult> Get(long id)
         {
             var file = await _fileRepository.Get(id);
+            if (file == null)
+            {
+                return NotFound();
+            }
+            
             return File(file.Content, System.Net.Mime.MediaTypeNames.Image.Jpeg, file.Name);
         }
     }
