@@ -35,5 +35,10 @@ namespace AdCampaign.DAL.Entities
         public virtual ICollection<AdvertStatistic> AdvertStatistics { get; set; }
         public virtual ICollection<Application> Applications { get; set; }
 
+        public long? PrimaryImageId { get; set; }
+        public virtual File PrimaryImage { get; set; }
+        
+        public long? SecondaryImageId { get; set; }
+        public virtual File SecondaryImage { get; set; }
     }
 }

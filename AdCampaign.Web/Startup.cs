@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AdCampaign.Authetication;
 using AdCampaign.DAL;
 using AdCampaign.DAL.Entities;
+using AdCampaign.DAL.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,7 @@ namespace AdCampaign
         {
             services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddScoped<AuthenticationService>();
+            services.AddScoped<IFileRepository, FileRepository>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
