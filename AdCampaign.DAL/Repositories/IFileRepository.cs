@@ -8,8 +8,10 @@ namespace AdCampaign.DAL.Repositories
     /// </summary>
     public interface IFileRepository
     {
-        Task Create(string fileName, byte[] content);
+        Task<File> Create(string fileName, byte[] content);
 
         Task<File?> Get(long id);
+        
+        Task Delete(File file);
     }
 }

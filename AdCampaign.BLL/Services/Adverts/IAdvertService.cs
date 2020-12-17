@@ -17,6 +17,11 @@ namespace AdCampaign.BLL.Services.Adverts
         /// <summary>
         /// Создать капмпанию
         /// </summary>
-        Task<Result<Advert>> Create(CreateAdvertDto dto);
+        Task<Result<Advert>> Create(AdvertDto dto, File primaryImage, File secondaryImage);
+        
+        /// <summary>
+        /// Обновить капмпанию
+        /// </summary>
+        Task<Result<Advert>> Update(AdvertDto dto, File primaryImage, File secondaryImage);
     }
 }
