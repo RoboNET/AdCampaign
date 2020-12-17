@@ -23,6 +23,7 @@
                 <td>@user.Email</td>
                 <td>@user.Phone</td>
                 <td>@Html.ActionLink("Редактировать", "Edit", new {user.Id})</td>
+                <td>@Html.ActionLink("Удалить", "Delete", new {user.Id})</td>
             </tr>
         }
         </tbody>

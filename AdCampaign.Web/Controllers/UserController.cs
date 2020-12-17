@@ -28,7 +28,6 @@ namespace AdCampaign.Controllers
         public async Task<ViewResult> List()
         {
             var users = await _context.Users.ToArrayAsync();
-            Console.WriteLine(string.Join(',', users.Select(user => user.Email)));
             return View(new UserListViewModel
             {
                 Users = users
@@ -103,6 +102,13 @@ namespace AdCampaign.Controllers
         {
             await _userService.BlockUser(id, null);
             return RedirectToAction("Edit", "User",new {id});
+        }
+        
+        [HttpGet("User/{id}/delete")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _userService.Delete(id);
+            return RedirectToAction("List", "User");
         }
     }
 }

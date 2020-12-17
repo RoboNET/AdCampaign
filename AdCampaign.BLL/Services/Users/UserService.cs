@@ -27,5 +27,11 @@ namespace AdCampaign.BLL.Services.Users
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task Delete(long id)
+        {
+            _context.Users.Remove(await _context.Users.FindAsync(id));
+            await _context.SaveChangesAsync();
+        }
     }
 }
