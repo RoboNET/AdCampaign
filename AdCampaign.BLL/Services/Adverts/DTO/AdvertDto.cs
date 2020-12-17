@@ -16,13 +16,15 @@ namespace AdCampaign.BLL.Services.Adverts.DTO
         
         public bool IsVisible { get; set; }
         
+        public bool ImpressingAlways { get; set; }
+        
         public DateTime ImpressingDateFrom { get; set; }
 
         public DateTime ImpressingDateTo { get; set; }
 
-        public TimeSpan ImpressingTimeFrom { get; set; }
+        public TimeSpan? ImpressingTimeFrom { get; set; }
 
-        public TimeSpan ImpressingTimeTo { get; set; }
+        public TimeSpan? ImpressingTimeTo { get; set; }
         
         
     }

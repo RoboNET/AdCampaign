@@ -82,6 +82,7 @@ namespace AdCampaign.BLL.Services.Adverts
                 ImpressingDateTo = dto.ImpressingDateTo,
                 ImpressingTimeFrom = dto.ImpressingTimeFrom,
                 ImpressingTimeTo = dto.ImpressingTimeTo,
+                ImpressingAlways = dto.ImpressingAlways,
                 PrimaryImageId = primaryCreated?.Id,
                 SecondaryImageId = secondaryCreated?.Id,
                 AdvertStatistics = new List<AdvertStatistic>

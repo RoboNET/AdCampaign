@@ -27,32 +27,46 @@
             </div>
             <div class="form-group">
                 <label for="ImpressingDateFrom">Дата начала показа рекламы</label>
-                <input asp-for="ImpressingDateFrom" id="ImpressingDateFrom" name="ImpressingDateFrom" width="276" value="@Model?.ImpressingDateFrom"/>
+                <input type="date" class="form-control" asp-for="ImpressingDateFrom" id="ImpressingDateFrom" name="ImpressingDateFrom" value="@Model?.ImpressingDateFrom.ToString("yyyy-MM-dd")"/>
                 <span asp-validation-for="ImpressingDateFrom" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="ImpressingDateTo">Дата окончания показа рекламы</label>
-                <input asp-for="ImpressingDateTo" id="ImpressingDateTo" name="ImpressingDateTo" width="276" value="@Model?.ImpressingDateTo"/>
+                <input type="date" class="form-control" asp-for="ImpressingDateTo" id="ImpressingDateTo" name="ImpressingDateTo" value="@Model?.ImpressingDateTo.ToString("yyyy-MM-dd")"/>
                 <span asp-validation-for="ImpressingDateTo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="ImpressingTimeFrom">Время начала показа рекламы</label>
-                <input asp-for="ImpressingTimeFrom" id="ImpressingTimeFrom" name="ImpressingTimeFrom" width="276" value="@Model?.ImpressingTimeFrom"/>
+                <input type="time" class="form-control" disabled="@(Model?.ImpressingAlways ?? false)" asp-for="ImpressingTimeFrom" id="ImpressingTimeFrom" name="ImpressingTimeFrom" value="@Model?.ImpressingTimeFrom?.ToString("hh:mm")"/>
                 <span asp-validation-for="ImpressingTimeFrom" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="ImpressingTimeTo">Время окончания показа рекламы</label>
-                <input asp-for="ImpressingTimeTo" id="ImpressingTimeTo" name="ImpressingTimeTo" width="276" value="@Model?.ImpressingTimeTo"/>
+                <input type="time" class="form-control" disabled="@(Model?.ImpressingAlways ?? false)" asp-for="ImpressingTimeTo" id="ImpressingTimeTo" name="ImpressingTimeTo" value="@Model?.ImpressingTimeTo?.ToString("hh:mm")"/>
                 <span asp-validation-for="ImpressingTimeTo" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label for="IsVisible">Отображается ли реклама</label>
-                <input type="checkbox" id="IsVisible" name="IsVisible" width="276" value="true"
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="ImpressingAlways" id="ImpressingAlways" value="true"
+                       @if (Model?.ImpressingAlways ?? false)
+                       {
+                           @("checked")
+                       }>
+                <label class="form-check-label" for="ImpressingAlways">
+                    Отображать всегда
+                </label>
+                <span asp-validation-for="ImpressingAlways" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="IsVisible" name="IsVisible" value="true"
                        @if (Model.IsVisible)
                        {
                            @("checked")
                        }/>
+                <label class="form-check-label" for="IsVisible">Видна ли реклама</label>
+
+                <span asp-validation-for="IsVisible" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -64,6 +78,7 @@
                     <option value="3">Телефон + E-mail</option>
                 </select>
                 <span asp-validation-for="RequestType" class="text-danger"></span>
+
             </div>
 
             <button type="submit" class="btn btn-primary">Создать</button>
@@ -73,19 +88,9 @@
 
 @section Scripts {
     <script>
-                $('#ImpressingDateFrom').datepicker({
-                    uiLibrary: 'bootstrap4'
-                });
-                $('#ImpressingDateTo').datepicker({
-                    uiLibrary: 'bootstrap4'
-                });
-                
-                $('#ImpressingTimeFrom').timepicker({
-                    uiLibrary: 'bootstrap4'
-                });
-                $('#ImpressingTimeTo').timepicker({
-                    uiLibrary: 'bootstrap4'
-                });
-
+                $('#ImpressingAlways').change(function () {
+                    $('#ImpressingTimeFrom').attr('disabled', this.checked); 
+                    $('#ImpressingTimeTo').attr('disabled', this.checked);
+                })                              
     </script>
 }

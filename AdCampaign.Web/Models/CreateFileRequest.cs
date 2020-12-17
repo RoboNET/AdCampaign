@@ -18,6 +18,8 @@ namespace AdCampaign.Models
 
     public class BaseFileRequestModel
     {
+        [Required] public bool ImpressingAlways { get; set; }
+        
         [Required] public string Name { get; set; }
 
         [Required] public RequestType RequestType { get; set; }
@@ -26,9 +28,9 @@ namespace AdCampaign.Models
 
         [Required] public DateTime ImpressingDateTo { get; set; }
 
-        [Required] public TimeSpan ImpressingTimeFrom { get; set; }
+        public TimeSpan? ImpressingTimeFrom { get; set; }
 
-        [Required] public TimeSpan ImpressingTimeTo { get; set; }
+        public TimeSpan? ImpressingTimeTo { get; set; }
     }
 
     public class CreateFileRequestModel : BaseFileRequestModel

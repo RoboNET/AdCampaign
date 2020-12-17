@@ -47,7 +47,8 @@ namespace AdCampaign.Controllers
                 ImpressingDateFrom = dto.ImpressingDateFrom,
                 ImpressingDateTo = dto.ImpressingDateTo,
                 ImpressingTimeFrom = dto.ImpressingTimeFrom,
-                ImpressingTimeTo = dto.ImpressingTimeTo
+                ImpressingTimeTo = dto.ImpressingTimeTo,
+                ImpressingAlways = dto.ImpressingAlways
             }, dto.PrimaryImage.ToFile(), dto.SecondaryImage.ToFile());
 
             if (!created.Ok)
@@ -82,7 +83,9 @@ namespace AdCampaign.Controllers
                 ImpressingDateFrom = result.ImpressingDateFrom,
                 ImpressingDateTo = result.ImpressingDateTo,
                 ImpressingTimeFrom = result.ImpressingTimeFrom,
-                ImpressingTimeTo = result.ImpressingTimeTo
+                ImpressingTimeTo = result.ImpressingTimeTo,
+                ImpressingAlways = result.ImpressingAlways
+
             });
         }
 
@@ -103,7 +106,9 @@ namespace AdCampaign.Controllers
                 ImpressingDateFrom = dto.ImpressingDateFrom,
                 ImpressingDateTo = dto.ImpressingDateTo,
                 ImpressingTimeFrom = dto.ImpressingTimeFrom,
-                ImpressingTimeTo = dto.ImpressingTimeTo
+                ImpressingTimeTo = dto.ImpressingTimeTo,
+                ImpressingAlways = dto.ImpressingAlways
+
             }, dto.PrimaryImage?.ToFile(), dto.SecondaryImage?.ToFile());
 
             if (!updated.Ok)
@@ -122,7 +127,8 @@ namespace AdCampaign.Controllers
                 ImpressingDateFrom = result.ImpressingDateFrom,
                 ImpressingDateTo = result.ImpressingDateTo,
                 ImpressingTimeFrom = result.ImpressingTimeFrom,
-                ImpressingTimeTo = result.ImpressingTimeTo
+                ImpressingTimeTo = result.ImpressingTimeTo,
+                ImpressingAlways = dto.ImpressingAlways
             });
         }
     }
