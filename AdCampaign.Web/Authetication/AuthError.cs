@@ -1,4 +1,4 @@
-using AdCampaign.BLL.Common;
+using AdCampaign.Common;
 
 namespace AdCampaign.Authetication
 {

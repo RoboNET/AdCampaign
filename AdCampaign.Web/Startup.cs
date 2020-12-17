@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdCampaign.Authetication;
+using AdCampaign.BLL.Services.Adverts;
 using AdCampaign.DAL;
 using AdCampaign.DAL.Entities;
+using AdCampaign.DAL.Repositories.Adverts;
+using AdCampaign.DAL.Repositories.AdvertsStatistic;
 using AdCampaign.DAL.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -45,7 +48,10 @@ namespace AdCampaign
                 options.SlidingExpiration = true;
             });
             services.AddDbContext<AdCampaignContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("AdCampaignContext")));
+                options.UseNpgsql(Configuration.GetConnectionString("AdCampaignContext")))
+                .AddScoped<IAdvertRepository, AdvertRepository>()
+                .AddScoped<IAdvertStatisticRepository, AdvertStatisticRepository>()
+                .AddScoped<IAdvertService, AdvertService>();
 
             services.AddControllersWithViews();
         }

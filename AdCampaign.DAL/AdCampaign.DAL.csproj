@@ -13,4 +13,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\AdCampaign.Common\AdCampaign.Common.csproj" />
+    </ItemGroup>
+
 </Project>

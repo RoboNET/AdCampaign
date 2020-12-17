@@ -1,5 +1,3 @@
-using System;
-
 namespace AdCampaign.Models
 {
     public class ErrorViewModel
