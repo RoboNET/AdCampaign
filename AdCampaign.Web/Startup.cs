@@ -53,7 +53,8 @@ namespace AdCampaign
                 .AddScoped<IAdvertRepository, AdvertRepository>()
                 .AddScoped<IAdvertStatisticRepository, AdvertStatisticRepository>()
                 .AddScoped<IAdvertService, AdvertService>()
-                .AddScoped<IUserService, UserService>();
+                .AddScoped<IUserService, UserService>()
+                .AddScoped<IPasswordHasherService, PasswordHasherService>();
 
             services.AddControllersWithViews();
         }
