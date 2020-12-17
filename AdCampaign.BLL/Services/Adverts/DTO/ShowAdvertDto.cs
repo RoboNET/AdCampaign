@@ -11,7 +11,9 @@ namespace AdCampaign.BLL.Services.Adverts.DTO
         public string Name { get; set; }
         public RequestType RequestType { get; set; }
         
-        //todo add photo here
+        public long? PrimaryImageId { get; set; }
+        public long? SecondaryImageId { get; set; }
+
 
         //todo automapper   
         public ShowAdvertDto(Advert advert)
@@ -19,6 +21,8 @@ namespace AdCampaign.BLL.Services.Adverts.DTO
             Id = advert.Id;
             Name = advert.Name;
             RequestType = advert.RequestType;
+            PrimaryImageId = advert.PrimaryImageId;
+            SecondaryImageId = advert.SecondaryImageId;
         }
     }
 }

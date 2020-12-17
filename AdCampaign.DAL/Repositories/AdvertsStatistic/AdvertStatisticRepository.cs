@@ -16,15 +16,16 @@ namespace AdCampaign.DAL.Repositories.AdvertsStatistic
         
         public async Task Increment(long advertId, AdvertStatisticType type)
         {
-            using var transaction = context.Database.BeginTransactionAsync();
-            await context.Database.ExecuteSqlRawAsync(
+            await context.Database.ExecuteSqlInterpolatedAsync (
                 $@"UPDATE ""AdvertsStatistics"" SET ""Value"" = ""AdvertsStatistics"".""Value"" + 1
                 WHERE ""AdvertId"" = {advertId} and ""AdvertStatisticType"" = {(int)type}");
         }
 
-        public Task Increment(IEnumerable<long> advertId, AdvertStatisticType type)
+        public async Task Increment(IEnumerable<long> advertIds, AdvertStatisticType type)
         {
-            throw new System.NotImplementedException();
+            await context.Database.ExecuteSqlInterpolatedAsync (
+                $@"UPDATE ""AdvertsStatistics"" SET ""Value"" = ""AdvertsStatistics"".""Value"" + 1
+                WHERE ""AdvertId"" in {string.Join(',', advertIds)} and ""AdvertStatisticType"" = {(int)type}");
         }
     }
 }

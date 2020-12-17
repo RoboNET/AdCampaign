@@ -35,6 +35,12 @@ namespace AdCampaign.DAL.Repositories.Adverts
             AddClause(advertParams.ImpressingTime, x => x.ImpressingTimeFrom <=  advertParams.ImpressingTime);
             AddClause(advertParams.ImpressingTime, x => x.ImpressingTimeTo <=  advertParams.ImpressingTime);
 
+            if (advertParams.Shuffle)
+                query = query.OrderBy(x => Guid.NewGuid());
+            
+            if (advertParams.ToTake.HasValue)
+                query = query.Take(advertParams.ToTake.Value);
+            
             return await query.ToListAsync();
             
             void AddClause<T>(T predicate, Expression<Func<Advert, bool>> exp)
@@ -67,5 +73,12 @@ namespace AdCampaign.DAL.Repositories.Adverts
                 await context.SaveChangesAsync();
             }
         }
+
+        public Task<Advert> Get(long id) => context.Adverts
+            .Include(x => x.Applications)
+            .Include(x => x.AdvertStatistics)
+            .Include(x => x.BlockedBy)
+            .Include(x => x.Owner)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }
