@@ -38,10 +38,16 @@ namespace AdCampaign.DAL.Repositories.AdvertsStatistic
                 paramsValues.Append("}");
             }
 
+            var parameters = new List<object>()
+            {
+                (int) type
+            };
+            
+            parameters.AddRange(advertIds.Select(a=>(object)a));
+            
             await context.Database.ExecuteSqlRawAsync(
                 @"UPDATE ""AdvertsStatistics"" SET ""Value"" = ""AdvertsStatistics"".""Value"" + 1
-                WHERE ""AdvertId"" in (" + paramsValues + @") and ""AdvertStatisticType"" = {0}", (int) type,
-                adverts);
+                WHERE ""AdvertId"" in (" + paramsValues + @") and ""AdvertStatisticType"" = {0}", parameters);
         }
     }
 }

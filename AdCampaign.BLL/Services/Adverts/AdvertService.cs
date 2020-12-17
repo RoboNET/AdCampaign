@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AdCampaign.BLL.Services.Adverts.DTO;
 using AdCampaign.Common;
 using AdCampaign.DAL.Entities;
+using AdCampaign.DAL.Repositories;
 using AdCampaign.DAL.Repositories.Adverts;
 using AdCampaign.DAL.Repositories.AdvertsStatistic;
 
@@ -15,65 +16,121 @@ namespace AdCampaign.BLL.Services.Adverts
     {
         private readonly IAdvertRepository advertRepository;
         private readonly IAdvertStatisticRepository statisticRepository;
+        private readonly IFileRepository fileRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IAdvertStatisticRepository statisticRepository)
+        public AdvertService(IAdvertRepository advertRepository,
+            IAdvertStatisticRepository statisticRepository, IFileRepository fileRepository)
         {
             this.advertRepository = advertRepository;
             this.statisticRepository = statisticRepository;
+            this.fileRepository = fileRepository;
         }
-        
+
         public async Task<Result<IEnumerable<ShowAdvertDto>>> GetAdvertsToShow(CancellationToken ct)
         {
             //количество показываемых кампаний
-            const int ToShowCount = 4;
+            const int toShowCount = 4;
             var adverts = await advertRepository.Get(new GetAdvertsParams
             {
                 IsBlocked = false,
                 IsVisible = true,
                 ImpressingDate = DateTime.UtcNow,
                 ImpressingTime = DateTime.UtcNow.TimeOfDay,
-                ToTake = ToShowCount,
+                ToTake = toShowCount,
                 Shuffle = true
             });
 
             var toShow = adverts
                 .Select(x => new ShowAdvertDto(x))
                 .ToList();
-            
+
             if (ct.IsCancellationRequested)
                 return toShow;
-            
+
             await statisticRepository.Increment(toShow.Select(x => x.Id), AdvertStatisticType.Impression);
             return toShow;
         }
 
-        public async Task<Result<Advert>> Create(CreateAdvertDto dto)
+        public async Task<Result<Advert>> Get(long userId, long id)
         {
+            var advert = await advertRepository.Get(id);
+            if (advert == null)
+                return new Error("Кампания не найдена", "campaign-not-found");
+
+            return advert;
+        }
+
+        public async Task<Result<Advert>> Create(long userId, AdvertDto dto, File primaryImage, File secondaryImage)
+        {
+            var primaryCreated = primaryImage != null
+                ? await fileRepository.Create(primaryImage.Name, primaryImage.Content)
+                : null;
+            var secondaryCreated = secondaryImage != null
+                ? await fileRepository.Create(secondaryImage.Name, secondaryImage.Content)
+                : null;
+
             var advert = new Advert
             {
                 Name = dto.Name,
-                OwnerId = dto.OwnerId,
-                IsBlocked = dto.IsBlocked,
+                OwnerId = userId,
+                IsBlocked = false,
                 IsVisible = dto.IsVisible,
-                BlockedById = dto.BlockedById,
-                BlockedDate = dto.BlockedDate,
                 DateCreated = DateTime.UtcNow,
                 DateUpdated = DateTime.UtcNow,
+                RequestType = dto.RequestType,
+                ImpressingDateFrom = dto.ImpressingDateFrom,
+                ImpressingDateTo = dto.ImpressingDateTo,
+                ImpressingTimeFrom = dto.ImpressingTimeFrom,
+                ImpressingTimeTo = dto.ImpressingTimeTo,
+                PrimaryImageId = primaryCreated?.Id,
+                SecondaryImageId = secondaryCreated?.Id,
                 AdvertStatistics = new List<AdvertStatistic>
                 {
                     new() {AdvertStatisticType = AdvertStatisticType.Filled},
                     new() {AdvertStatisticType = AdvertStatisticType.Impression},
                     new() {AdvertStatisticType = AdvertStatisticType.Followed},
-                },
-                RequestType = dto.RequestType,
-                ImpressingDateFrom = dto.ImpressingDateFrom,
-                PrimaryImageId = dto.PrimaryImageId,
-                SecondaryImageId = dto.SecondaryImageId,
-                ImpressingDateTo = dto.ImpressingDateFrom,
-                ImpressingTimeFrom = dto.ImpressingTimeFrom,
-                ImpressingTimeTo = dto.ImpressingTimeTo
+                }
             };
             return await advertRepository.Insert(advert);
+        }
+
+        public async Task<Result<Advert>> Update(long userId, AdvertDto dto, File primaryImage, File secondaryImage)
+        {
+            var advert = await advertRepository.Get(dto.Id);
+            if (advert == null)
+                return new Error("Кампания не найдена", "campaign-not-found");
+
+            //todo optimize file updating
+            if (primaryImage != null)
+            {
+                if (advert.PrimaryImage != null)
+                    await fileRepository.Delete(advert.PrimaryImage);
+                var created = await fileRepository.Create(primaryImage.Name, primaryImage.Content);
+                advert.PrimaryImageId = created.Id;
+            }
+
+            if (secondaryImage != null)
+            {
+                if (advert.SecondaryImage != null)
+                    await fileRepository.Delete(advert.SecondaryImage);
+                var created = await fileRepository.Create(secondaryImage.Name, secondaryImage.Content);
+                advert.SecondaryImageId = created.Id;
+            }
+
+            UpdateBaseInfo(advert, dto);
+            advert.DateUpdated = DateTime.UtcNow;
+            return await advertRepository.Update(advert);
+        }
+
+        private void UpdateBaseInfo(Advert advert, AdvertDto dto)
+        {
+            advert.Name = dto.Name;
+            advert.IsVisible = dto.IsVisible;
+            advert.RequestType = dto.RequestType;
+            advert.ImpressingDateFrom = dto.ImpressingDateFrom;
+            advert.ImpressingDateTo = dto.ImpressingDateTo;
+            advert.ImpressingTimeFrom = dto.ImpressingTimeFrom;
+            advert.ImpressingTimeTo = dto.ImpressingTimeTo;
         }
     }
 }
