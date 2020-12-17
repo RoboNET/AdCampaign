@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Repositories" />
+      <ProjectReference Include="..\AdCampaign.Common\AdCampaign.Common.csproj" />
     </ItemGroup>
 
 </Project>

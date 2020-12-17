@@ -1,12 +1,24 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Главная";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome @ViewBag.Login</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <form method="post" asp-controller="Auth" asp-action="Logout">
-        <button class="btn btn-lg btn-primary btn-block">Logout</button>
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-12 p-0">
+            <img class="w-100" src="https://ykl-res.azureedge.net/e7669ecb-b991-4307-9297-8d614484a666/lakes-and-mountains-scenery-wallpaper-650x400-w600.jpg"/>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12 col-md-4 p-0">
+            <img class="img-fluid" src="https://ykl-res.azureedge.net/e7669ecb-b991-4307-9297-8d614484a666/lakes-and-mountains-scenery-wallpaper-650x400-w600.jpg"/>
+        </div>
+        <div class="col-12 col-md-4 p-0">
+            <img class="img-fluid" src="https://ykl-res.azureedge.net/e7669ecb-b991-4307-9297-8d614484a666/lakes-and-mountains-scenery-wallpaper-650x400-w600.jpg"/>
+        </div>
+        <div  class="col-12 col-md-4 p-0">
+            <img class="img-fluid" src="https://ykl-res.azureedge.net/e7669ecb-b991-4307-9297-8d614484a666/lakes-and-mountains-scenery-wallpaper-650x400-w600.jpg"/>
+        </div>
+    </div>
     <a asp-controller="User" asp-action="List" class="btn btn-primary">Users</a>
 </div>

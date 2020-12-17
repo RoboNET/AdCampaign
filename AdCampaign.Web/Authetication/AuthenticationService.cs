@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AdCampaign.BLL.Common;
+using AdCampaign.Common;
 using AdCampaign.DAL;
 using AdCampaign.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
