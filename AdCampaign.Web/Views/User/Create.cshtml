@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Создать пользователя";
+}
+<div class="row justify-content-center">
+    <h1 class="col-8">Создать пользователя</h1>
+</div>
+<div class="row justify-content-center">
+    <form asp-action="Create" method="post"  class="col-8">
+        <div class="form-group">
+            <label for="username">Имя</label>
+            <input type="text" name="username" class="form-control" id="username">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" class="form-control" id="email">
+        </div>
+        <div class="form-group">
+            <label for="phone">Телефон</label>
+            <input type="text" name="phone" class="form-control" id="phone">
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" name="password" class="form-control" id="password">
+        </div>
+        <div class="form-group">
+            <label for="role">Роль</label>
+            <select asp-items="@UserRoles.GetList()" name="role" id="role" class="form-control"></select>
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
