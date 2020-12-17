@@ -55,18 +55,20 @@ namespace AdCampaign.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update([FromForm] IFormFileCollection files, AdvertDto dto)
+        public async Task<IActionResult> Update(UpdateFileRequestModel dto)
         {
-            var (primary, secondary) = GetFiles(files);
-            var updated = await _service.Update(User.GetId(), dto, primary, secondary);
-            return View(updated.Data);
-        }
-
-        private static (File primary, File secondary) GetFiles(IFormFileCollection files)
-        {
-            var primary = files.FirstOrDefault(x => x.Name == "primary");
-            var secondary = files.FirstOrDefault(x => x.Name == "secondary");
-            return (primary?.ToFile(), secondary?.ToFile());
+            var updated = await _service.Update(User.GetId(), new AdvertDto()
+            {
+                Id = dto.Id,
+                IsVisible = dto.IsVisible,
+                Name = dto.Name,
+                RequestType = dto.RequestType,
+                ImpressingDateFrom = dto.ImpressingDateFrom,
+                ImpressingDateTo = dto.ImpressingDateTo,
+                ImpressingTimeFrom = dto.ImpressingTimeFrom,
+                ImpressingTimeTo = dto.ImpressingTimeTo
+            }, dto.PrimaryImage?.ToFile(), dto.SecondaryImage?.ToFile());
+            return View(updated.Unwrap());
         }
     }
 }

@@ -4,14 +4,21 @@ using Microsoft.AspNetCore.Http;
 
 namespace AdCampaign.Models
 {
+    public class UpdateFileRequestModel : CreateFileRequestModel
+    {
+        public long Id { get; set; }
+        
+        public bool IsVisible { get; set; }
+    }
+
     public class CreateFileRequestModel
     {
         public string Name { get; set; }
 
         public RequestType RequestType { get; set; }
-        
+
         public bool IsVisible { get; set; }
-        
+
         public DateTime ImpressingDateFrom { get; set; }
 
         public DateTime ImpressingDateTo { get; set; }
@@ -21,8 +28,7 @@ namespace AdCampaign.Models
         public TimeSpan ImpressingTimeTo { get; set; }
 
         public IFormFile PrimaryImage { get; set; }
-        
-        public IFormFile SecondaryImage { get; set; }
 
+        public IFormFile SecondaryImage { get; set; }
     }
 }
