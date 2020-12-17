@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AdCampaign.DAL;
 using AdCampaign.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdCampaign.BLL.Services.Users
@@ -62,5 +65,16 @@ namespace AdCampaign.BLL.Services.Users
             user.PasswordHash = _passwordHasherService.HashPassword(user, password);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<UserDto>> GetAllUsers() =>
+            await _context.Users.Select(user => new UserDto
+            {
+                Email = user.Email,
+                Id = user.Id,
+                Name = user.Name,
+                Phone = user.Phone,
+                Role = user.Role,
+                IsBlocked = user.IsBlocked
+            }).ToArrayAsync();
     }
 }

@@ -24,7 +24,7 @@ namespace AdCampaign.Controllers
         [HttpGet("Users")]
         public async Task<ViewResult> List()
         {
-            var users = await _context.Users.ToArrayAsync();
+            var users = await _userService.GetAllUsers();
             return View(new UserListViewModel
             {
                 Users = users
