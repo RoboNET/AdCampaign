@@ -4,17 +4,30 @@
 }
 
 <div class="container">
-    <div class="row">
+    <div class="row position-relative">
         @if (Model.Count != 0)
         {
             var item = Model[0];
-            <div class="col-12 d-none d-md-flex justify-content-center">
+            <div class="col-12 d-none d-lg-flex justify-content-center" data-toggle="collapse" href="#collapseExample">
                 <img class="img-fluid" src="@Url.Action("Get", "Files", item.PrimaryImageId)"/>
+            </div>
+            <div class="collapse position-absolute" id="collapseExample" style="right: 30px; top: 15px">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Телефон</label>
+                        <input type="phone" class="form-control" id="exampleInputPassword1">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
         }
         else
         {
-            <div class="col-12 d-none d-md-flex">
+            <div class="col-12 d-none d-lg-flex">
                 <div class="jumbotron jumbotron-fluid w-100" style="height: 250px">
                     <div class="container">
                         <p class="lead">
@@ -30,11 +43,12 @@
         @for (int index = 0; index < 4; index++)
         {
             int itemIndex = index;
-            
+
             if (Model.Count <= index)
             {
-                <div class="col-12 col-md-4 pt-4 @if (itemIndex == 0) {@("d-md-none")} ">
-                    <div class="jumbotron jumbotron-fluid" style="height: 250px">
+                <div class="col-12 col-lg-4 pt-4 @if (itemIndex == 0) {@("d-lg-none")}">
+                    <div class="jumbotron jumbotron-fluid position-relative"
+                         style="height: 250px">
                         <div class="container">
                             <p class="lead">
                                 Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:vlad@htmlbook.ru">vlad@htmlbook.ru</a>
@@ -46,34 +60,33 @@
             else
             {
                 var item = Model[itemIndex];
-                <div class="col-12 col-md-4 pt-4 @if(itemIndex == 0) {@("d-md-none")}">
-                    <img class="w-100" style="height: 250px" src="@Url.Action("Get", "Files", item.SecondaryImageId)"/>
+                <div class="col-12 col-lg-4 pt-4 @if (itemIndex == 0) {@("d-lg-none")}">
+                    <img class="w-100" 
+                         data-toggle="collapse" 
+                         href="#collapseExample@(index)"
+                         style="height: 250px"
+                         onclick="sendClickEvent('@(index)')"
+                         src="@Url.Action("Get", "Files", item.SecondaryImageId)"/>
+                    <div class="collapse position-absolute" id="collapseExample@(index)" style="right: 30px; top: 30px">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Email</label>
+                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Телефон</label>
+                                <input type="phone" class="form-control" id="exampleInputPassword1">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
                 </div>
             }
         }
-@*         @foreach (var item in Model) *@
-@*         { *@
-@*             <div class="col-12 col-md-4 pt-4"> *@
-@*                 <img class="w-100" style="height: 250px" src="@Url.Action("Get", "Files", item.SecondaryImageId)"/> *@
-@*             </div> *@
-@*         } *@
-@*         <div class="col-12 d-md-none pt-4"> *@
-@*             <img class="w-100" style="height: 250px" src="https://ykl-res.azureedge.net/e7669ecb-b991-4307-9297-8d614484a666/lakes-and-mountains-scenery-wallpaper-650x400-w600.jpg"/> *@
-@*         </div> *@
-@*         <div class="col-12 col-md-4 pt-4"> *@
-@*             <img class="w-100" style="height: 250px" src="https://ykl-res.azureedge.net/e7669ecb-b991-4307-9297-8d614484a666/lakes-and-mountains-scenery-wallpaper-650x400-w600.jpg"/> *@
-@*         </div> *@
-@*         <div class="col-12 col-md-4 pt-4"> *@
-@*             <img class="w-100" style="height: 250px" src="https://st.depositphotos.com/1005145/2341/i/600/depositphotos_23418410-stock-photo-pink-flowers-in-the-mountains.jpg"/> *@
-@*         </div> *@
-@*         <div class="col-12 col-md-4 pt-4"> *@
-@*             <div class="jumbotron jumbotron-fluid" style="height: 250px"> *@
-@*                 <div class="container"> *@
-@*                     <p class="lead"> *@
-@*                         Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:vlad@htmlbook.ru">vlad@htmlbook.ru</a> *@
-@*                     </p> *@
-@*                 </div> *@
-@*             </div> *@
-@*         </div> *@
     </div>
+    <script>
+        window.sendClickEvent = (id) => {
+            console.log(id)
+        } 
+    </script>
 </div>
