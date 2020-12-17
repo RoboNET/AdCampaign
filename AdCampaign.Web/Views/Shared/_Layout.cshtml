@@ -14,9 +14,20 @@
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AdCampaign.Web</a>
             <div class="navbar-collapse collapse justify-content-end">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Войти</a>
-                    </li>
+                    @if (User.Identity is {IsAuthenticated:true})
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-controller="Auth" asp-action="Logout">
+                                <button class="btn btn-primary btn-block">Logout</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Auth">Войти</a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -24,6 +35,23 @@
 </header>
 <div class="container">
     <main role="main" class="pb-3">
+        @if (User.Identity is {IsAuthenticated:true})
+        {
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Пользователи</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Рекламные компании</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Заявки</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Статистика</a>
+                </li>
+            </ul>
+        }
         @RenderBody()
     </main>
 </div>
