@@ -15,7 +15,6 @@ namespace AdCampaign.Controllers
             _service = service;
         }
 
-        [HttpGet]
         public IActionResult Index()
         {
             return View();
@@ -28,7 +27,7 @@ namespace AdCampaign.Controllers
             if (!principalResult.Ok)
             {
                 ViewData["Errors"] = principalResult.Errors;
-                return View("Index");
+                return View();
             }
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
