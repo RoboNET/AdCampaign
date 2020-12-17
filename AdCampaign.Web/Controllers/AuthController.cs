@@ -20,20 +20,14 @@ namespace AdCampaign.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Auth()
-        {
-            return View();
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Auth(string username, string password, string returnUrl)
+        public async Task<IActionResult> Index(string username, string password, string returnUrl)
         {
             var principalResult = await _service.CreatePrincipal(username, password);
             if (!principalResult.Ok)
             {
                 ViewData["Errors"] = principalResult.Errors;
-                return View("Auth");
+                return View();
             }
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,

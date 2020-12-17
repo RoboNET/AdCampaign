@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AdCampaign.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -28,12 +27,6 @@ namespace AdCampaign.Controllers
                 ViewBag.Login = User.GetLogin()!;
             }
 
-            return View();
-        }
-
-        [AllowAnonymous]
-        public IActionResult Privacy()
-        {
             return View();
         }
 
