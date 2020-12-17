@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Users;
 using AdCampaign.DAL.Entities;
 using AdCampaign.Models;
@@ -32,14 +33,9 @@ namespace AdCampaign.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Create(
-            string username,
-            string password,
-            string email,
-            string phone,
-            Role role)
+        public async Task<IActionResult> Create(EditUserRequest dto)
         {
-            await _userService.CreateUser(username, password, email, phone, role);
+            await _userService.CreateUser(dto.Username, dto.Password, dto.Email, dto.Phone, dto.Role);
             return RedirectToAction("List", "User");
         }
         
@@ -59,22 +55,16 @@ namespace AdCampaign.Controllers
         }
         
         [HttpPost("User/{id}/edit")]
-        public async Task<IActionResult> Edit(
-            long id,
-            string username,
-            string password,
-            string email,
-            string phone,
-            Role role)
+        public async Task<IActionResult> Edit(long id, EditUserRequest dto)
         {
-            await _userService.UpdateUser(id, username, password, email, phone, role);
+            await _userService.UpdateUser(dto.Id, dto.Username, dto.Password, dto.Email, dto.Phone, dto.Role);
             return RedirectToAction("Edit", "User",new {id});
         }
         
         [HttpPost("User/block")]
         public async Task<IActionResult> Block(long id)
         {
-            await _userService.BlockUser(id, null);
+            await _userService.BlockUser(id, User.GetUserId());
             return RedirectToAction("Edit", "User",new {id});
         }
         

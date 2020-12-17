@@ -20,7 +20,15 @@ namespace AdCampaign.Authetication
             var role = principal.FindFirst(ClaimTypes.Role)!.Value;
             return Enum.Parse<Role>(role);
         }
+        
+        public static long GetUserId(this ClaimsPrincipal principal)
+        {
+            AssertAuthentication(principal);
 
+            var userId = principal.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+            return long.Parse(userId);
+        }
+        
         private static void AssertAuthentication(ClaimsPrincipal principal)
         {
             if (!principal.Identity!.IsAuthenticated)

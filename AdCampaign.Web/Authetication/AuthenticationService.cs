@@ -36,6 +36,7 @@ namespace AdCampaign.Authetication
 
             var claimsIdentity = new ClaimsIdentity(new List<Claim>
             {
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new(ClaimTypes.Name, user.Name),
                 new(ClaimTypes.Email, user.Email),
                 new(ClaimTypes.Role, user.Role.ToString())
