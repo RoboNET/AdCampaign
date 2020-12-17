@@ -97,7 +97,7 @@ namespace AdCampaign.BLL.Services.Adverts
                 var created = await fileRepository.Create(primaryImage.Name, primaryImage.Content);
                 advert.PrimaryImageId = created.Id;
             }
-            
+
             if (secondaryImage != null)
             {
                 if (advert.SecondaryImage != null)
@@ -105,7 +105,7 @@ namespace AdCampaign.BLL.Services.Adverts
                 var created = await fileRepository.Create(secondaryImage.Name, secondaryImage.Content);
                 advert.SecondaryImageId = created.Id;
             }
-            
+
             UpdateBaseInfo(advert, dto);
             advert.DateUpdated = DateTime.UtcNow;
             return await advertRepository.Update(advert);
@@ -124,6 +124,22 @@ namespace AdCampaign.BLL.Services.Adverts
             advert.ImpressingDateTo = dto.ImpressingDateTo;
             advert.ImpressingTimeFrom = dto.ImpressingTimeFrom;
             advert.ImpressingTimeTo = dto.ImpressingTimeTo;
+        }
+
+        public async Task<Result> Delete(long id, string userEmail, Role role)
+        {
+            var advert = await advertRepository.Get(id);
+            if (CanDeleteByRole(role) || UserIsOwner(advert.Owner, userEmail))
+            {
+                advert.IsVisible = false;
+                await advertRepository.Update(advert);
+                return new();
+            }
+
+            return new Error("У вас нет прав на удаление", "403");
+
+            static bool CanDeleteByRole(Role role) => role == Role.Administrator || role == Role.Moderator;
+            static bool UserIsOwner(User user, string email) => user.Email.Equals(email, StringComparison.Ordinal);
         }
     }
 }

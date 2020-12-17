@@ -18,10 +18,12 @@ namespace AdCampaign.BLL.Services.Adverts
         /// Создать капмпанию
         /// </summary>
         Task<Result<Advert>> Create(AdvertDto dto, File primaryImage, File secondaryImage);
-        
+
         /// <summary>
         /// Обновить капмпанию
         /// </summary>
         Task<Result<Advert>> Update(AdvertDto dto, File primaryImage, File secondaryImage);
+
+        Task<Result> Delete(long id, string userEmail, Role role);
     }
 }

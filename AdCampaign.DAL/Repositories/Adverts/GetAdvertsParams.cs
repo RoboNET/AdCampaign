@@ -17,6 +17,8 @@ namespace AdCampaign.DAL.Repositories.Adverts
 
         public TimeSpan? ImpressingTime { get; set; }
 
+        public string UserEmail { get; set; }
+
         public int? ToTake { get; set; }
 
         public bool Shuffle { get; set; }
