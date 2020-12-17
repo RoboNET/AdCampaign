@@ -40,7 +40,7 @@ namespace AdCampaign.Controllers
             }
 
             
-            return View(ads.Unwrap());
+            return View(ads.Unwrap().ToList());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
