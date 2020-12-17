@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Adverts;
+using AdCampaign.BLL.Services.Users;
 using AdCampaign.DAL;
 using AdCampaign.DAL.Entities;
 using AdCampaign.DAL.Repositories.Adverts;
@@ -51,7 +52,8 @@ namespace AdCampaign
                 options.UseNpgsql(Configuration.GetConnectionString("AdCampaignContext")))
                 .AddScoped<IAdvertRepository, AdvertRepository>()
                 .AddScoped<IAdvertStatisticRepository, AdvertStatisticRepository>()
-                .AddScoped<IAdvertService, AdvertService>();
+                .AddScoped<IAdvertService, AdvertService>()
+                .AddScoped<IUserService, UserService>();
 
             services.AddControllersWithViews();
         }
