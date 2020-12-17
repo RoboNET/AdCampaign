@@ -9,9 +9,4 @@
       <ProjectReference Include="..\AdCampaign.DAL\AdCampaign.DAL.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Common" />
-      <Folder Include="Repositories" />
-    </ItemGroup>
-
 </Project>
