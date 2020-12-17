@@ -1,23 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Users;
-using AdCampaign.DAL;
 using AdCampaign.DAL.Entities;
 using AdCampaign.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AdCampaign.Controllers
 {
     public class UserController :  Controller
     {
-        private readonly AdCampaignContext _context;
         private readonly IUserService _userService;
 
-        public UserController(AdCampaignContext context, IUserService userService)
+        public UserController(IUserService userService)
         {
-            _context = context;
             _userService = userService;
         }
 
@@ -52,7 +47,7 @@ namespace AdCampaign.Controllers
         [HttpGet("User/{id}/edit")]
         public async Task<IActionResult> Edit(long id)
         {
-            var user = await _context.Users.FirstAsync(u => u.Id == id);
+            var user = await _userService.Get(id);
             return View(new UserEditViewModel
             {
                 Name = user.Name,
@@ -80,7 +75,7 @@ namespace AdCampaign.Controllers
         [HttpPost("User/{id}/block")]
         public async Task<IActionResult> Block(long id)
         {
-            await _userService.BlockUser(id, null);
+            await _userService.BlockUser(id, User.GetUserId());
             return RedirectToAction("Edit", "User",new {id});
         }
         

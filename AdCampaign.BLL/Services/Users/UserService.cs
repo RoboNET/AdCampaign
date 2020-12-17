@@ -76,5 +76,19 @@ namespace AdCampaign.BLL.Services.Users
                 Role = user.Role,
                 IsBlocked = user.IsBlocked
             }).ToArrayAsync();
+
+        public async Task<UserDto> Get(long id)
+        {
+            var user = await _context.Users.FirstAsync(u => u.Id == id);
+            return new UserDto
+            {
+                Email = user.Email,
+                Id = user.Id,
+                Name = user.Name,
+                Phone = user.Phone,
+                Role = user.Role,
+                IsBlocked = user.IsBlocked
+            };
+        }
     }
 }
