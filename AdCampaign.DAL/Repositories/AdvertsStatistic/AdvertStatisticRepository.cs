@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AdCampaign.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -13,19 +15,33 @@ namespace AdCampaign.DAL.Repositories.AdvertsStatistic
         {
             this.context = context;
         }
-        
+
         public async Task Increment(long advertId, AdvertStatisticType type)
         {
-            await context.Database.ExecuteSqlInterpolatedAsync (
+            await context.Database.ExecuteSqlInterpolatedAsync(
                 $@"UPDATE ""AdvertsStatistics"" SET ""Value"" = ""AdvertsStatistics"".""Value"" + 1
-                WHERE ""AdvertId"" = {advertId} and ""AdvertStatisticType"" = {(int)type}");
+                WHERE ""AdvertId"" = {advertId} and ""AdvertStatisticType"" = {(int) type}");
         }
 
         public async Task Increment(IEnumerable<long> advertIds, AdvertStatisticType type)
         {
-            await context.Database.ExecuteSqlInterpolatedAsync (
-                $@"UPDATE ""AdvertsStatistics"" SET ""Value"" = ""AdvertsStatistics"".""Value"" + 1
-                WHERE ""AdvertId"" in {string.Join(',', advertIds)} and ""AdvertStatisticType"" = {(int)type}");
+            StringBuilder paramsValues = new StringBuilder();
+            var adverts = advertIds.ToList();
+
+            if (adverts.Count == 0)
+                return;
+
+            for (var index = 1; index <= adverts.Count; index++)
+            {
+                paramsValues.Append("{");
+                paramsValues.Append(index);
+                paramsValues.Append("}");
+            }
+
+            await context.Database.ExecuteSqlRawAsync(
+                @"UPDATE ""AdvertsStatistics"" SET ""Value"" = ""AdvertsStatistics"".""Value"" + 1
+                WHERE ""AdvertId"" in (" + paramsValues + @") and ""AdvertStatisticType"" = {0}", (int) type,
+                adverts);
         }
     }
 }
