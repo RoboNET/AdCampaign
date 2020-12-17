@@ -1,15 +1,11 @@
 ﻿using System;
 using AdCampaign.DAL.Entities;
+using Microsoft.AspNetCore.Http;
 
-namespace AdCampaign.BLL.Services.Adverts.DTO
+namespace AdCampaign.Models
 {
-    /// <summary>
-    ///     Модель для создания кампании
-    /// </summary>
-    public class AdvertDto
+    public class CreateFileRequestModel
     {
-        public long Id { get; set; }
-
         public string Name { get; set; }
 
         public RequestType RequestType { get; set; }
@@ -23,7 +19,10 @@ namespace AdCampaign.BLL.Services.Adverts.DTO
         public TimeSpan ImpressingTimeFrom { get; set; }
 
         public TimeSpan ImpressingTimeTo { get; set; }
+
+        public IFormFile PrimaryImage { get; set; }
         
-        
+        public IFormFile SecondaryImage { get; set; }
+
     }
 }

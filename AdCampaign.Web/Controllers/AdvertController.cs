@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Adverts;
 using AdCampaign.BLL.Services.Adverts.DTO;
 using AdCampaign.DAL.Entities;
 using AdCampaign.Extensions;
+using AdCampaign.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,22 +25,41 @@ namespace AdCampaign.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddAdvert([FromForm] IFormFileCollection files, AdvertDto dto)
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            var (primary, secondary) = GetFiles(files);
-            var created = await _service.Create(dto, primary, secondary);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateFileRequestModel dto)
+        {
+            var created = await _service.Create(User.GetId(), new AdvertDto()
+            {
+                Name = dto.Name,
+                RequestType = dto.RequestType,
+                ImpressingDateFrom = dto.ImpressingDateFrom,
+                ImpressingDateTo = dto.ImpressingDateTo,
+                ImpressingTimeFrom = dto.ImpressingTimeFrom,
+                ImpressingTimeTo = dto.ImpressingTimeTo
+            }, dto.PrimaryImage.ToFile(), dto.SecondaryImage.ToFile());
             //todo redirect to created
             return RedirectToAction("Index");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateAdvert([FromForm] IFormFileCollection files, AdvertDto dto)
+        [HttpGet]
+        public async Task<IActionResult> Update(long id)
+        {
+            var updated = await _service.Get(User.GetId(), id);
+            return View(updated.Unwrap());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update([FromForm] IFormFileCollection files, AdvertDto dto)
         {
             var (primary, secondary) = GetFiles(files);
-            var updated = await _service.Update(dto, primary, secondary);
-            //todo redirect to updated
-            return RedirectToAction("Index");
+            var updated = await _service.Update(User.GetId(), dto, primary, secondary);
+            return View(updated.Data);
         }
 
         private static (File primary, File secondary) GetFiles(IFormFileCollection files)

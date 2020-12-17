@@ -15,13 +15,19 @@ namespace AdCampaign.BLL.Services.Adverts
         Task<Result<IEnumerable<ShowAdvertDto>>> GetAdvertsToShow(CancellationToken ct);
 
         /// <summary>
+        /// Получить капмпанию
+        /// </summary>
+        Task<Result<Advert>> Get(long userId, long id);
+
+        
+        /// <summary>
         /// Создать капмпанию
         /// </summary>
-        Task<Result<Advert>> Create(AdvertDto dto, File primaryImage, File secondaryImage);
+        Task<Result<Advert>> Create(long userId, AdvertDto dto, File primaryImage, File secondaryImage);
         
         /// <summary>
         /// Обновить капмпанию
         /// </summary>
-        Task<Result<Advert>> Update(AdvertDto dto, File primaryImage, File secondaryImage);
+        Task<Result<Advert>> Update(long userId, AdvertDto dto, File primaryImage, File secondaryImage);
     }
 }
