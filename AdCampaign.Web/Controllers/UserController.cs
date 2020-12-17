@@ -75,5 +75,24 @@ namespace AdCampaign.Controllers
                 UserId = user.Id
             });
         }
+        
+        [HttpPost("User/{id}/edit")]
+        public async Task<IActionResult> Edit(
+            long id,
+            string username,
+            string email,
+            string phone,
+            string password,
+            Role role)
+        {
+            var user = await _context.Users.SingleAsync(u => u.Id == id);
+            user.Email = email;
+            user.Name = username;
+            user.Phone = phone;
+            user.Role = role;
+            user.PasswordHash = _passwordHasher.HashPassword(user, password);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Edit", "User",new {id});
+        }
     }
 }
