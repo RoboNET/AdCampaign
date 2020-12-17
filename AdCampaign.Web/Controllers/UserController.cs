@@ -71,14 +71,14 @@ namespace AdCampaign.Controllers
             return RedirectToAction("Edit", "User",new {id});
         }
         
-        [HttpPost("User/{id}/block")]
+        [HttpPost("User/block")]
         public async Task<IActionResult> Block(long id)
         {
             await _userService.BlockUser(id, null);
             return RedirectToAction("Edit", "User",new {id});
         }
         
-        [HttpGet("User/{id}/delete")]
+        [HttpPost("User/delete")]
         public async Task<IActionResult> Delete(long id)
         {
             await _userService.Delete(id);

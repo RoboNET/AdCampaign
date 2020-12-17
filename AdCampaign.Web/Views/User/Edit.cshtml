@@ -5,35 +5,40 @@
 <div class="row justify-content-center">
     <h1 class="col-8">Create user</h1>
 </div>
-<div class="row justify-content-center">
-    <form asp-action="Edit" method="post" class="col-8">
-        <input type="hidden" value="@Model.UserId" name="id">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" disabled checked="@Model.IsActive" id="customCheck">
-            <label class="custom-control-label" for="customCheck">Активен</label>
-        </div>
-        <div class="form-group">
-            <label for="username">Имя</label>
-            <input type="text" name="username" class="form-control" id="username" value="@Model.Name">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" class="form-control" id="email" value="@Model.Email">
-        </div>
-        <div class="form-group">
-            <label for="phone">phone</label>
-            <input type="text" name="phone" class="form-control" id="phone" value="@Model.Phone">
-        </div>
-        <div class="form-group">
-            <label for="password">Пароль (заменит имеющийся)</label>
-            <input type="password" name="password" class="form-control" id="password">
-        </div>
-        <div class="form-group">
-            <label for="role">Role</label>
-            <select asp-for="@Model.Role" asp-items="@UserRoles.GetList()" name="role" id="role" class="form-control"></select>
-        </div>
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-        <a href="google.com" class="btn btn-primary">Заблокировать</a>
+<div class="justify-content-center">
+    <div class="col-8">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" value="@Model.UserId" name="id">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" disabled checked="@Model.IsActive" id="customCheck">
+                <label class="custom-control-label" for="customCheck">Активен</label>
+            </div>
+            <div class="form-group">
+                <label for="username">Имя</label>
+                <input type="text" name="username" class="form-control" id="username" value="@Model.Name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" class="form-control" id="email" value="@Model.Email">
+            </div>
+            <div class="form-group">
+                <label for="phone">phone</label>
+                <input type="text" name="phone" class="form-control" id="phone" value="@Model.Phone">
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль (заменит имеющийся)</label>
+                <input type="password" name="password" class="form-control" id="password">
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select asp-for="@Model.Role" asp-items="@UserRoles.GetList()" name="role" id="role" class="form-control"></select>
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
+        <form method="post" asp-controller="User" asp-action="Block" class="form-inline my-2 my-lg-0">
+            <input type="hidden" name="id" value="@Model.UserId">
+            <button type="submit" class="btn btn-primary">Заблокировать</button>
+        </form>
         <a href="google.com" class="btn btn-primary">Рекламные компании</a>
-    </form>
+    </div>
 </div>

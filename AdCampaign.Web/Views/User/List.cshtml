@@ -23,7 +23,12 @@
                 <td>@user.Email</td>
                 <td>@user.Phone</td>
                 <td>@Html.ActionLink("Редактировать", "Edit", new {user.Id})</td>
-                <td>@Html.ActionLink("Удалить", "Delete", new {user.Id})</td>
+                <td>
+                    <form method="post" asp-controller="User" asp-action="Delete" class="form-inline my-2 my-lg-0">
+                        <input type="hidden" name="id" value="@user.Id">
+                        <button type="submit" class="btn btn-primary">Удалить</button>
+                    </form>
+                </td>
             </tr>
         }
         </tbody>
