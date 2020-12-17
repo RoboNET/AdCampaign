@@ -9,7 +9,7 @@
         {
             var item = Model[0];
             <div class="col-12 d-none d-lg-flex justify-content-center" data-toggle="collapse" href="#collapseExample">
-                <img class="img-fluid" src="@Url.Action("Get", "Files", item.PrimaryImageId)"/>
+                <img class="img-fluid" src="@Url.Action("Get", "Files", new{id= item.PrimaryImageId})"/>
             </div>
             <div class="collapse position-absolute" id="collapseExample" style="right: 30px; top: 15px">
                 <form>
@@ -66,7 +66,7 @@
                          href="#collapseExample@(index)"
                          style="height: 250px"
                          onclick="sendClickEvent('@(index)')"
-                         src="@Url.Action("Get", "Files", item.SecondaryImageId)"/>
+                         src="@Url.Action("Get", "Files", new{id=item.SecondaryImageId})"/>
                     <div class="collapse position-absolute" id="collapseExample@(index)" style="right: 30px; top: 30px">
                         <form>
                             <div class="form-group">
