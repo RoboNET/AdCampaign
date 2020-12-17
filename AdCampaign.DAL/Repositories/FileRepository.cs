@@ -12,7 +12,7 @@ namespace AdCampaign.DAL.Repositories
             _db = db;
         }
         
-        public async Task Create(string fileName, byte[] content)
+        public async Task<File> Create(string fileName, byte[] content)
         {
             var file = new File
             {
@@ -23,11 +23,18 @@ namespace AdCampaign.DAL.Repositories
 
             await _db.Files.AddAsync(file);
             await _db.SaveChangesAsync();
+            return file;
         }
 
         public async Task<File?> Get(long id)
         {
             return await _db.FindAsync<File>(id);
+        }
+
+        public async Task Delete(File file)
+        {
+            _db.Remove(file);
+            await _db.SaveChangesAsync();
         }
     }
 }

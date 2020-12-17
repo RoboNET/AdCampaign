@@ -6,7 +6,7 @@ namespace AdCampaign.BLL.Services.Adverts.DTO
     /// <summary>
     ///     Модель для создания кампании
     /// </summary>
-    public class CreateAdvertDto
+    public class AdvertDto
     {
         public long Id { get; set; }
 
@@ -24,8 +24,6 @@ namespace AdCampaign.BLL.Services.Adverts.DTO
 
         public DateTime? BlockedDate { get; set; }
 
-        public DateTime DateUpdated { get; set; }
-
         public DateTime ImpressingDateFrom { get; set; }
 
         public DateTime ImpressingDateTo { get; set; }
@@ -33,9 +31,7 @@ namespace AdCampaign.BLL.Services.Adverts.DTO
         public TimeSpan ImpressingTimeFrom { get; set; }
 
         public TimeSpan ImpressingTimeTo { get; set; }
-
-        public long? PrimaryImageId { get; set; }
-
-        public long? SecondaryImageId { get; set; }
+        
+        
     }
 }
