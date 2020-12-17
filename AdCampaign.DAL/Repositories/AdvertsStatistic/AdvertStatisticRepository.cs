@@ -36,6 +36,10 @@ namespace AdCampaign.DAL.Repositories.AdvertsStatistic
                 paramsValues.Append("{");
                 paramsValues.Append(index);
                 paramsValues.Append("}");
+                if (index != adverts.Count)
+                {
+                    paramsValues.Append(",");
+                }
             }
 
             var parameters = new List<object>()

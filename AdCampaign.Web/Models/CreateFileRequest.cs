@@ -1,34 +1,40 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using AdCampaign.DAL.Entities;
 using Microsoft.AspNetCore.Http;
 
 namespace AdCampaign.Models
 {
-    public class UpdateFileRequestModel : CreateFileRequestModel
+    public class UpdateFileRequestModel : BaseFileRequestModel
     {
-        public long Id { get; set; }
-        
-        public bool IsVisible { get; set; }
-    }
+        [Required] public long Id { get; set; }
 
-    public class CreateFileRequestModel
-    {
-        public string Name { get; set; }
-
-        public RequestType RequestType { get; set; }
-
-        public bool IsVisible { get; set; }
-
-        public DateTime ImpressingDateFrom { get; set; }
-
-        public DateTime ImpressingDateTo { get; set; }
-
-        public TimeSpan ImpressingTimeFrom { get; set; }
-
-        public TimeSpan ImpressingTimeTo { get; set; }
+        [Required] public bool IsVisible { get; set; }
 
         public IFormFile PrimaryImage { get; set; }
 
         public IFormFile SecondaryImage { get; set; }
+    }
+
+    public class BaseFileRequestModel
+    {
+        [Required] public string Name { get; set; }
+
+        [Required] public RequestType RequestType { get; set; }
+
+        [Required] public DateTime ImpressingDateFrom { get; set; }
+
+        [Required] public DateTime ImpressingDateTo { get; set; }
+
+        [Required] public TimeSpan ImpressingTimeFrom { get; set; }
+
+        [Required] public TimeSpan ImpressingTimeTo { get; set; }
+    }
+
+    public class CreateFileRequestModel : BaseFileRequestModel
+    {
+        [Required] public IFormFile PrimaryImage { get; set; }
+
+        [Required] public IFormFile SecondaryImage { get; set; }
     }
 }

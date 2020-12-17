@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Adverts;
 using AdCampaign.BLL.Services.Adverts.DTO;
+using AdCampaign.Common;
 using AdCampaign.DAL.Entities;
 using AdCampaign.Extensions;
 using AdCampaign.Models;
@@ -34,6 +35,11 @@ namespace AdCampaign.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateFileRequestModel dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
             var created = await _service.Create(User.GetId(), new AdvertDto()
             {
                 Name = dto.Name,
@@ -43,7 +49,14 @@ namespace AdCampaign.Controllers
                 ImpressingTimeFrom = dto.ImpressingTimeFrom,
                 ImpressingTimeTo = dto.ImpressingTimeTo
             }, dto.PrimaryImage.ToFile(), dto.SecondaryImage.ToFile());
-            //todo redirect to created
+
+            if (!created.Ok)
+            {
+                ViewData["Errors"] = created.Errors;
+                return View(dto);
+            }
+
+
             return RedirectToAction("Index");
         }
 
@@ -51,12 +64,36 @@ namespace AdCampaign.Controllers
         public async Task<IActionResult> Update(long id)
         {
             var updated = await _service.Get(User.GetId(), id);
-            return View(updated.Unwrap());
+
+            if (!updated.Ok)
+            {
+                ViewData["Errors"] = updated.Errors;
+                return View();
+            }
+
+            var result = updated.Unwrap();
+
+            return View(new UpdateFileRequestModel
+            {
+                Id = result.Id,
+                Name = result.Name,
+                IsVisible = result.IsVisible,
+                RequestType = result.RequestType,
+                ImpressingDateFrom = result.ImpressingDateFrom,
+                ImpressingDateTo = result.ImpressingDateTo,
+                ImpressingTimeFrom = result.ImpressingTimeFrom,
+                ImpressingTimeTo = result.ImpressingTimeTo
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(UpdateFileRequestModel dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
             var updated = await _service.Update(User.GetId(), new AdvertDto()
             {
                 Id = dto.Id,
@@ -68,7 +105,25 @@ namespace AdCampaign.Controllers
                 ImpressingTimeFrom = dto.ImpressingTimeFrom,
                 ImpressingTimeTo = dto.ImpressingTimeTo
             }, dto.PrimaryImage?.ToFile(), dto.SecondaryImage?.ToFile());
-            return View(updated.Unwrap());
+
+            if (!updated.Ok)
+            {
+                ViewData["Errors"] = updated.Errors;
+                return View(dto);
+            }
+
+            var result = updated.Unwrap();
+            return View(new UpdateFileRequestModel
+            {
+                Id = result.Id,
+                Name = result.Name,
+                IsVisible = result.IsVisible,
+                RequestType = result.RequestType,
+                ImpressingDateFrom = result.ImpressingDateFrom,
+                ImpressingDateTo = result.ImpressingDateTo,
+                ImpressingTimeFrom = result.ImpressingTimeFrom,
+                ImpressingTimeTo = result.ImpressingTimeTo
+            });
         }
     }
 }
