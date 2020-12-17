@@ -79,6 +79,8 @@ namespace AdCampaign.DAL.Repositories.Adverts
             .Include(x => x.AdvertStatistics)
             .Include(x => x.BlockedBy)
             .Include(x => x.Owner)
+            .Include(x => x.PrimaryImage)
+            .Include(x => x.SecondaryImage)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 }
