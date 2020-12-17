@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using AdCampaign.DAL.Entities;
+using AdCampaign.BLL.Services.Users;
 
 namespace AdCampaign.Models
 {
     public class UserListViewModel
     {
-        public IEnumerable<User> Users { get; set; }
+        public IEnumerable<UserDto> Users { get; set; }
     }
 }
