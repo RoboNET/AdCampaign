@@ -43,7 +43,7 @@
                         </td>
                         <td>
                             @Html.ActionLink("Запросы", actionName: "Index", "Application", new {advertId = advert.Id})
-                            @Html.ActionLink("Статистика", actionName: "Statistics")
+                            @Html.ActionLink("Статистика", actionName: "Statistic", new {id = @advert.Id})
                             @Html.ActionLink("Редактировать", actionName: "Update", new {id = @advert.Id})
                             @Html.ActionLink("Удалить", actionName: "Delete", routeValues: new {@advert.Id})
                         </td>

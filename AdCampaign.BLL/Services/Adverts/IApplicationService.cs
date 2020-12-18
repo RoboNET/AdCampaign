@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AdCampaign.BLL.Services.Adverts.DTO;
 using AdCampaign.Common;
 using AdCampaign.DAL.Entities;
+using AdCampaign.DAL.Repositories.AdvertsStatistic;
 using AdCampaign.DAL.Repositories.Application;
 
 namespace AdCampaign.BLL.Services.Adverts
@@ -19,10 +20,13 @@ namespace AdCampaign.BLL.Services.Adverts
     public class ApplicationService : IApplicationService
     {
         private readonly IApplicationRepository _applicationRepository;
+        private readonly IAdvertStatisticRepository _statisticRepository;
 
-        public ApplicationService(IApplicationRepository applicationRepository)
+        public ApplicationService(IApplicationRepository applicationRepository,
+            IAdvertStatisticRepository statisticRepository)
         {
             _applicationRepository = applicationRepository;
+            _statisticRepository = statisticRepository;
         }
 
         public async Task<Result> Create(CreateApplicationDto dto)
@@ -34,6 +38,8 @@ namespace AdCampaign.BLL.Services.Adverts
                 Phone = dto.Phone,
                 Email = dto.Email
             });
+
+            await _statisticRepository.Increment(dto.AdvertId, AdvertStatisticType.Filled);
 
             return new();
         }
