@@ -1,0 +1,37 @@
+@model AdCampaign.Models.Users.UserListViewModel
+@{
+    ViewData["Title"] = "Список пользователей";
+}
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Имя</th>
+            <th scope="col">Роль</th>
+            <th scope="col">Email</th>
+            <th scope="col">Телефон</th>
+            <th scope="col">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <th scope="row">@user.Name</th>
+                <td>@user.Role</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+                <td>@Html.ActionLink("Редактировать", "Edit", new {user.Id})</td>
+                <td>
+                    <form method="post" asp-controller="User" asp-action="Delete" class="form-inline my-2 my-lg-0">
+                        <input type="hidden" name="id" value="@user.Id">
+                        <button type="submit" class="btn btn-primary">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <a asp-controller="User" asp-action="Create" class="btn btn-primary">Add user</a>
+</div>

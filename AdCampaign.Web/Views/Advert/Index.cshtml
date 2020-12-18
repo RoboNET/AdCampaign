@@ -1,5 +1,6 @@
 @using AdCampaign.DAL.Entities
 @using AdCampaign.Common
+@using AdCampaign.Authetication
 @model IEnumerable<AdCampaign.Controllers.AdvertViewModel>
 
 <div class="container">
@@ -12,7 +13,11 @@
         <table class="col-12 table">
             <tr>
                 <th>Name</th>
-                <th>Owner</th>
+
+                @if (User.IsAdministratorOrModerator())
+                {
+                    <th>Owner</th>
+                }
                 <th>Active</th>
                 <th>Data</th>
                 <th>Actions</th>
@@ -24,9 +29,12 @@
                         <td>
                             @advert.Name
                         </td>
-                        <td>
-                            @Html.ActionLink(@advert.OwnerName, controllerName: "User", actionName: "Details", routeValues: new {id = @advert.OwnerId})
-                        </td>
+                        @if (User.IsAdministratorOrModerator())
+                        {
+                            <td>
+                                @Html.ActionLink(@advert.OwnerName, controllerName: "User", actionName: "Edit", routeValues: new {id = @advert.OwnerId})
+                            </td>
+                        }
                         <td>
                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert.IsActive">
                         </td>

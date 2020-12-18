@@ -32,7 +32,7 @@ namespace AdCampaign.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 principalResult.Unwrap());
-            return Redirect(returnUrl ?? "/Home");
+            return Redirect(returnUrl ?? "/Advert");
         }
 
         [HttpPost]
