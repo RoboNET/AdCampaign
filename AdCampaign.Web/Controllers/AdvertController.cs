@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.IO;
 using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Adverts;
 using AdCampaign.BLL.Services.Adverts.DTO;
@@ -54,7 +55,7 @@ namespace AdCampaign.Controllers
 
             return RedirectToAction("Index");
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -66,6 +67,13 @@ namespace AdCampaign.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return View(dto);
+            }
+
+            if (!CheckFileExtension(dto.PrimaryImage?.FileName) || !CheckFileExtension(dto.SecondaryImage?.FileName))
+            {
+                ViewData["Errors"] = new Error[]
+                    {new("Расширение файла должно быть .jpg, .jpeg или .png", "400")};
                 return View(dto);
             }
 
@@ -127,6 +135,13 @@ namespace AdCampaign.Controllers
                 return View(dto);
             }
 
+            if (!CheckFileExtension(dto.PrimaryImage?.FileName) || !CheckFileExtension(dto.SecondaryImage?.FileName))
+            {
+                ViewData["Errors"] = new Error[]
+                    {new("Расширение файла должно быть .jpg, .jpeg или .png", "400")};
+                return View(dto);
+            }
+
             var updated = await _service.Update(User.GetId(), new AdvertDto()
             {
                 Id = dto.Id,
@@ -166,8 +181,8 @@ namespace AdCampaign.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeBlock(long id, bool block)
         {
-            var result= await _service.ChangeBlock(User.GetId(), User.GetRole(), id, block);
-            if (!result.Ok) 
+            var result = await _service.ChangeBlock(User.GetId(), User.GetRole(), id, block);
+            if (!result.Ok)
                 return Json(result.Errors);
 
             return RedirectToAction("Update", new {id});
@@ -180,15 +195,31 @@ namespace AdCampaign.Controllers
             await _service.IncrementAdvertsStats(id, statisticType);
             return Ok();
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Statistic(long id)
         {
-            var result= await _service.Get(User.GetId(), id);
-            if (!result.Ok) 
+            var result = await _service.Get(User.GetId(), id);
+            if (!result.Ok)
                 return Json(result.Errors);
 
+            ViewData["AdName"] = result.Unwrap().Name;
+
             return View(result.Unwrap().AdvertStatistics);
+        }
+
+        bool CheckFileExtension(string? name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return true;
+            
+            var extension = Path.GetExtension(name);
+            if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿@using AdCampaign.DAL.Entities
+@using AdCampaign.Authetication
 @{ var controllerName = ViewContext.RouteData.Values["controller"].ToString(); }
 <!DOCTYPE html>
 <html lang="en">
@@ -24,20 +25,29 @@
                 @if (User.Identity is {IsAuthenticated:true})
                 {
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item @if (controllerName == "User"){@("active")}">
-                            <a class="nav-link" asp-controller="User" asp-action="List">Пользователи</a>
-                        </li>
+                        @if (User.IsInRole(Role.Administrator.ToString()) ||
+                             User.IsInRole(Role.Moderator.ToString()))
+                        {
+                            <li class="nav-item @if (controllerName == "User"){@("active")}">
+                                <a class="nav-link" asp-controller="User" asp-action="List">Пользователи</a>
+                            </li>
+                        }
                         <li class="nav-item @if (controllerName == "Advert"){@("active")}">
                             <a class="nav-link" asp-controller="Advert" asp-action="Index">Рекламные кампании</a>
                         </li>
                         <li class="nav-item @if (controllerName == "Application"){@("active")}">
-                            <a class="nav-link"  asp-controller="Application" asp-action="Index">Заявки</a>
+                            <a class="nav-link" asp-controller="Application" asp-action="Index">Заявки</a>
                         </li>
                     </ul>
 
+                    <span class="navbar-text" style="padding-right: 20px;">
+                        Привет, @User.GetLogin()
+                    </span>
+
                     <form method="post" asp-controller="Auth" asp-action="Logout" class="form-inline my-2 my-lg-0">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Выйти</button>
-                    </form>                }
+                    </form>                    
+                }
                 else
                 {
                     <ul class="navbar-nav ml-auto justify-content-end">

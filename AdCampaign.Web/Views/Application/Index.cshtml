@@ -10,6 +10,13 @@
         <h1 class="col-12">Список заявок</h1>
     </div>
 
+     @if (ViewData["AdName"] is string adName)
+     {
+         <div class="row justify-content-center">
+             <h3 class="col-12">@adName</h3>
+         </div>
+     }
+    
     @if (ViewData["Errors"] is Error[] errors)
     {
         foreach (var error in errors)

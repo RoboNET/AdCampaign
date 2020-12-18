@@ -11,6 +11,7 @@ using AdCampaign.DAL.Repositories.Adverts;
 using AdCampaign.DAL.Repositories.AdvertsStatistic;
 using AdCampaign.DAL.Repositories;
 using AdCampaign.DAL.Repositories.Application;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AuthenticationService = AdCampaign.Authetication.AuthenticationService;
 
 namespace AdCampaign
 {
@@ -57,6 +59,11 @@ namespace AdCampaign
                 .AddScoped<IPasswordHasherService, PasswordHasherService>();
 
             services.AddControllersWithViews();
+            services.AddAuthorization(options =>
+                options.AddPolicy("CanEditUsers", builder =>
+                    builder.RequireRole(Role.Administrator.ToString(), Role.Moderator.ToString())
+                )
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

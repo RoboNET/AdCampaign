@@ -4,6 +4,10 @@
 }
 
 <div class="container">
+    <div class="row justify-content-center">
+        <h1 class="col-12">Список пользователей</h1>
+    </div>
+    <a asp-controller="User" asp-action="Create" class="btn btn-primary" style="margin-bottom: 7px">Добавить пользователя</a>
     <table class="table">
         <thead>
         <tr>
@@ -33,5 +37,4 @@
         }
         </tbody>
     </table>
-    <a asp-controller="User" asp-action="Create" class="btn btn-primary">Добавить пользователя</a>
 </div>

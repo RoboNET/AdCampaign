@@ -6,11 +6,20 @@ namespace AdCampaign.Models.Users
 {
     public class UserCreateRequest : IValidatableObject
     {
-        [Required] public string Name { get; set; }
-        [Required] public string Email { get; set; }
-        [Required] public string Phone { get; set; }
-        [Required] public Role Role { get; set; }
-        [Required] public string Password { get; set; }
+        [Required(ErrorMessage = Constants.FieldRequired)]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = Constants.FieldRequired)]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = Constants.FieldRequired)]
+        public string Phone { get; set; }
+
+        [Required(ErrorMessage = Constants.FieldRequired)]
+        public Role Role { get; set; }
+
+        [Required(ErrorMessage = Constants.FieldRequired)]
+        public string Password { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
