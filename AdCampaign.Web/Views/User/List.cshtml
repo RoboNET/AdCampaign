@@ -1,3 +1,4 @@
+@using AdCampaign.Models.Users
 @model AdCampaign.Models.Users.UserListViewModel
 @{
     ViewData["Title"] = "Список пользователей";
@@ -23,7 +24,7 @@
         {
             <tr>
                 <th scope="row">@user.Name</th>
-                <td>@user.Role</td>
+                <td>@UserRoles.Localize(user.Role)</td>
                 <td>@user.Email</td>
                 <td>@user.Phone</td>
                 <td>@Html.ActionLink("Редактировать", "Edit", new {user.Id})</td>

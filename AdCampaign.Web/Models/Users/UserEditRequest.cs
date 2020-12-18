@@ -12,7 +12,6 @@ namespace AdCampaign.Models.Users
         [Required(ErrorMessage = Constants.FieldRequired)]
         public string Name { get; set; }
         
-        [Required(ErrorMessage = Constants.FieldRequired)]
         public string Password { get; set; }
         
         [Required(ErrorMessage = Constants.FieldRequired)]
