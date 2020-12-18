@@ -39,14 +39,18 @@
             </div>
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </form>
-        <form method="post" asp-controller="User" asp-action="Block" class="form-inline my-2 my-lg-0">
-            <input type="hidden" name="id" value="@Model.Id">
-            <button type="submit" class="btn btn-primary">Заблокировать</button>
-        </form>
-        <form method="post" asp-controller="User" asp-action="UnBlock" class="form-inline my-2 my-lg-0">
-            <input type="hidden" name="id" value="@Model.Id">
-            <button type="submit" class="btn btn-primary">Разблокировать</button>
-        </form> 
-        <a href="google.com" class="btn btn-primary">Рекламные компании</a>
+        @if (Model.IsActive) {
+            <form method="post" asp-controller="User" asp-action="Block" class="form-inline my-2 my-lg-0">
+                <input type="hidden" name="id" value="@Model.Id">
+                <button type="submit" class="btn btn-primary">Заблокировать</button>
+            </form>
+        }
+        else
+        {
+            <form method="post" asp-controller="User" asp-action="UnBlock" class="form-inline my-2 my-lg-0">
+                <input type="hidden" name="id" value="@Model.Id">
+                <button type="submit" class="btn btn-primary">Разблокировать</button>
+            </form>
+        }
     </div>
 </div>
