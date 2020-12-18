@@ -86,6 +86,13 @@ namespace AdCampaign.Controllers
             return RedirectToAction("Edit", "User", new {id});
         }
 
+        [HttpPost("User/unblock")]
+        public async Task<IActionResult> UnBlock(long id)
+        {
+            await _userService.UnBlockUser(id);
+            return RedirectToAction("Edit", "User", new {id});
+        }
+
         [HttpPost("User/delete")]
         public async Task<IActionResult> Delete(long id)
         {

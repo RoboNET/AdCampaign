@@ -35,6 +35,18 @@ namespace AdCampaign.BLL.Services.Users
             await _context.SaveChangesAsync();
         }
 
+        public async Task UnBlockUser(long userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return;
+
+            user.BlockedDate = null;
+            user.IsBlocked = false;
+            user.BlockedById = null;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task Delete(long id)
         {
             _context.Users.Remove(await _context.Users.FindAsync(id));
