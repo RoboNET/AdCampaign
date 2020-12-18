@@ -13,7 +13,7 @@ namespace AdCampaign.BLL.Services.Users
         Task Delete(long id);
         Task<Result> CreateUser(string username, string password, string email, string phone, Role role);
         Task UpdateUser(long id, string username, string password, string email, string phone, Role role);
-        Task<IEnumerable<UserDto>> GetAllUsers();
+        Task<IEnumerable<UserDto>> GetUsers(bool onlyAdvertisers);
         Task<UserDto> Get(long id);
     }
 }

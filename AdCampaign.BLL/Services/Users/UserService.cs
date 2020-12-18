@@ -81,20 +81,27 @@ namespace AdCampaign.BLL.Services.Users
             user.Name = username;
             user.Phone = phone;
             user.Role = role;
-            user.PasswordHash = _passwordHasherService.HashPassword(user, password);
+            if (!string.IsNullOrEmpty(password))
+                user.PasswordHash = _passwordHasherService.HashPassword(user, password);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllUsers() =>
-            await _context.Users.Select(user => new UserDto
-            {
-                Email = user.Email,
-                Id = user.Id,
-                Name = user.Name,
-                Phone = user.Phone,
-                Role = user.Role,
-                IsBlocked = user.IsBlocked
-            }).ToArrayAsync();
+        public async Task<IEnumerable<UserDto>> GetUsers(bool onlyAdvertisers)
+        {
+            var queryable = _context.Users
+                .Select(user => new UserDto
+                {
+                    Email = user.Email,
+                    Id = user.Id,
+                    Name = user.Name,
+                    Phone = user.Phone,
+                    Role = user.Role,
+                    IsBlocked = user.IsBlocked
+                });
+            if (onlyAdvertisers)
+                queryable = queryable.Where(u => u.Role == Role.Advertiser);
+            return await queryable.ToArrayAsync();
+        }
 
         public async Task<UserDto> Get(long id)
         {
