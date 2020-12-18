@@ -25,7 +25,5 @@ namespace AdCampaign.BLL.Services.Adverts.DTO
         public TimeSpan? ImpressingTimeFrom { get; set; }
 
         public TimeSpan? ImpressingTimeTo { get; set; }
-        
-        
     }
 }
