@@ -51,6 +51,11 @@ namespace AdCampaign.BLL.Services.Adverts
             return toShow;
         }
 
+        public Task IncrementAdvertsStats(long id, AdvertStatisticType statisticType)
+        {
+            return statisticRepository.Increment(id, statisticType);
+        }
+
         public async Task<Result<Advert>> Get(long userId, long id)
         {
             var advert = await advertRepository.Get(id);
