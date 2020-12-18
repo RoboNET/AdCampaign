@@ -103,6 +103,7 @@ namespace AdCampaign.Controllers
             }
 
             var result = updated.Unwrap();
+            @ViewData["IsBlocked"] = result.IsBlocked;
 
             return View(new UpdateFileRequestModel
             {
@@ -146,6 +147,8 @@ namespace AdCampaign.Controllers
             }
 
             var result = updated.Unwrap();
+
+            @ViewData["IsBlocked"] = result.IsBlocked;
             return View(new UpdateFileRequestModel
             {
                 Id = result.Id,
@@ -166,8 +169,8 @@ namespace AdCampaign.Controllers
             var result= await _service.ChangeBlock(User.GetId(), User.GetRole(), id, block);
             if (!result.Ok) 
                 return Json(result.Errors);
-            
-            return Ok();
+
+            return RedirectToAction("Update", new {id});
         }
 
         [HttpPost]
