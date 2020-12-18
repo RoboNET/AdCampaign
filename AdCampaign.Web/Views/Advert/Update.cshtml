@@ -31,12 +31,12 @@
             </div>
             <div class="form-group">
                 <label for="PrimaryImage">Большая картинка</label>
-                <input asp-for="PrimaryImage" type="file" class="form-control-file" id="PrimaryImage" name="PrimaryImage">
+                <input asp-for="PrimaryImage" type="file" class="form-control-file" id="PrimaryImage" name="PrimaryImage" accept=".jpg, .jpeg, .png">
                 <span asp-validation-for="PrimaryImage" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="SecondaryImage">Маленькая картинка</label>
-                <input asp-for="SecondaryImage" type="file" class="form-control-file" id="SecondaryImage" name="SecondaryImage">
+                <input asp-for="SecondaryImage" type="file" class="form-control-file" id="SecondaryImage" name="SecondaryImage" accept=".jpg, .jpeg, .png">
                 <span asp-validation-for="SecondaryImage" class="text-danger"></span>
             </div>
             <div class="form-group">
