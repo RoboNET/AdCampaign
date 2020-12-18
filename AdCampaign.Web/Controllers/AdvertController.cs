@@ -18,9 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdCampaign.Controllers
 {
     public record AdvertViewModel(long Id, string Name, bool IsActive, RequestType RequestType, long OwnerId,
-        string OwnerName, bool isBlocked);
+        string OwnerName, bool IsBlocked);
 
-
+    
     [Authorize]
     public class AdvertController : Controller
     {

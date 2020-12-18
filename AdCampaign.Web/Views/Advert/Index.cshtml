@@ -39,7 +39,7 @@
                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert.IsActive">
                         </td>
                          <td>
-                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert."></td>
+                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert.IsBlocked"></td>
                          <td>
                             @(advert.RequestType switch{RequestType.Email => "Email", RequestType.Phone=> "Телефон", _=> "Email и телефон"})
                         </td>
