@@ -48,7 +48,8 @@ namespace AdCampaign.Controllers
                 ImpressingDateTo = dto.ImpressingDateTo,
                 ImpressingTimeFrom = dto.ImpressingTimeFrom,
                 ImpressingTimeTo = dto.ImpressingTimeTo,
-                ImpressingAlways = dto.ImpressingAlways
+                ImpressingAlways = dto.ImpressingAlways,
+                IsVisible = true
             }, dto.PrimaryImage.ToFile(), dto.SecondaryImage.ToFile());
 
             if (!created.Ok)
@@ -85,7 +86,6 @@ namespace AdCampaign.Controllers
                 ImpressingTimeFrom = result.ImpressingTimeFrom,
                 ImpressingTimeTo = result.ImpressingTimeTo,
                 ImpressingAlways = result.ImpressingAlways
-
             });
         }
 
@@ -108,7 +108,6 @@ namespace AdCampaign.Controllers
                 ImpressingTimeFrom = dto.ImpressingTimeFrom,
                 ImpressingTimeTo = dto.ImpressingTimeTo,
                 ImpressingAlways = dto.ImpressingAlways
-
             }, dto.PrimaryImage?.ToFile(), dto.SecondaryImage?.ToFile());
 
             if (!updated.Ok)
@@ -130,6 +129,13 @@ namespace AdCampaign.Controllers
                 ImpressingTimeTo = result.ImpressingTimeTo,
                 ImpressingAlways = dto.ImpressingAlways
             });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> IncrementStatistic(long id, AdvertStatisticType statisticType)
+        {
+            await _service.IncrementAdvertsStats(id, statisticType);
+            return Ok();
         }
     }
 }

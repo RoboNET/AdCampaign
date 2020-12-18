@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AdCampaign.DAL.Entities;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +17,7 @@ namespace AdCampaign.Models
         public IFormFile SecondaryImage { get; set; }
     }
 
-    public class BaseFileRequestModel
+    public class BaseFileRequestModel : IValidatableObject
     {
         [Required] public bool ImpressingAlways { get; set; }
         
@@ -31,6 +32,16 @@ namespace AdCampaign.Models
         public TimeSpan? ImpressingTimeFrom { get; set; }
 
         public TimeSpan? ImpressingTimeTo { get; set; }
+        
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!ImpressingAlways && (!ImpressingTimeFrom.HasValue || !ImpressingTimeTo.HasValue))
+            {
+                yield return new ValidationResult(
+                    $"Поскольку реклама отображается не всегда, должно быть установлено время показа.",
+                    new[] { nameof(ImpressingTimeFrom), nameof(ImpressingTimeTo) });
+            }
+        }
     }
 
     public class CreateFileRequestModel : BaseFileRequestModel
