@@ -12,8 +12,9 @@
                 <img class="img-fluid" style="height: 250px" src="@Url.Action("Get", "Files", new {id = item.PrimaryImageId})"/>
             </div>
             <div class="collapse position-absolute" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px;">
-                @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
-
+                <div class="w-50">
+                    @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
+                </div>
             </div>
         }
         else
@@ -22,7 +23,7 @@
                 <div class="jumbotron jumbotron-fluid w-100  mb-0" style="height: 250px">
                     <div class="container">
                         <p class="lead">
-                            Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:vlad@htmlbook.ru">vlad@htmlbook.ru</a>
+                            Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:admin@test.local">admin@test.local</a>
                         </p>
                     </div>
                 </div>
@@ -42,7 +43,7 @@
                          style="height: 250px">
                         <div class="container">
                             <p class="lead">
-                                Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:vlad@htmlbook.ru">vlad@htmlbook.ru</a>
+                                Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:admin@test.local">admin@test.local</a>
                             </p>
                         </div>
                     </div>
