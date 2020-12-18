@@ -8,26 +8,12 @@
         @if (Model.Count != 0)
         {
             var item = Model[0];
-            <div class="col-12 d-none d-lg-flex justify-content-center" data-toggle="collapse" href="#collapseExample" onclick="sendClickEvent('@(item.Id)')">
+            <div class="col-12 d-none d-lg-flex justify-content-center" data-toggle="collapse" href="#collapseExample@(item.Id)" onclick="sendClickEvent('@(item.Id)')">
                 <img class="img-fluid" style="height: 250px" src="@Url.Action("Get", "Files", new {id = item.PrimaryImageId})"/>
             </div>
-            <div class="collapse position-absolute" id="collapseExample" style="width: calc(100% - 30px); right: 15px;">
-                <form class="card p-2" style="height: 250px" asp-controller="Application" asp-action="Create" method="post">
-                    <input type="hidden" name="AdvertId" value="@item.Id">
+            <div class="collapse position-absolute" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px;">
+                @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
 
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Email</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" name="Email" aria-describedby="emailHelp">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Телефон</label>
-                        <input type="phone" class="form-control" name="Phone" id="exampleInputPassword1">
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-primary">Отправить</button>
-                        <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample">Отменить</button>
-                    </div>
-                </form>
             </div>
         }
         else
@@ -72,22 +58,8 @@
                          style="height: 250px"
                          onclick="sendClickEvent('@(item.Id)')"
                          src="@Url.Action("Get", "Files", new {id = item.SecondaryImageId})"/>
-                    <div class="collapse position-absolute" id="collapseExample@(index)" style="width: calc(100% - 30px); right: 15px; top: 24px">
-                        <form class="card p-2" style="height: 250px" asp-controller="Application" asp-action="Create" method="post">
-                            <input type="hidden" name="AdvertId" value="@item.Id">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Email</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" name="Email" aria-describedby="emailHelp">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Телефон</label>
-                                <input type="phone" class="form-control" name="Phone" id="exampleInputPassword1">
-                            </div>
-                            <div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample@(index)">Отменить</button>
-                            </div>
-                        </form>
+                    <div class="collapse position-absolute" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px; top: 24px">
+                        @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
                     </div>
                 </div>
             }
@@ -109,4 +81,39 @@
             
         } 
     </script>
+    
+    <script>
+        $.validator.addMethod('vatNumber', function (value, element, params) {
+        
+            var genre = $(params[0]).val(), businessType = params[1], vat = value;
+                
+            if (genre.includes(businessType)) {
+                if (value.length === 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        });
+        
+        $.validator.unobtrusive.adapters.add('vatNumber', ['businessType'], function (options) {
+            var element = $(options.form).find('#RequestType')[0];
+        
+            options.rules['vatNumber'] = [element, options.params['businessType']];
+            options.messages['vatNumber'] = options.message;
+        });
+    
+     $.validator.addMethod("phone", function (value, element) {
+            if (this.optional(element)) {
+                return true;
+            }
+            var reverseValue = $.trim(value).split("").reverse().join("");
+            var reverseRegEx = new RegExp("^(\\d+\\s?(x|\\.txe?)\\s?)?((\\)(\\d+[\\s\\-\\.]?)?\\d+\\(|\\d+)[\\s\\-\\.]?)*(\\)([\\s\\-\\.]?\\d+)?\\d+\\+?\\((?!\\+.*)|\\d+)(\\s?\\+)?$", "i");
+            var match = reverseRegEx.exec(reverseValue);
+            return (match && (match.index === 0) && (match[0].length === value.length));
+        });
+        $.validator.unobtrusive.adapters.addBool("phone");
+        </script>
 </div>
