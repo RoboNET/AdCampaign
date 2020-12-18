@@ -1,13 +1,15 @@
 ﻿using System.Threading.Tasks;
 using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Users;
+using AdCampaign.Common;
 using AdCampaign.DAL.Entities;
-using AdCampaign.Models;
 using AdCampaign.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdCampaign.Controllers
 {
+    [Authorize(Policy = "CanEditUsers")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -20,7 +22,7 @@ namespace AdCampaign.Controllers
         [HttpGet("Users")]
         public async Task<ViewResult> List()
         {
-            var users = await _userService.GetAllUsers();
+            var users = await _userService.GetUsers(User.GetRole() == Role.Moderator);
             return View(new UserListViewModel
             {
                 Users = users
@@ -38,7 +40,13 @@ namespace AdCampaign.Controllers
         {
             if (!ModelState.IsValid)
                 return View(dto);
-
+            
+            if (!User.IsAdministrator() && dto.Role != Role.Advertiser)
+            {
+                ViewData["Errors"] = new [] {new Error("Вы можете создать только рекламодателя", "400")};
+                return View(dto);
+            }
+    
             var result = await _userService.CreateUser(dto.Name, dto.Password, dto.Email, dto.Phone, dto.Role);
             if (!result.Ok)
             {
@@ -53,7 +61,10 @@ namespace AdCampaign.Controllers
         public async Task<IActionResult> Edit(long id)
         {
             var user = await _userService.Get(id);
-            return View(new UserEditRequest()
+            if (user.Role == Role.Administrator && User.GetRole() != Role.Administrator)
+                return NotFound();
+
+            return View(new UserEditRequest
             {
                 Name = user.Name,
                 Email = user.Email,
@@ -67,17 +78,20 @@ namespace AdCampaign.Controllers
         [HttpPost("User/{id}/edit")]
         public async Task<IActionResult> Edit(long id, UserEditRequest dto)
         {
+            if (await CheckRoles(id))
+                return NotFound();
+            
             if (!ModelState.IsValid)
             {
                 var user = await _userService.Get(id);
-                return View("Edit", new UserEditRequest()
+                return View("Edit", new UserEditRequest
                 {
                     Email = dto.Email,
                     Name = dto.Name,
                     Phone = dto.Phone,
                     Role = dto.Role,
                     Id = dto.Id,
-                    IsActive = !user.IsBlocked 
+                    IsActive = !user.IsBlocked
                 });
             }
 
@@ -88,6 +102,9 @@ namespace AdCampaign.Controllers
         [HttpPost("User/block")]
         public async Task<IActionResult> Block(long id)
         {
+            if (await CheckRoles(id))
+                return NotFound();
+            
             await _userService.BlockUser(id, User.GetId());
             return RedirectToAction("Edit", "User", new {id});
         }
@@ -95,6 +112,9 @@ namespace AdCampaign.Controllers
         [HttpPost("User/unblock")]
         public async Task<IActionResult> UnBlock(long id)
         {
+            if (await CheckRoles(id))
+                return NotFound();
+            
             await _userService.UnBlockUser(id);
             return RedirectToAction("Edit", "User", new {id});
         }
@@ -102,8 +122,17 @@ namespace AdCampaign.Controllers
         [HttpPost("User/delete")]
         public async Task<IActionResult> Delete(long id)
         {
+            if (await CheckRoles(id))
+                return NotFound();
+            
             await _userService.Delete(id);
             return RedirectToAction("List", "User");
+        }
+
+        private async Task<bool> CheckRoles(long editableUserId)
+        {
+            var editableUser = await _userService.Get(editableUserId);
+            return editableUser.Role == Role.Administrator && !User.IsAdministrator();
         }
     }
 }

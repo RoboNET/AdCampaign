@@ -25,9 +25,13 @@
                 @if (User.Identity is {IsAuthenticated:true})
                 {
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item @if (controllerName == "User"){@("active")}">
-                            <a class="nav-link" asp-controller="User" asp-action="List">Пользователи</a>
-                        </li>
+                        @if (User.IsInRole(Role.Administrator.ToString()) ||
+                             User.IsInRole(Role.Moderator.ToString()))
+                        {
+                            <li class="nav-item @if (controllerName == "User"){@("active")}">
+                                <a class="nav-link" asp-controller="User" asp-action="List">Пользователи</a>
+                            </li>
+                        }
                         <li class="nav-item @if (controllerName == "Advert"){@("active")}">
                             <a class="nav-link" asp-controller="Advert" asp-action="Index">Рекламные кампании</a>
                         </li>
