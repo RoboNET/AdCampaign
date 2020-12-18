@@ -4,14 +4,14 @@
 }
 
 <div class="container">
-    <div class="row position-relative">
+    <div class="row position-relative d-none d-lg-flex">
         @if (Model.Count != 0)
         {
             var item = Model[0];
             <div class="col-12 d-none d-lg-flex justify-content-center" data-toggle="collapse" href="#collapseExample@(item.Id)" onclick="sendClickEvent('@(item.Id)')">
                 <img class="img-fluid" style="height: 250px" src="@Url.Action("Get", "Files", new {id = item.PrimaryImageId})"/>
             </div>
-            <div class="collapse position-absolute d-none d-lg-flex" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px;">
+            <div class="collapse position-absolute" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px;">
                 @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
 
             </div>
