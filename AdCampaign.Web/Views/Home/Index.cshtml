@@ -1,11 +1,11 @@
 ﻿@model List<AdCampaign.BLL.Services.Adverts.DTO.ShowAdvertDto>
 @{
-    ViewData["Title"] = "Главная";
     bool placeholderDisplayed = false;
+    ViewData["Title"] = "Главная";
 }
 
 <div class="container">
-    <div class="row position-relative">
+    <div class="row position-relative d-none d-lg-flex">
         @if (Model.Count != 0)
         {
             var item = Model[0];
@@ -21,7 +21,7 @@
         {
             placeholderDisplayed = true;
             <div class="col-12 d-none d-lg-flex">
-                <div class="jumbotron jumbotron-fluid w-100" style="height: 250px">
+                <div class="jumbotron jumbotron-fluid w-100  mb-0" style="height: 250px">
                     <div class="container">
                         <p class="lead">
                             Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:vlad@htmlbook.ru">vlad@htmlbook.ru</a>
@@ -43,7 +43,7 @@
                 {
                     placeholderDisplayed = true;
                     <div class="col-12 col-lg-4 pt-4 @if (itemIndex == 0) {@("d-lg-none")}">
-                        <div class="jumbotron jumbotron-fluid position-relative"
+                        <div class="jumbotron jumbotron-fluid position-relative mb-0"
                              style="height: 250px">
                             <div class="container">
                                 <p class="lead">
@@ -87,7 +87,7 @@
             
         } 
     </script>
-
+    
     <script>
         $.validator.addMethod('vatNumber', function (value, element, params) {
         
