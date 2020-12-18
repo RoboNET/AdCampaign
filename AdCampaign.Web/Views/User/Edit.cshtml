@@ -1,7 +1,7 @@
 ﻿@using AdCampaign.Models.Users
 @model AdCampaign.Models.Users.UserEditRequest
 @{
-    ViewData["Title"] = "Создать пользователя";
+    ViewData["Title"] = "Редактировать пользователя";
 }
 <div class="row justify-content-center">
     <h1 class="col-8">Редактировать пользователя</h1>
@@ -25,16 +25,16 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="phone">phone</label>
+                <label for="phone">Телефон</label>
                 <input type="text" name="phone" class="form-control" id="phone" value="@Model.Phone">
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="password">Пароль (заменит имеющийся)</label>
+                <label for="password">Новый пароль</label>
                 <input type="password" name="password" class="form-control" id="password">
             </div>
             <div class="form-group">
-                <label for="role">Role</label>
+                <label for="role">Роль</label>
                 <select asp-for="@Model.Role" asp-items="@UserRoles.GetList()" name="role" id="role" class="form-control"></select>
             </div>
             <button type="submit" class="btn btn-primary">Сохранить</button>
