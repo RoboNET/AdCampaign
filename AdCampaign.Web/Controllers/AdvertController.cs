@@ -161,6 +161,16 @@ namespace AdCampaign.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> ChangeBlock(long id, bool block)
+        {
+            var result= await _service.ChangeBlock(User.GetId(), User.GetRole(), id, block);
+            if (!result.Ok) 
+                return Json(result.Errors);
+            
+            return Ok();
+        }
+
+        [HttpPost]
         public async Task<IActionResult> IncrementStatistic(long id, AdvertStatisticType statisticType)
         {
             await _service.IncrementAdvertsStats(id, statisticType);
