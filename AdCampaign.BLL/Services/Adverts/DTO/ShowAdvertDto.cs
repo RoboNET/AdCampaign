@@ -14,8 +14,6 @@ namespace AdCampaign.BLL.Services.Adverts.DTO
         public long? PrimaryImageId { get; set; }
         public long? SecondaryImageId { get; set; }
 
-
-        //todo automapper   
         public ShowAdvertDto(Advert advert)
         {
             Id = advert.Id;

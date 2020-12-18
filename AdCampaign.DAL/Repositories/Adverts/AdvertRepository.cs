@@ -10,16 +10,13 @@ namespace AdCampaign.DAL.Repositories.Adverts
 {
     public class AdvertRepository : IAdvertRepository
     {
-        private readonly AdCampaignContext context;
+        private readonly AdCampaignContext _context;
 
-        public AdvertRepository(AdCampaignContext context)
-        {
-            this.context = context;
-        }
+        public AdvertRepository(AdCampaignContext context) => _context = context;
 
         public async Task<IEnumerable<Advert>> Get(GetAdvertsParams advertParams)
         {
-            IQueryable<Advert> query = context.Adverts
+            IQueryable<Advert> query = _context.Adverts
                 .Include(x => x.Applications)
                 .Include(x => x.AdvertStatistics)
                 .Include(x => x.BlockedBy)
@@ -55,29 +52,29 @@ namespace AdCampaign.DAL.Repositories.Adverts
 
         public async Task<Advert> Insert(Advert advert)
         {
-            await context.Adverts.AddAsync(advert);
-            await context.SaveChangesAsync();
+            await _context.Adverts.AddAsync(advert);
+            await _context.SaveChangesAsync();
             return advert;
         }
 
         public async Task<Advert> Update(Advert advert)
         {
-            context.Adverts.Update(advert);
-            await context.SaveChangesAsync();
+            _context.Adverts.Update(advert);
+            await _context.SaveChangesAsync();
             return advert;
         }
 
         public async Task Delete(long advertId)
         {
-            var advert = await context.Adverts.FindAsync(advertId);
+            var advert = await _context.Adverts.FindAsync(advertId);
             if (advert != null)
             {
-                context.Adverts.Remove(advert);
-                await context.SaveChangesAsync();
+                _context.Adverts.Remove(advert);
+                await _context.SaveChangesAsync();
             }
         }
 
-        public Task<Advert> Get(long id) => context.Adverts
+        public Task<Advert> Get(long id) => _context.Adverts
             .Include(x => x.Applications)
             .Include(x => x.AdvertStatistics)
             .Include(x => x.BlockedBy)

@@ -9,23 +9,21 @@ namespace AdCampaign.DAL.Repositories.AdvertsStatistic
 {
     public class AdvertStatisticRepository : IAdvertStatisticRepository
     {
-        private readonly AdCampaignContext context;
+        private readonly AdCampaignContext _context;
 
         public AdvertStatisticRepository(AdCampaignContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
-        public async Task Increment(long advertId, AdvertStatisticType type)
-        {
-            await context.Database.ExecuteSqlInterpolatedAsync(
+        public Task Increment(long advertId, AdvertStatisticType type) =>
+            _context.Database.ExecuteSqlInterpolatedAsync(
                 $@"UPDATE ""AdvertsStatistics"" SET ""Value"" = ""AdvertsStatistics"".""Value"" + 1
                 WHERE ""AdvertId"" = {advertId} and ""AdvertStatisticType"" = {(int) type}");
-        }
 
         public async Task Increment(IEnumerable<long> advertIds, AdvertStatisticType type)
         {
-            StringBuilder paramsValues = new StringBuilder();
+            var paramsValues = new StringBuilder();
             var adverts = advertIds.ToList();
 
             if (adverts.Count == 0)
@@ -49,7 +47,7 @@ namespace AdCampaign.DAL.Repositories.AdvertsStatistic
             
             parameters.AddRange(advertIds.Select(a=>(object)a));
             
-            await context.Database.ExecuteSqlRawAsync(
+            await _context.Database.ExecuteSqlRawAsync(
                 @"UPDATE ""AdvertsStatistics"" SET ""Value"" = ""AdvertsStatistics"".""Value"" + 1
                 WHERE ""AdvertId"" in (" + paramsValues + @") and ""AdvertStatisticType"" = {0}", parameters);
         }

@@ -14,23 +14,23 @@ namespace AdCampaign.BLL.Services.Adverts
 {
     public class AdvertService : IAdvertService
     {
-        private readonly IAdvertRepository advertRepository;
-        private readonly IAdvertStatisticRepository statisticRepository;
-        private readonly IFileRepository fileRepository;
+        private readonly IAdvertRepository _advertRepository;
+        private readonly IAdvertStatisticRepository _statisticRepository;
+        private readonly IFileRepository _fileRepository;
 
         public AdvertService(IAdvertRepository advertRepository,
             IAdvertStatisticRepository statisticRepository, IFileRepository fileRepository)
         {
-            this.advertRepository = advertRepository;
-            this.statisticRepository = statisticRepository;
-            this.fileRepository = fileRepository;
+            _advertRepository = advertRepository;
+            _statisticRepository = statisticRepository;
+            _fileRepository = fileRepository;
         }
 
         public async Task<Result<IEnumerable<ShowAdvertDto>>> GetAdvertsToShow(CancellationToken ct)
         {
             //количество показываемых кампаний
             const int toShowCount = 4;
-            var adverts = await advertRepository.Get(new GetAdvertsParams
+            var adverts = await _advertRepository.Get(new GetAdvertsParams
             {
                 IsBlocked = false,
                 IsVisible = true,
@@ -47,31 +47,32 @@ namespace AdCampaign.BLL.Services.Adverts
             if (ct.IsCancellationRequested)
                 return toShow;
 
-            await statisticRepository.Increment(toShow.Select(x => x.Id), AdvertStatisticType.Impression);
+            await _statisticRepository.Increment(toShow.Select(x => x.Id), AdvertStatisticType.Impression);
             return toShow;
         }
 
-        public Task IncrementAdvertsStats(long id, AdvertStatisticType statisticType)
-        {
-            return statisticRepository.Increment(id, statisticType);
-        }
+        public Task IncrementAdvertsStats(long id, AdvertStatisticType statisticType) =>
+            _statisticRepository.Increment(id, statisticType);
 
-        public async Task<Result<Advert>> Get(long userId, long id)
+        public async Task<Result<Advert>> Get(long userId, Role role, long id)
         {
-            var advert = await advertRepository.Get(id);
+            var advert = await _advertRepository.Get(id);
             if (advert == null)
                 return new Error("Кампания не найдена", "campaign-not-found");
 
-            return advert;
+            if(CanAdvertAccessByRole(role) || UserIsOwner(advert.Owner, userId))
+                return advert;
+            
+            return new Error("У вас нет прав на просмотр", "403");
         }
 
         public async Task<Result<Advert>> Create(long userId, AdvertDto dto, File primaryImage, File secondaryImage)
         {
             var primaryCreated = primaryImage != null
-                ? await fileRepository.Create(primaryImage.Name, primaryImage.Content)
+                ? await _fileRepository.Create(primaryImage.Name, primaryImage.Content)
                 : null;
             var secondaryCreated = secondaryImage != null
-                ? await fileRepository.Create(secondaryImage.Name, secondaryImage.Content)
+                ? await _fileRepository.Create(secondaryImage.Name, secondaryImage.Content)
                 : null;
 
             var advert = new Advert
@@ -97,38 +98,40 @@ namespace AdCampaign.BLL.Services.Adverts
                     new() {AdvertStatisticType = AdvertStatisticType.Followed},
                 }
             };
-            return await advertRepository.Insert(advert);
+            return await _advertRepository.Insert(advert);
         }
 
-        public async Task<Result<Advert>> Update(long userId, AdvertDto dto, File primaryImage, File secondaryImage)
+        public async Task<Result<Advert>> Update(long userId, Role role, AdvertDto dto, File primaryImage, File secondaryImage)
         {
-            var advert = await advertRepository.Get(dto.Id);
+            var advert = await _advertRepository.Get(dto.Id);
             if (advert == null)
                 return new Error("Кампания не найдена", "campaign-not-found");
 
-            //todo optimize file updating
+            if(!CanAdvertAccessByRole(role) && !UserIsOwner(advert.Owner, userId))
+                return new Error("У вас нет прав на изменение", "403");
+
             if (primaryImage != null)
             {
                 if (advert.PrimaryImage != null)
-                    await fileRepository.Delete(advert.PrimaryImage);
-                var created = await fileRepository.Create(primaryImage.Name, primaryImage.Content);
+                    await _fileRepository.Delete(advert.PrimaryImage);
+                var created = await _fileRepository.Create(primaryImage.Name, primaryImage.Content);
                 advert.PrimaryImageId = created.Id;
             }
 
             if (secondaryImage != null)
             {
                 if (advert.SecondaryImage != null)
-                    await fileRepository.Delete(advert.SecondaryImage);
-                var created = await fileRepository.Create(secondaryImage.Name, secondaryImage.Content);
+                    await _fileRepository.Delete(advert.SecondaryImage);
+                var created = await _fileRepository.Create(secondaryImage.Name, secondaryImage.Content);
                 advert.SecondaryImageId = created.Id;
             }
 
             UpdateBaseInfo(advert, dto);
             advert.DateUpdated = DateTime.UtcNow;
-            return await advertRepository.Update(advert);
+            return await _advertRepository.Update(advert);
         }
 
-        private void UpdateBaseInfo(Advert advert, AdvertDto dto)
+        private static void UpdateBaseInfo(Advert advert, AdvertDto dto)
         {
             advert.Name = dto.Name;
             advert.IsVisible = dto.IsVisible;
@@ -140,24 +143,25 @@ namespace AdCampaign.BLL.Services.Adverts
             advert.ImpressingAlways = dto.ImpressingAlways;
         }
 
-        public async Task<Result> Delete(long id, string userEmail, Role role)
+        private static bool UserIsOwner(User user, long userId) => user.Id == userId;
+
+        private static bool CanAdvertAccessByRole(Role role) => role == Role.Administrator || role == Role.Moderator;
+
+        public async Task<Result> Delete(long id, long userId, Role role)
         {
-            var advert = await advertRepository.Get(id);
-            if (CanDeleteByRole(role) || UserIsOwner(advert.Owner, userEmail))
+            var advert = await _advertRepository.Get(id);
+            if (CanAdvertAccessByRole(role) || UserIsOwner(advert.Owner, userId))
             {
-                await advertRepository.Delete(id);
+                await _advertRepository.Delete(id);
                 return new();
             }
 
             return new Error("У вас нет прав на удаление", "403");
-
-            static bool CanDeleteByRole(Role role) => role == Role.Administrator || role == Role.Moderator;
-            static bool UserIsOwner(User user, string email) => user.Email.Equals(email, StringComparison.Ordinal);
         }
 
         public async Task<Result> ChangeBlock(long userId, Role role, long id, bool block)
         {
-            var advert = await advertRepository.Get(id);
+            var advert = await _advertRepository.Get(id);
             if (CanBlockByRole(role))
             {
                 advert.IsBlocked = block;
@@ -172,7 +176,7 @@ namespace AdCampaign.BLL.Services.Adverts
                     advert.BlockedDate = null;
                 }
 
-                await advertRepository.Update(advert);
+                await _advertRepository.Update(advert);
                 return new();
             }
 

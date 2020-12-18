@@ -47,7 +47,7 @@ namespace AdCampaign.Controllers
 
         public async Task<IActionResult> Delete(long id)
         {
-            var res = await _service.Delete(id, User.GetEmail(), User.GetRole());
+            var res = await _service.Delete(id, User.GetId(), User.GetRole());
             if (!res.Ok)
             {
                 return Forbid();
@@ -102,7 +102,7 @@ namespace AdCampaign.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(long id)
         {
-            var updated = await _service.Get(User.GetId(), id);
+            var updated = await _service.Get(User.GetId(), User.GetRole(), id);
 
             if (!updated.Ok)
             {
@@ -142,7 +142,7 @@ namespace AdCampaign.Controllers
                 return View(dto);
             }
 
-            var updated = await _service.Update(User.GetId(), new AdvertDto()
+            var updated = await _service.Update(User.GetId(), User.GetRole(), new AdvertDto()
             {
                 Id = dto.Id,
                 IsVisible = dto.IsVisible,
@@ -199,7 +199,7 @@ namespace AdCampaign.Controllers
         [HttpGet]
         public async Task<IActionResult> Statistic(long id)
         {
-            var result = await _service.Get(User.GetId(), id);
+            var result = await _service.Get(User.GetId(), User.GetRole(), id);
             if (!result.Ok)
                 return Json(result.Errors);
 

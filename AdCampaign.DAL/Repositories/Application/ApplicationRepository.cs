@@ -10,23 +10,20 @@ namespace AdCampaign.DAL.Repositories.Application
 {
     public class ApplicationRepository : IApplicationRepository
     {
-        private readonly AdCampaignContext context;
+        private readonly AdCampaignContext _context;
 
-        public ApplicationRepository(AdCampaignContext context)
-        {
-            this.context = context;
-        }
+        public ApplicationRepository(AdCampaignContext context) => _context = context;
 
         public async Task<Entities.Application> Insert(Entities.Application application)
         {
-            await context.Applications.AddAsync(application);
-            await context.SaveChangesAsync();
+            await _context.Applications.AddAsync(application);
+            await _context.SaveChangesAsync();
             return application;
         }
 
         public async Task<IEnumerable<Entities.Application>> Get(long? userId, long? advertId)
         {
-            var query = context.Applications.Include(application => application.Advert).AsQueryable();
+            var query = _context.Applications.Include(application => application.Advert).AsQueryable();
 
             AddClause(userId, application => application.Advert.OwnerId == userId);
             AddClause(advertId, application => application.AdvertId == advertId);
@@ -42,7 +39,7 @@ namespace AdCampaign.DAL.Repositories.Application
 
         public async Task<IEnumerable<Entities.Application>> Get(long advertId)
         {
-            return await context.Applications.Where(a => a.AdvertId == advertId).ToListAsync();
+            return await _context.Applications.Where(a => a.AdvertId == advertId).ToListAsync();
         }
     }
 }

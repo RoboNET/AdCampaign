@@ -47,7 +47,7 @@ namespace AdCampaign.Controllers
         {
             if (advertId.HasValue)
             {
-                var advert= await _advertService.Get(User.GetId(), advertId.Value);
+                var advert= await _advertService.Get(User.GetId(), User.GetRole(), advertId.Value);
                if (!advert.Ok)
                {
                    ViewData["Errors"] = advert.Errors;
