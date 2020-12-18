@@ -3,15 +3,17 @@ using System;
 using AdCampaign.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AdCampaign.DAL.Migrations
 {
     [DbContext(typeof(AdCampaignContext))]
-    partial class AdCampaignContextModelSnapshot : ModelSnapshot
+    [Migration("20201217231528_AddImpressAlways")]
+    partial class AddImpressAlways
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,10 +49,10 @@ namespace AdCampaign.DAL.Migrations
                     b.Property<DateTime>("ImpressingDateTo")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<TimeSpan?>("ImpressingTimeFrom")
+                    b.Property<TimeSpan>("ImpressingTimeFrom")
                         .HasColumnType("interval");
 
-                    b.Property<TimeSpan?>("ImpressingTimeTo")
+                    b.Property<TimeSpan>("ImpressingTimeTo")
                         .HasColumnType("interval");
 
                     b.Property<bool>("IsBlocked")

@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Adverts;
 using AdCampaign.BLL.Services.Adverts.DTO;
+using AdCampaign.Common;
 using AdCampaign.DAL.Entities;
 using AdCampaign.DAL.Repositories.Adverts;
 using AdCampaign.Extensions;
+using AdCampaign.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,12 +31,11 @@ namespace AdCampaign.Controllers
             _repository = repository;
             _service = service;
         }
-        
+
         public async Task<IActionResult> Index()
         {
             var filter = new GetAdvertsParams
             {
-                IsVisible = true,
                 UserEmail = User.GetRole() == Role.Advertiser ? User.GetEmail() : null
             };
 
@@ -53,30 +54,117 @@ namespace AdCampaign.Controllers
 
             return RedirectToAction("Index");
         }
-        [HttpPost]
-        public async Task<IActionResult> AddAdvert([FromForm]IFormFileCollection files, AdvertDto dto)
-        {
-            var (primary, secondary) = GetFiles(files);
-            var created = await _service.Create(dto, primary, secondary);
-            //todo redirect to created
-            return RedirectToAction("Index");
-        }
         
-        [HttpPut]
-        public async Task<IActionResult> UpdateAdvert([FromForm]IFormFileCollection files, AdvertDto dto)
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            var (primary, secondary) = GetFiles(files);
-            var updated = await _service.Update(dto, primary, secondary);
-            //todo redirect to updated
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateFileRequestModel dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
+            var created = await _service.Create(User.GetId(), new AdvertDto()
+            {
+                Name = dto.Name,
+                RequestType = dto.RequestType,
+                ImpressingDateFrom = dto.ImpressingDateFrom,
+                ImpressingDateTo = dto.ImpressingDateTo,
+                ImpressingTimeFrom = dto.ImpressingTimeFrom,
+                ImpressingTimeTo = dto.ImpressingTimeTo,
+                ImpressingAlways = dto.ImpressingAlways,
+                IsVisible = true
+            }, dto.PrimaryImage.ToFile(), dto.SecondaryImage.ToFile());
+
+            if (!created.Ok)
+            {
+                ViewData["Errors"] = created.Errors;
+                return View(dto);
+            }
+
+
             return RedirectToAction("Index");
         }
 
-        private static (File primary, File secondary) GetFiles(IFormFileCollection files)
+        [HttpGet]
+        public async Task<IActionResult> Update(long id)
         {
-            var  primary = files.FirstOrDefault(x => x.Name == "primary");
-            var  secondary = files.FirstOrDefault(x => x.Name == "secondary");
-            return (primary?.ToFile(), secondary?.ToFile());
+            var updated = await _service.Get(User.GetId(), id);
+
+            if (!updated.Ok)
+            {
+                ViewData["Errors"] = updated.Errors;
+                return View();
+            }
+
+            var result = updated.Unwrap();
+
+            return View(new UpdateFileRequestModel
+            {
+                Id = result.Id,
+                Name = result.Name,
+                IsVisible = result.IsVisible,
+                RequestType = result.RequestType,
+                ImpressingDateFrom = result.ImpressingDateFrom,
+                ImpressingDateTo = result.ImpressingDateTo,
+                ImpressingTimeFrom = result.ImpressingTimeFrom,
+                ImpressingTimeTo = result.ImpressingTimeTo,
+                ImpressingAlways = result.ImpressingAlways
+            });
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateFileRequestModel dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
+            var updated = await _service.Update(User.GetId(), new AdvertDto()
+            {
+                Id = dto.Id,
+                IsVisible = dto.IsVisible,
+                Name = dto.Name,
+                RequestType = dto.RequestType,
+                ImpressingDateFrom = dto.ImpressingDateFrom,
+                ImpressingDateTo = dto.ImpressingDateTo,
+                ImpressingTimeFrom = dto.ImpressingTimeFrom,
+                ImpressingTimeTo = dto.ImpressingTimeTo,
+                ImpressingAlways = dto.ImpressingAlways
+            }, dto.PrimaryImage?.ToFile(), dto.SecondaryImage?.ToFile());
+
+            if (!updated.Ok)
+            {
+                ViewData["Errors"] = updated.Errors;
+                return View(dto);
+            }
+
+            var result = updated.Unwrap();
+            return View(new UpdateFileRequestModel
+            {
+                Id = result.Id,
+                Name = result.Name,
+                IsVisible = result.IsVisible,
+                RequestType = result.RequestType,
+                ImpressingDateFrom = result.ImpressingDateFrom,
+                ImpressingDateTo = result.ImpressingDateTo,
+                ImpressingTimeFrom = result.ImpressingTimeFrom,
+                ImpressingTimeTo = result.ImpressingTimeTo,
+                ImpressingAlways = dto.ImpressingAlways
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> IncrementStatistic(long id, AdvertStatisticType statisticType)
+        {
+            await _service.IncrementAdvertsStats(id, statisticType);
+            return Ok();
+        }
     }
 }
