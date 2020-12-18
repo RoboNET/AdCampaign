@@ -12,10 +12,12 @@ namespace AdCampaign.Controllers
     public class ApplicationController : Controller
     {
         private readonly IApplicationService _applicationService;
+        private readonly IAdvertService _advertService;
 
-        public ApplicationController(IApplicationService applicationService)
+        public ApplicationController(IApplicationService applicationService, IAdvertService advertService)
         {
             _applicationService = applicationService;
+            _advertService = advertService;
         }
 
         [HttpPost]
@@ -43,6 +45,18 @@ namespace AdCampaign.Controllers
         [Authorize]
         public async Task<IActionResult> Index(long? advertId)
         {
+            if (advertId.HasValue)
+            {
+                var advert= await _advertService.Get(User.GetId(), advertId.Value);
+               if (!advert.Ok)
+               {
+                   ViewData["Errors"] = advert.Errors;
+                   return View();
+               }
+
+               ViewData["AdName"] = advert.Unwrap().Name;
+            }
+
             var items = await _applicationService.Get(User.GetId(), User.GetRole(), advertId);
 
             if (!items.Ok)
