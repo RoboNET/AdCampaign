@@ -188,6 +188,8 @@ namespace AdCampaign.Controllers
             if (!result.Ok) 
                 return Json(result.Errors);
 
+            ViewData["AdName"] = result.Unwrap().Name;
+            
             return View(result.Unwrap().AdvertStatistics);
         }
     }
