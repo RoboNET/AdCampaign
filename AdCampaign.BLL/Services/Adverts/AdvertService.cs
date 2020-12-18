@@ -158,7 +158,7 @@ namespace AdCampaign.BLL.Services.Adverts
         public async Task<Result> ChangeBlock(long userId, Role role, long id, bool block)
         {
             var advert = await advertRepository.Get(id);
-            if (CanBlockByRole(role) || UserIsOwner(advert.Owner, userId))
+            if (CanBlockByRole(role))
             {
                 advert.IsBlocked = block;
                 if (block)
@@ -176,10 +176,9 @@ namespace AdCampaign.BLL.Services.Adverts
                 return new();
             }
 
-            return new Error("У вас нет прав на удаление", "403");
+            return new Error("У вас нет прав на блокировку", "403");
 
             static bool CanBlockByRole(Role role) => role == Role.Administrator || role == Role.Moderator;
-            static bool UserIsOwner(User user, long id) => user.Id == id;
         }
     }
 }
