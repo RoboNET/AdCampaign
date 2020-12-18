@@ -1,11 +1,23 @@
-﻿@model UserCreateRequest
-@using AdCampaign.Models.Users
+﻿@using AdCampaign.Models.Users
+@using AdCampaign.Common
+@model UserCreateRequest
 @{
     ViewData["Title"] = "Создать пользователя";
 }
 <div class="row justify-content-center">
     <h1 class="col-8">Создать пользователя</h1>
 </div>
+@if (ViewData["Errors"] is Error[] errors)
+{
+    foreach (var error in errors)
+    {
+        <div class="row justify-content-center">
+            <div class="alert alert-danger mt-5" role="alert">
+                @error.Message
+            </div>
+        </div>
+    }
+}
 <div class="row justify-content-center">
     <form asp-controller="User" asp-action="Create" method="post"  class="col-8">
         <div class="form-group">
