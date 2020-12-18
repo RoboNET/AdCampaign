@@ -6,11 +6,25 @@ namespace AdCampaign.Authetication
 {
     public static class ClaimExt
     {
+        public static long GetId(this ClaimsPrincipal principal)
+        {
+            AssertAuthentication(principal);
+
+            return long.Parse(principal.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        }
+        
         public static string GetLogin(this ClaimsPrincipal principal)
         {
             AssertAuthentication(principal);
 
             return principal.FindFirst(ClaimTypes.Name)!.Value;
+        }
+
+        public static string GetEmail(this ClaimsPrincipal principal)
+        {
+            AssertAuthentication(principal);
+
+            return principal.FindFirst(ClaimTypes.Email)!.Value;
         }
 
         public static Role GetRole(this ClaimsPrincipal principal)
