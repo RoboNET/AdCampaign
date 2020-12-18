@@ -7,8 +7,7 @@
     <div class="row justify-content-center">
         <h1 class="col-12">Список рекламных кампаний</h1>
     </div>
-    <a class="nav-link" asp-controller="Advert" asp-action="Create">Создать рекламную кампанию</a>
-
+    <a asp-controller="Advert" asp-action="Create" class="btn btn-primary" style="margin-bottom: 7px">Добавить рекламную кампанию</a>
     <div class="row justify-content-center">
         <table class="col-12 table">
             <tr>
@@ -18,7 +17,8 @@
                 {
                     <th>Владелец</th>
                 }
-                <th>Видимость</th>
+                <th>Активна</th>
+                <th>Заблокирована</th>
                 <th>Данные для заполнения</th>
                 <th>Действия</th>
             </tr>
@@ -38,11 +38,13 @@
                         <td>
                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert.IsActive">
                         </td>
-                        <td>
+                         <td>
+                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert."></td>
+                         <td>
                             @(advert.RequestType switch{RequestType.Email => "Email", RequestType.Phone=> "Телефон", _=> "Email и телефон"})
                         </td>
                         <td>
-                            @Html.ActionLink("Запросы", actionName: "Index", "Application", new {advertId = advert.Id})
+                            @Html.ActionLink("Заявки", actionName: "Index", "Application", new {advertId = advert.Id})
                             @Html.ActionLink("Статистика", actionName: "Statistic", new {id = @advert.Id})
                             @Html.ActionLink("Редактировать", actionName: "Update", new {id = @advert.Id})
                             @Html.ActionLink("Удалить", actionName: "Delete", routeValues: new {@advert.Id})

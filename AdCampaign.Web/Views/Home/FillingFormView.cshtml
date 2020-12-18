@@ -1,28 +1,28 @@
 ﻿@using AdCampaign.DAL.Entities
 @model CreateApplicationViewModel
 
-<form class="card p-2" style="height: 250px" asp-controller="Application" asp-action="Create" method="post">
+<form class="card p-2" style="height: 250px; border-radius: 0;" asp-controller="Application" asp-action="Create" method="post">
     <input type="hidden" name="AdvertId" value="@Model.AdvertId">
     <input type="hidden" name="RequestType" id="RequestType" value="@Model.RequestType">
 
     @if (Model.RequestType.HasFlag(RequestType.Email))
     {
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="exampleInputEmail1">Email</label>
             <input asp-for="Email" type="text" class="form-control" id="exampleInputEmail1" name="Email" aria-describedby="emailHelp">
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <span asp-validation-for="Email" class="text-danger position-absolute small"></span>
         </div>
     }
     @if (Model.RequestType.HasFlag(RequestType.Phone))
     {
-        <div class="form-group">
+        <div class="form-group mb-4">
             <label for="exampleInputPassword1">Телефон</label>
             <input asp-for="Phone" type="phone" class="form-control" name="Phone" id="exampleInputPassword1">
-            <span asp-validation-for="Phone" class="text-danger"></span>
+            <span asp-validation-for="Phone" class="text-danger position-absolute small"></span>
         </div>
     }
-    <div>
+    <div class="mt-1">
         <button type="submit" class="btn btn-primary">Отправить</button>
-        <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample@(@Model.AdvertId)">Отменить</button>
+        <button type="reset" class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample@(@Model.AdvertId)">Отменить</button>
     </div>
 </form>

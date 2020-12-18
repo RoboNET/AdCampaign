@@ -1,4 +1,5 @@
 ﻿@using AdCampaign.DAL.Entities
+@using AdCampaign.Authetication
 @{ var controllerName = ViewContext.RouteData.Values["controller"].ToString(); }
 <!DOCTYPE html>
 <html lang="en">
@@ -39,9 +40,14 @@
                         </li>
                     </ul>
 
+                    <span class="navbar-text" style="padding-right: 20px;">
+                        Привет, @User.GetLogin()
+                    </span>
+
                     <form method="post" asp-controller="Auth" asp-action="Logout" class="form-inline my-2 my-lg-0">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Выйти</button>
-                    </form>                }
+                    </form>                    
+                }
                 else
                 {
                     <ul class="navbar-nav ml-auto justify-content-end">
