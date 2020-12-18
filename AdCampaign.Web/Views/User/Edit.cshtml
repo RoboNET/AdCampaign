@@ -8,7 +8,7 @@
 </div>
 <div class="justify-content-center">
     <div class="col-8">
-        <form asp-action="Edit" method="post">
+        <form asp-action="Edit" method="post" style="margin-bottom: 7px">
             <input type="hidden" value="@Model.Id" name="id">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" disabled checked="@Model.IsActive" id="customCheck">
@@ -39,14 +39,19 @@
             </div>
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </form>
-        <form method="post" asp-controller="User" asp-action="Block" class="form-inline my-2 my-lg-0">
-            <input type="hidden" name="id" value="@Model.Id">
-            <button type="submit" class="btn btn-primary">Заблокировать</button>
-        </form>
-        <form method="post" asp-controller="User" asp-action="UnBlock" class="form-inline my-2 my-lg-0">
-            <input type="hidden" name="id" value="@Model.Id">
-            <button type="submit" class="btn btn-primary">Разблокировать</button>
-        </form> 
-        <a href="google.com" class="btn btn-primary">Рекламные компании</a>
+        @if (@Model.IsActive)
+            {
+                <form asp-controller="User" asp-action="Block" method="post">
+                    <input type="hidden" name="id" value="@Model.Id">
+                    <button type="submit" class="btn btn-primary">Заблокировать</button>
+                </form> 
+            }
+            else
+            {
+                <form asp-controller="User" asp-action="UnBlock" method="post">
+                    <input type="hidden" name="id" value="@Model.Id">
+                    <button type="submit" class="btn btn-primary">Разблокировать</button>
+                </form> 
+            }
     </div>
 </div>
