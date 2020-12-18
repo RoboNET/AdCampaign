@@ -7,10 +7,7 @@ namespace AdCampaign.DAL.Repositories
     {
         private readonly AdCampaignContext _db;
 
-        public FileRepository(AdCampaignContext db)
-        {
-            _db = db;
-        }
+        public FileRepository(AdCampaignContext db) => _db = db;
         
         public async Task<File> Create(string fileName, byte[] content)
         {
