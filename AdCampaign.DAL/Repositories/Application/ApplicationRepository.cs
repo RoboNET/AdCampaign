@@ -26,7 +26,7 @@ namespace AdCampaign.DAL.Repositories.Application
 
         public async Task<IEnumerable<Entities.Application>> Get(long? userId, long? advertId)
         {
-            var query = context.Applications.AsQueryable();
+            var query = context.Applications.Include(application => application.Advert).AsQueryable();
 
             AddClause(userId, application => application.Advert.OwnerId == userId);
             AddClause(advertId, application => application.AdvertId == advertId);

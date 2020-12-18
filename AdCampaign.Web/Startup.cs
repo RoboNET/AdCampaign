@@ -9,6 +9,7 @@ using AdCampaign.DAL.Entities;
 using AdCampaign.DAL.Repositories.Adverts;
 using AdCampaign.DAL.Repositories.AdvertsStatistic;
 using AdCampaign.DAL.Repositories;
+using AdCampaign.DAL.Repositories.Application;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,10 +38,7 @@ namespace AdCampaign
             services.AddScoped<AuthenticationService>();
             services.AddScoped<IFileRepository, FileRepository>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Auth";
-                });
+                .AddCookie(options => { options.LoginPath = "/Auth"; });
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = ".Cookies";
@@ -48,10 +46,12 @@ namespace AdCampaign
                 options.SlidingExpiration = true;
             });
             services.AddDbContext<AdCampaignContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("AdCampaignContext")))
+                    options.UseNpgsql(Configuration.GetConnectionString("AdCampaignContext")))
                 .AddScoped<IAdvertRepository, AdvertRepository>()
                 .AddScoped<IAdvertStatisticRepository, AdvertStatisticRepository>()
-                .AddScoped<IAdvertService, AdvertService>();
+                .AddScoped<IAdvertService, AdvertService>()
+                .AddScoped<IApplicationService, ApplicationService>()
+                .AddScoped<IApplicationRepository, ApplicationRepository>();
 
             services.AddControllersWithViews();
         }

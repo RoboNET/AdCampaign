@@ -13,7 +13,7 @@ namespace AdCampaign.BLL.Services.Adverts
     {
         Task<Result> Create(CreateApplicationDto dto);
 
-        Task<Result<IEnumerable<CreateApplicationDto>>> Get(long userId, Role userRole, long? advertId);
+        Task<Result<IEnumerable<ApplicationListItemDto>>> Get(long userId, Role userRole, long? advertId);
     }
 
     public class ApplicationService : IApplicationService
@@ -38,7 +38,7 @@ namespace AdCampaign.BLL.Services.Adverts
             return new();
         }
 
-        public async Task<Result<IEnumerable<CreateApplicationDto>>> Get(long userId, Role userRole, long? advertId)
+        public async Task<Result<IEnumerable<ApplicationListItemDto>>> Get(long userId, Role userRole, long? advertId)
         {
             IEnumerable<Application> result;
             if (userRole == Role.Advertiser)
@@ -50,11 +50,12 @@ namespace AdCampaign.BLL.Services.Adverts
                 result = await _applicationRepository.Get(null, advertId);
             }
 
-            return new(result.Select(application => new CreateApplicationDto()
+            return new(result.Select(application => new ApplicationListItemDto()
             {
                 AdvertId = application.AdvertId,
                 Email = application.Email,
-                Phone = application.Phone
+                Phone = application.Phone,
+                AdvertName = application.Advert.Name
             }));
         }
     }

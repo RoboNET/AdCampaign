@@ -9,17 +9,19 @@
         {
             var item = Model[0];
             <div class="col-12 d-none d-lg-flex justify-content-center" data-toggle="collapse" href="#collapseExample">
-                <img class="img-fluid" style="height: 250px" src="@Url.Action("Get", "Files", new{id= item.PrimaryImageId})"/>
+                <img class="img-fluid" style="height: 250px" src="@Url.Action("Get", "Files", new {id = item.PrimaryImageId})"/>
             </div>
             <div class="collapse position-absolute" id="collapseExample" style="width: calc(100% - 30px); right: 15px;">
-                <form class="card p-2" style="height: 250px">
+                <form class="card p-2" style="height: 250px" asp-controller="Application" asp-action="Create" method="post">
+                    <input type="hidden" name="AdvertId" value="@item.Id">
+
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <input type="text" class="form-control" id="exampleInputEmail1" name="Email"  aria-describedby="emailHelp">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Телефон</label>
-                        <input type="phone" class="form-control" id="exampleInputPassword1">
+                        <input type="phone" class="form-control" name="Phone"  id="exampleInputPassword1">
                     </div>
                     <div>
                         <button type="submit" class="btn btn-primary">Отправить</button>
@@ -64,21 +66,22 @@
             {
                 var item = Model[itemIndex];
                 <div class="col-12 col-lg-4 pt-4 position-relative @if (itemIndex == 0) {@("d-lg-none")}">
-                    <img class="w-100" 
-                         data-toggle="collapse" 
+                    <img class="w-100"
+                         data-toggle="collapse"
                          href="#collapseExample@(index)"
                          style="height: 250px"
                          onclick="sendClickEvent('@(index)')"
-                         src="@Url.Action("Get", "Files", new{id=item.SecondaryImageId})"/>
+                         src="@Url.Action("Get", "Files", new {id = item.SecondaryImageId})"/>
                     <div class="collapse position-absolute" id="collapseExample@(index)" style="width: calc(100% - 30px); right: 15px; top: 24px">
-                        <form class="card p-2" style="height: 250px">
+                        <form class="card p-2" style="height: 250px" asp-controller="Application" asp-action="Create" method="post">
+                            <input type="hidden" name="AdvertId" value="@item.Id">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Email</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                <input type="text" class="form-control" id="exampleInputEmail1" name="Email" aria-describedby="emailHelp">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Телефон</label>
-                                <input type="phone" class="form-control" id="exampleInputPassword1">
+                                <input type="phone" class="form-control" name="Phone" id="exampleInputPassword1">
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-primary">Submit</button>

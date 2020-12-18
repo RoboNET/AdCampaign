@@ -1,5 +1,5 @@
 ﻿@using AdCampaign.Common
-@model IEnumerable<AdCampaign.BLL.Services.Adverts.DTO.CreateApplicationDto>
+@model IEnumerable<AdCampaign.BLL.Services.Adverts.DTO.ApplicationListItemDto>
 
 @{
     ViewBag.Title = "Список заявок";
@@ -21,7 +21,7 @@
             </div>
         }
     }
-    
+
     <div class="row justify-content-center">
         <table class="col-12 table">
             <tr>
@@ -34,7 +34,7 @@
                 {
                     <tr>
                         <td>
-                            @advert.AdvertId
+                            @Html.ActionLink(@advert.AdvertName, controllerName: "Advert", actionName: "Update", routeValues: new {id = @advert.AdvertId})
                         </td>
                         <td>
                             @advert.Email
