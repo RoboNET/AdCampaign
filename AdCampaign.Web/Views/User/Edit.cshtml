@@ -1,29 +1,33 @@
-﻿@model UserEditViewModel
+﻿@using AdCampaign.Models.Users
+@model AdCampaign.Models.Users.UserEditRequest
 @{
     ViewData["Title"] = "Создать пользователя";
 }
 <div class="row justify-content-center">
-    <h1 class="col-8">Create user</h1>
+    <h1 class="col-8">Редактировать пользователя</h1>
 </div>
 <div class="justify-content-center">
     <div class="col-8">
         <form asp-action="Edit" method="post">
-            <input type="hidden" value="@Model.UserId" name="id">
+            <input type="hidden" value="@Model.Id" name="id">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" disabled checked="@Model.IsActive" id="customCheck">
                 <label class="custom-control-label" for="customCheck">Активен</label>
             </div>
             <div class="form-group">
-                <label for="username">Имя</label>
-                <input type="text" name="username" class="form-control" id="username" value="@Model.Name">
+                <label for="name">Имя</label>
+                <input type="text" name="name" class="form-control" id="name" value="@Model.Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" class="form-control" id="email" value="@Model.Email">
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="phone">phone</label>
                 <input type="text" name="phone" class="form-control" id="phone" value="@Model.Phone">
+                <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="password">Пароль (заменит имеющийся)</label>
@@ -36,7 +40,7 @@
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </form>
         <form method="post" asp-controller="User" asp-action="Block" class="form-inline my-2 my-lg-0">
-            <input type="hidden" name="id" value="@Model.UserId">
+            <input type="hidden" name="id" value="@Model.Id">
             <button type="submit" class="btn btn-primary">Заблокировать</button>
         </form>
         <a href="google.com" class="btn btn-primary">Рекламные компании</a>
