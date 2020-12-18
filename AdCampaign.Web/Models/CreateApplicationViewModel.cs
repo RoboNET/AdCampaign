@@ -9,11 +9,11 @@ namespace AdCampaign.Models
     {
         public long AdvertId { get; set; }
 
-        [Phone(ErrorMessage = "Введенный текст не является верным номером телефона")]
+        [Phone(ErrorMessage = "Неверный формат телефона")]
         [RequiredIf("RequestType", RequestType.Phone, Constants.FieldRequired)]
         public string Phone { get; set; }
 
-        [EmailAddress(ErrorMessage = "Введенный текст не является верным адресом электронной почты")]
+        [EmailAddress(ErrorMessage = "Неверный формат электронной почты")]
         [RequiredIf("RequestType", RequestType.Email, Constants.FieldRequired)]
         public string Email { get; set; }
 

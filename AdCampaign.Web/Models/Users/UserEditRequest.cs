@@ -6,22 +6,22 @@ namespace AdCampaign.Models.Users
 {
     public class UserEditRequest : IValidatableObject
     {
-        [Required] 
+        [Required(ErrorMessage = Constants.FieldRequired)]
         public long Id { get; set; }
         
-        [Required] 
+        [Required(ErrorMessage = Constants.FieldRequired)]
         public string Name { get; set; }
         
-        [Required] 
+        [Required(ErrorMessage = Constants.FieldRequired)]
         public string Password { get; set; }
         
-        [Required] 
+        [Required(ErrorMessage = Constants.FieldRequired)]
         public string Email { get; set; }
         
-        [Required] 
+        [Required(ErrorMessage = Constants.FieldRequired)]
         public string Phone { get; set; }
         
-        [Required] 
+        [Required(ErrorMessage = Constants.FieldRequired)]
         public Role Role { get; set; }
         
         public bool IsActive { get; set; }

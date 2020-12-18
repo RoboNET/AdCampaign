@@ -1,5 +1,6 @@
 ﻿@model List<AdCampaign.BLL.Services.Adverts.DTO.ShowAdvertDto>
 @{
+    bool placeholderDisplayed = false;
     ViewData["Title"] = "Главная";
 }
 
@@ -22,7 +23,7 @@
                 <div class="jumbotron jumbotron-fluid w-100  mb-0" style="height: 250px">
                     <div class="container">
                         <p class="lead">
-                            Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:vlad@htmlbook.ru">vlad@htmlbook.ru</a>
+                            Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:admin@test.local">admin@test.local</a>
                         </p>
                     </div>
                 </div>
@@ -37,16 +38,20 @@
 
             if (Model.Count <= index)
             {
-                <div class="col-12 col-lg-4 pt-4 @if (itemIndex == 0) {@("d-lg-none")}">
-                    <div class="jumbotron jumbotron-fluid position-relative mb-0"
-                         style="height: 250px">
-                        <div class="container">
-                            <p class="lead">
-                                Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:vlad@htmlbook.ru">vlad@htmlbook.ru</a>
-                            </p>
+                if (!placeholderDisplayed)
+                {
+                    placeholderDisplayed = true;
+                    <div class="col-12 col-lg-4 pt-4 @if (itemIndex == 0) {@("d-lg-none")}">
+                        <div class="jumbotron jumbotron-fluid position-relative mb-0"
+                             style="height: 250px">
+                            <div class="container">
+                                <p class="lead">
+                                    Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:admin@test.local">admin@test.local</a>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             }
             else
             {
