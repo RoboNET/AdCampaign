@@ -81,7 +81,13 @@ namespace AdCampaign.Controllers
                 });
             }
 
-            await _userService.UpdateUser(dto.Id, dto.Name, dto.Password, dto.Email, dto.Phone, dto.Role);
+            var result = await _userService.UpdateUser(dto.Id, dto.Name, dto.Password, dto.Email, dto.Phone, dto.Role);
+            if (!result.Ok)
+            {
+                ViewData["Errors"] = result.Errors;
+                return View(dto);
+            }
+
             return RedirectToAction("Edit", "User", new {id});
         }
 

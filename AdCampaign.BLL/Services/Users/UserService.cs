@@ -61,6 +61,13 @@ namespace AdCampaign.BLL.Services.Users
             if (exist)
                 return new Error("Заданный Email занят", "400");
 
+            var isPasswordValidResult = IsPasswordValid(password);
+            if (!isPasswordValidResult.Ok)
+            {
+                return isPasswordValidResult;
+            }
+
+
             var user = new User
             {
                 Email = normalizedEmail,
@@ -74,8 +81,14 @@ namespace AdCampaign.BLL.Services.Users
             return new();
         }
 
-        public async Task UpdateUser(long id, string username, string password, string email, string phone, Role role)
+        public async Task<Result> UpdateUser(long id, string username, string password, string email, string phone, Role role)
         {
+            var isPasswordValidResult = IsPasswordValid(password);
+            if (!isPasswordValidResult.Ok)
+            {
+                return isPasswordValidResult;
+            }
+
             var user = await _context.Users.FindAsync(id);
             user.Email = email;
             user.Name = username;
@@ -83,6 +96,7 @@ namespace AdCampaign.BLL.Services.Users
             user.Role = role;
             user.PasswordHash = _passwordHasherService.HashPassword(user, password);
             await _context.SaveChangesAsync();
+            return new();
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsers() =>
@@ -108,6 +122,14 @@ namespace AdCampaign.BLL.Services.Users
                 Role = user.Role,
                 IsBlocked = user.IsBlocked
             };
+        }
+
+        private static Result IsPasswordValid(string password)
+        {
+            var isPasswordValid = password.All(c => c >= 48 && c <= 122);
+            return isPasswordValid ?
+                new Result() :
+                new Error("Пароль должен содержать латинские буквы и цифры", "400");
         }
     }
 }
