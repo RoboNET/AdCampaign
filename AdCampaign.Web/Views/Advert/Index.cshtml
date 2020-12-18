@@ -17,7 +17,8 @@
                 {
                     <th>Владелец</th>
                 }
-                <th>Видимость</th>
+                <th>Активна</th>
+                <th>Заблокирована</th>
                 <th>Данные для заполнения</th>
                 <th>Действия</th>
             </tr>
@@ -37,7 +38,9 @@
                         <td>
                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert.IsActive">
                         </td>
-                        <td>
+                         <td>
+                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert."></td>
+                         <td>
                             @(advert.RequestType switch{RequestType.Email => "Email", RequestType.Phone=> "Телефон", _=> "Email и телефон"})
                         </td>
                         <td>

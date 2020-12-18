@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdCampaign.Controllers
 {
     public record AdvertViewModel(long Id, string Name, bool IsActive, RequestType RequestType, long OwnerId,
-        string OwnerName);
+        string OwnerName, bool isBlocked);
 
 
     [Authorize]
@@ -42,7 +42,7 @@ namespace AdCampaign.Controllers
 
             IEnumerable<Advert> advertResponses = await _repository.Get(filter);
             return View(advertResponses.Select(a =>
-                new AdvertViewModel(a.Id, a.Name, !a.IsBlocked, a.RequestType, a.OwnerId, a.Owner.Name)));
+                new AdvertViewModel(a.Id, a.Name, a.IsVisible, a.RequestType, a.OwnerId, a.Owner.Name, a.IsBlocked)));
         }
 
         public async Task<IActionResult> Delete(long id)
