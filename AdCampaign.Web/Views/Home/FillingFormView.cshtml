@@ -10,7 +10,7 @@
         <div class="form-group">
             <label for="exampleInputEmail1">Email</label>
             <input asp-for="Email" type="text" class="form-control" id="exampleInputEmail1" name="Email" aria-describedby="emailHelp">
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <span asp-validation-for="Email" class="text-danger position-absolute small" style="right: 10px"></span>
         </div>
     }
     @if (Model.RequestType.HasFlag(RequestType.Phone))
@@ -18,11 +18,11 @@
         <div class="form-group">
             <label for="exampleInputPassword1">Телефон</label>
             <input asp-for="Phone" type="phone" class="form-control" name="Phone" id="exampleInputPassword1">
-            <span asp-validation-for="Phone" class="text-danger"></span>
+            <span asp-validation-for="Phone" class="text-danger position-absolute small" style="right: 10px"></span>
         </div>
     }
     <div>
         <button type="submit" class="btn btn-primary">Отправить</button>
-        <button class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample@(@Model.AdvertId)">Отменить</button>
+        <button type="reset" class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample@(@Model.AdvertId)">Отменить</button>
     </div>
 </form>

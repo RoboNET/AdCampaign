@@ -11,7 +11,7 @@
             <div class="col-12 d-none d-lg-flex justify-content-center" data-toggle="collapse" href="#collapseExample@(item.Id)" onclick="sendClickEvent('@(item.Id)')">
                 <img class="img-fluid" style="height: 250px" src="@Url.Action("Get", "Files", new {id = item.PrimaryImageId})"/>
             </div>
-            <div class="collapse position-absolute" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px;">
+            <div class="collapse position-absolute d-none d-lg-flex" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px;">
                 @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
 
             </div>
@@ -19,7 +19,7 @@
         else
         {
             <div class="col-12 d-none d-lg-flex">
-                <div class="jumbotron jumbotron-fluid w-100" style="height: 250px">
+                <div class="jumbotron jumbotron-fluid w-100  mb-0" style="height: 250px">
                     <div class="container">
                         <p class="lead">
                             Это место сейчас свободно, мы готовы с вами сотрудничать, напишите нам <br/> <a href="mailto:vlad@htmlbook.ru">vlad@htmlbook.ru</a>
@@ -38,7 +38,7 @@
             if (Model.Count <= index)
             {
                 <div class="col-12 col-lg-4 pt-4 @if (itemIndex == 0) {@("d-lg-none")}">
-                    <div class="jumbotron jumbotron-fluid position-relative"
+                    <div class="jumbotron jumbotron-fluid position-relative mb-0"
                          style="height: 250px">
                         <div class="container">
                             <p class="lead">
