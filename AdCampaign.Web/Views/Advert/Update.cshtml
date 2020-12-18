@@ -86,12 +86,7 @@
             <div class="form-group">
 
                 <label for="RequestType">Тип запрашиваемых данных</label>
-                @Html.DropDownListFor(m => m.RequestType, new SelectListItem[]
-                {
-                    new ("Телефон", "1"),
-                    new ("Email", "2"),
-                    new ("Телефон + Email", "3"),
-                }, new{ @class="form-control"})
+                @Html.DropDownListFor(m => m.RequestType, RequestTypeSelectList.Items, new{ @class="form-control"})
                 <span asp-validation-for="RequestType" class="text-danger"></span>
 
             </div>
