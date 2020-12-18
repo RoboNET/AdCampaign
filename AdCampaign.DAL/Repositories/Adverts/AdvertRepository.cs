@@ -29,11 +29,11 @@ namespace AdCampaign.DAL.Repositories.Adverts
             AddClause(advertParams.IsVisible, x => x.IsVisible == advertParams.IsVisible);
             AddClause(advertParams.OwnerId, x => x.OwnerId == advertParams.OwnerId);
             
-            AddClause(advertParams.ImpressingDate, x => x.ImpressingDateFrom >= advertParams.ImpressingDate);
-            AddClause(advertParams.ImpressingDate, x => x.ImpressingDateTo <=  advertParams.ImpressingDate);
+            AddClause(advertParams.ImpressingDate, x => x.ImpressingDateFrom <= advertParams.ImpressingDate);
+            AddClause(advertParams.ImpressingDate, x => x.ImpressingDateTo >=  advertParams.ImpressingDate);
             
-            AddClause(advertParams.ImpressingTime, x => x.ImpressingTimeFrom <=  advertParams.ImpressingTime);
-            AddClause(advertParams.ImpressingTime, x => x.ImpressingTimeTo <=  advertParams.ImpressingTime);
+            AddClause(advertParams.ImpressingTime, x => x.ImpressingAlways || x.ImpressingTimeFrom <=  advertParams.ImpressingTime);
+            AddClause(advertParams.ImpressingTime, x => x.ImpressingAlways || x.ImpressingTimeTo >=  advertParams.ImpressingTime);
 
             if (advertParams.Shuffle)
                 query = query.OrderBy(x => Guid.NewGuid());

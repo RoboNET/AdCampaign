@@ -17,6 +17,8 @@ namespace AdCampaign.DAL.Entities
         public virtual User Owner { get; set; }
 
         public bool IsVisible { get; set; }
+        
+        public bool ImpressingAlways { get; set; } 
 
         public bool IsBlocked { get; set; }
         public virtual User BlockedBy { get; set; }
@@ -29,8 +31,8 @@ namespace AdCampaign.DAL.Entities
         public DateTime ImpressingDateFrom { get; set; }
         public DateTime ImpressingDateTo { get; set; }
 
-        public TimeSpan ImpressingTimeFrom { get; set; }
-        public TimeSpan ImpressingTimeTo { get; set; }
+        public TimeSpan? ImpressingTimeFrom { get; set; }
+        public TimeSpan? ImpressingTimeTo { get; set; }
         
         public virtual ICollection<AdvertStatistic> AdvertStatistics { get; set; }
         public virtual ICollection<Application> Applications { get; set; }

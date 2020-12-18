@@ -8,43 +8,48 @@
     <title>@ViewData["Title"] - Сервис рекламных кампаний</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Сервис рекламных кампаний</a>
+    <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Сервис рекламных кампаний</a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            @if (User.Identity is {IsAuthenticated:true})
-            {
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                @if (User.Identity is {IsAuthenticated:true})
+                {
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item @if (controllerName == "User"){@("active")}">
+                            <a class="nav-link" asp-controller="Advert" asp-action="Index" >Пользователи</a>
+                        </li>
+                        <li class="nav-item @if (controllerName == "Advert"){@("active")}">
+                            <a class="nav-link" href="#">Рекламные кампании</a>
+                        </li>
+                        <li class="nav-item @if (controllerName == "User"){@("active")}">
+                            <a class="nav-link" href="#">Заявки</a>
+                        </li>
+                    </ul>
 
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item @if (controllerName == "User"){@("active")}">
-                        <a class="nav-link" href="#">Пользователи</a>
-                    </li>
-                    <li class="nav-item @if (controllerName == "Home"){@("active")}">
-                        <a class="nav-link" href="#">Рекламные компании</a>
-                    </li>
-                    <li class="nav-item @if (controllerName == "User"){@("active")}">
-                        <a class="nav-link" href="#">Заявки</a>
-                    </li>
-                </ul>
-
-                <form method="post" asp-controller="Auth" asp-action="Logout" class="form-inline my-2 my-lg-0">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Выйти</button>
-                </form>            }
-            else
-            {
-                <ul class="navbar-nav ml-auto justify-content-end">
-                    <li class="nav-item @if (controllerName == "Auth"){@("active")}">
-                        <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Index">Войти</a>
-                    </li>
-                </ul>
-            }
+                    <form method="post" asp-controller="Auth" asp-action="Logout" class="form-inline my-2 my-lg-0">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Выйти</button>
+                    </form>
+                }
+                else
+                {
+                    <ul class="navbar-nav ml-auto justify-content-end">
+                        <li class="nav-item @if (controllerName == "Auth"){@("active")}">
+                            <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Index">Войти</a>
+                        </li>
+                    </ul>
+                }
+            </div>
         </div>
     </nav>
 </header>
@@ -54,12 +59,12 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
+<footer     class="border-top footer text-muted">
     <div class="container">
         &copy; 2020 - Сервис рекламных кампаний
     </div>
 </footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
