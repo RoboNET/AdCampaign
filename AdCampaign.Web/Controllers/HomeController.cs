@@ -28,7 +28,7 @@ namespace AdCampaign.Controllers
         {
             if (User.Identity is {IsAuthenticated:true})
             {
-                ViewBag.Login = User.GetLogin()!;
+                return RedirectToAction("Index", "Advert");
             }
 
             var ads= await _advertService.GetAdvertsToShow(ct);

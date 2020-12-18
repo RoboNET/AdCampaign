@@ -32,11 +32,11 @@ namespace AdCampaign.Controllers
             _service = service;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(long? userId)
         {
             var filter = new GetAdvertsParams
             {
-                UserEmail = User.GetRole() == Role.Advertiser ? User.GetEmail() : null
+                OwnerId = User.GetRole() == Role.Advertiser ? User.GetId() : userId
             };
 
             IEnumerable<Advert> advertResponses = await _repository.Get(filter);

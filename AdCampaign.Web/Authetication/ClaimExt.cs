@@ -12,7 +12,7 @@ namespace AdCampaign.Authetication
 
             return long.Parse(principal.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         }
-        
+
         public static string GetLogin(this ClaimsPrincipal principal)
         {
             AssertAuthentication(principal);
@@ -34,15 +34,31 @@ namespace AdCampaign.Authetication
             var role = principal.FindFirst(ClaimTypes.Role)!.Value;
             return Enum.Parse<Role>(role);
         }
-        
-        public static long GetUserId(this ClaimsPrincipal principal)
+
+        public static bool IsAdministrator(this ClaimsPrincipal principal)
         {
             AssertAuthentication(principal);
 
-            var userId = principal.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            return long.Parse(userId);
+            var role = GetRole(principal);
+            return role == Role.Administrator;
         }
-        
+
+        public static bool IsModerator(this ClaimsPrincipal principal)
+        {
+            AssertAuthentication(principal);
+
+            var role = GetRole(principal);
+            return role == Role.Moderator;
+        }
+
+        public static bool IsAdministratorOrModerator(this ClaimsPrincipal principal)
+        {
+            AssertAuthentication(principal);
+
+            var role = GetRole(principal);
+            return role == Role.Moderator || role == Role.Administrator;
+        }
+
         private static void AssertAuthentication(ClaimsPrincipal principal)
         {
             if (!principal.Identity!.IsAuthenticated)

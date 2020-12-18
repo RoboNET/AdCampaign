@@ -1,18 +1,23 @@
 @using AdCampaign.DAL.Entities
 @using AdCampaign.Common
+@using AdCampaign.Authetication
 @model IEnumerable<AdCampaign.Controllers.AdvertViewModel>
 
 <div class="container">
     <div class="row justify-content-center">
-        <h1 class="col-12">Список реклам</h1>
+        <h1 class="col-12">Список рекламных кампаний</h1>
     </div>
-    <a class="nav-link" asp-controller="Advert" asp-action="Create">Создать рекламную компонию</a>
+    <a class="nav-link" asp-controller="Advert" asp-action="Create">Создать рекламную кампанию</a>
 
     <div class="row justify-content-center">
         <table class="col-12 table">
             <tr>
                 <th>Name</th>
-                <th>Owner</th>
+
+                @if (User.IsAdministratorOrModerator())
+                {
+                    <th>Owner</th>
+                }
                 <th>Active</th>
                 <th>Data</th>
                 <th>Actions</th>
@@ -24,17 +29,20 @@
                         <td>
                             @advert.Name
                         </td>
-                        <td>
-                            @Html.ActionLink(@advert.OwnerName, controllerName: "User", actionName: "Details", routeValues: new {id = @advert.OwnerId})
-                        </td>
+                        @if (User.IsAdministratorOrModerator())
+                        {
+                            <td>
+                                @Html.ActionLink(@advert.OwnerName, controllerName: "User", actionName: "Edit", routeValues: new {id = @advert.OwnerId})
+                            </td>
+                        }
                         <td>
                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert.IsActive">
                         </td>
                         <td>
-                            @(advert.RequestType switch{RequestType.Email => "Email", RequestType.Phone=> "Телефон",_=> "Email и телефон"})
+                            @(advert.RequestType switch{RequestType.Email => "Email", RequestType.Phone=> "Телефон", _=> "Email и телефон"})
                         </td>
                         <td>
-                            @Html.ActionLink("Запросы", actionName: "Requests")
+                            @Html.ActionLink("Запросы", actionName: "Index", "Application", new {advertId = advert.Id})
                             @Html.ActionLink("Статистика", actionName: "Statistics")
                             @Html.ActionLink("Редактировать", actionName: "Update", new {id = @advert.Id})
                             @Html.ActionLink("Удалить", actionName: "Delete", routeValues: new {@advert.Id})

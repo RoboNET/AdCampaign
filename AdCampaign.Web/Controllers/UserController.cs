@@ -82,7 +82,7 @@ namespace AdCampaign.Controllers
         [HttpPost("User/block")]
         public async Task<IActionResult> Block(long id)
         {
-            await _userService.BlockUser(id, User.GetUserId());
+            await _userService.BlockUser(id, User.GetId());
             return RedirectToAction("Edit", "User", new {id});
         }
 

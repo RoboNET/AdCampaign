@@ -14,7 +14,7 @@ namespace AdCampaign.Controllers
         {
             _fileRepository = fileRepository;
         }
-        
+
         [Route("{id}")]
         [HttpGet]
         [AllowAnonymous]
@@ -26,7 +26,7 @@ namespace AdCampaign.Controllers
             {
                 return NotFound();
             }
-            
+
             return File(file.Content, System.Net.Mime.MediaTypeNames.Image.Jpeg, file.Name);
         }
     }
