@@ -1,9 +1,23 @@
-﻿@model UpdateFileRequestModel
+﻿@using AdCampaign.DAL.Entities
+@using AdCampaign.Common
+@model UpdateFileRequestModel
 @{
     ViewBag.Title = "Редактирование рекламной кампании";
 }
 
 <h2>Редактирование рекламной кампании</h2>
+
+@if (ViewData["Errors"] is Error[] errors)
+{
+    foreach (var error in errors)
+    {
+        <div class="row justify-content-center">
+            <div class="alert alert-danger mt-5" role="alert">
+                @error.Message
+            </div>
+        </div>
+    }
+}
 
 <div class="container">
     <div class="row">
@@ -83,6 +97,27 @@
 
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </form>
+
+        @if (User.IsInRole(Role.Administrator.ToString()) || User.IsInRole(Role.Moderator.ToString()))
+        {
+            @if (ViewData["IsBlocked"] is bool blocked)
+            {
+                <form asp-controller="Advert" asp-action="ChangeBlock" method="post" class="col-6" enctype='multipart/form-data'>
+                    <input type="hidden" name="id" value="@Model.Id">
+                    <input type="hidden" name="block" value="@((!blocked).ToString())">
+                    <button type="submit" class="btn btn-primary">
+                        @if (!blocked)
+                        {
+                            @("Заблокировать")
+                        }
+                        else
+                        {
+                            @("Разблокировать")
+                        }
+                    </button>
+                </form>                
+            }
+        }
     </div>
 </div>
 

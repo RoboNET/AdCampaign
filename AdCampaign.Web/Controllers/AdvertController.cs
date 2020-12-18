@@ -103,6 +103,7 @@ namespace AdCampaign.Controllers
             }
 
             var result = updated.Unwrap();
+            @ViewData["IsBlocked"] = result.IsBlocked;
 
             return View(new UpdateFileRequestModel
             {
@@ -146,6 +147,8 @@ namespace AdCampaign.Controllers
             }
 
             var result = updated.Unwrap();
+
+            @ViewData["IsBlocked"] = result.IsBlocked;
             return View(new UpdateFileRequestModel
             {
                 Id = result.Id,
@@ -158,6 +161,16 @@ namespace AdCampaign.Controllers
                 ImpressingTimeTo = result.ImpressingTimeTo,
                 ImpressingAlways = dto.ImpressingAlways
             });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeBlock(long id, bool block)
+        {
+            var result= await _service.ChangeBlock(User.GetId(), User.GetRole(), id, block);
+            if (!result.Ok) 
+                return Json(result.Errors);
+
+            return RedirectToAction("Update", new {id});
         }
 
         [HttpPost]

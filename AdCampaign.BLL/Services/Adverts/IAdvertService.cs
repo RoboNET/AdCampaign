@@ -32,5 +32,8 @@ namespace AdCampaign.BLL.Services.Adverts
         Task<Result<Advert>> Update(long userId, AdvertDto dto, File primaryImage, File secondaryImage);
         
         Task<Result> Delete(long id, string userEmail, Role role);
+        
+        Task<Result> ChangeBlock(long userId, Role role, long id, bool block);
+
     }
 }

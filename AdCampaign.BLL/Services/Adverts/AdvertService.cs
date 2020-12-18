@@ -145,8 +145,7 @@ namespace AdCampaign.BLL.Services.Adverts
             var advert = await advertRepository.Get(id);
             if (CanDeleteByRole(role) || UserIsOwner(advert.Owner, userEmail))
             {
-                advert.IsVisible = false;
-                await advertRepository.Update(advert);
+                await advertRepository.Delete(id);
                 return new();
             }
 
@@ -154,6 +153,32 @@ namespace AdCampaign.BLL.Services.Adverts
 
             static bool CanDeleteByRole(Role role) => role == Role.Administrator || role == Role.Moderator;
             static bool UserIsOwner(User user, string email) => user.Email.Equals(email, StringComparison.Ordinal);
+        }
+
+        public async Task<Result> ChangeBlock(long userId, Role role, long id, bool block)
+        {
+            var advert = await advertRepository.Get(id);
+            if (CanBlockByRole(role))
+            {
+                advert.IsBlocked = block;
+                if (block)
+                {
+                    advert.BlockedById = userId;
+                    advert.BlockedDate = DateTime.UtcNow;
+                }
+                else
+                {
+                    advert.BlockedById = null;
+                    advert.BlockedDate = null;
+                }
+
+                await advertRepository.Update(advert);
+                return new();
+            }
+
+            return new Error("У вас нет прав на блокировку", "403");
+
+            static bool CanBlockByRole(Role role) => role == Role.Administrator || role == Role.Moderator;
         }
     }
 }
