@@ -64,18 +64,18 @@
                            @("checked")
                        }>
                 <label class="form-check-label" for="ImpressingAlways">
-                    Отображать всегда
+                    Отображать в любое время
                 </label>
                 <span asp-validation-for="ImpressingAlways" class="text-danger"></span>
             </div>
 
             <div class="form-group">
 
-                <label for="RequestType">Тип запрашиваемой информации</label>
+                <label for="RequestType">Тип запрашиваемых данных</label>
                 <select class="form-control" id="RequestType" name="RequestType">
                     <option value="1">Телефон</option>
-                    <option value="2">E-mail</option>
-                    <option value="3">Телефон + E-mail</option>
+                    <option value="2">Email</option>
+                    <option value="3">Телефон + Email</option>
                 </select>
                 <span asp-validation-for="RequestType" class="text-danger"></span>
             </div>
