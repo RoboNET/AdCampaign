@@ -48,7 +48,8 @@ namespace AdCampaign.Controllers
                 ImpressingDateTo = dto.ImpressingDateTo,
                 ImpressingTimeFrom = dto.ImpressingTimeFrom,
                 ImpressingTimeTo = dto.ImpressingTimeTo,
-                ImpressingAlways = dto.ImpressingAlways
+                ImpressingAlways = dto.ImpressingAlways,
+                IsVisible = true
             }, dto.PrimaryImage.ToFile(), dto.SecondaryImage.ToFile());
 
             if (!created.Ok)
