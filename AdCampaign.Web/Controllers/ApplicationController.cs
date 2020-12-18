@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Adverts;
 using AdCampaign.BLL.Services.Adverts.DTO;
@@ -20,6 +21,11 @@ namespace AdCampaign.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateApplicationViewModel request)
         {
+            if (!ModelState.IsValid)
+            {
+                return Json(ModelState.Values.SelectMany(entry => entry.Errors));
+            }
+
             var result = await _applicationService.Create(new CreateApplicationDto()
             {
                 Email = request.Email,

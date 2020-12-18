@@ -174,10 +174,21 @@ namespace AdCampaign.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> IncrementStatistic(long id, AdvertStatisticType statisticType)
         {
             await _service.IncrementAdvertsStats(id, statisticType);
             return Ok();
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> Statistic(long id)
+        {
+            var result= await _service.Get(User.GetId(), id);
+            if (!result.Ok) 
+                return Json(result.Errors);
+
+            return View(result.Unwrap().AdvertStatistics);
         }
     }
 }

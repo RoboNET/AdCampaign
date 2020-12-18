@@ -1,0 +1,28 @@
+﻿@using AdCampaign.DAL.Entities
+@model System.Collections.Generic.ICollection<AdCampaign.DAL.Entities.AdvertStatistic>
+
+@{
+    ViewBag.Title = "Статистика показов";
+}
+
+<div class="row justify-content-center">
+    <table class="col-12 table">
+        <tr>
+            <th>Name</th>
+            <th>Count</th>
+        </tr>
+        @{
+            foreach (var advert in Model)
+            {
+                <tr>
+                    <td>
+                        @(advert.AdvertStatisticType switch{AdvertStatisticType.Filled => "Отправок формы", AdvertStatisticType.Followed=> "Открытий", AdvertStatisticType.Impression=>"Показов", _=> advert.AdvertStatisticType.ToString()})
+                    </td>
+                    <td>
+                        @advert.Value
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
