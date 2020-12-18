@@ -28,21 +28,24 @@ namespace AdCampaign.DAL.Repositories.Adverts
             AddClause(advertParams.IsBlocked, x => x.IsBlocked == advertParams.IsBlocked);
             AddClause(advertParams.IsVisible, x => x.IsVisible == advertParams.IsVisible);
             AddClause(advertParams.OwnerId, x => x.OwnerId == advertParams.OwnerId);
-            
+
             AddClause(advertParams.ImpressingDate, x => x.ImpressingDateFrom <= advertParams.ImpressingDate);
-            AddClause(advertParams.ImpressingDate, x => x.ImpressingDateTo >=  advertParams.ImpressingDate);
-            
-            AddClause(advertParams.ImpressingTime, x => x.ImpressingAlways || x.ImpressingTimeFrom <=  advertParams.ImpressingTime);
-            AddClause(advertParams.ImpressingTime, x => x.ImpressingAlways || x.ImpressingTimeTo >=  advertParams.ImpressingTime);
+            AddClause(advertParams.ImpressingDate,
+                x => x.ImpressingDateTo + TimeSpan.FromDays(1) >= advertParams.ImpressingDate);
+
+            AddClause(advertParams.ImpressingTime,
+                x => x.ImpressingAlways || x.ImpressingTimeFrom <= advertParams.ImpressingTime);
+            AddClause(advertParams.ImpressingTime,
+                x => x.ImpressingAlways || x.ImpressingTimeTo >= advertParams.ImpressingTime);
 
             if (advertParams.Shuffle)
                 query = query.OrderBy(x => Guid.NewGuid());
-            
+
             if (advertParams.ToTake.HasValue)
                 query = query.Take(advertParams.ToTake.Value);
-            
+
             return await query.ToListAsync();
-            
+
             void AddClause<T>(T predicate, Expression<Func<Advert, bool>> exp)
             {
                 if (predicate is not null)
