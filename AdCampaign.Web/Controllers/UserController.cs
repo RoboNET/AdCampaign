@@ -39,7 +39,13 @@ namespace AdCampaign.Controllers
             if (!ModelState.IsValid)
                 return View(dto);
 
-            await _userService.CreateUser(dto.Name, dto.Password, dto.Email, dto.Phone, dto.Role);
+            var result = await _userService.CreateUser(dto.Name, dto.Password, dto.Email, dto.Phone, dto.Role);
+            if (!result.Ok)
+            {
+                ViewData["Errors"] = result.Errors;
+                return View(dto);
+            }
+
             return RedirectToAction("List", "User");
         }
 

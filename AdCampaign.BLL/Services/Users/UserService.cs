@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdCampaign.Common;
 using AdCampaign.DAL;
 using AdCampaign.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -53,11 +54,16 @@ namespace AdCampaign.BLL.Services.Users
             await _context.SaveChangesAsync();
         }
 
-        public async Task CreateUser(string username, string password, string email, string phone, Role role)
+        public async Task<Result> CreateUser(string username, string password, string email, string phone, Role role)
         {
+            var normalizedEmail = email.ToLower();
+            var exist = _context.Users.Any(u => u.Email.Equals(normalizedEmail));
+            if (exist)
+                return new Error("Заданный Email занят", "400");
+
             var user = new User
             {
-                Email = email,
+                Email = normalizedEmail,
                 Name = username,
                 Phone = phone,
                 Role = role
@@ -65,6 +71,7 @@ namespace AdCampaign.BLL.Services.Users
             user.PasswordHash = _passwordHasherService.HashPassword(user, password);
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
+            return new();
         }
 
         public async Task UpdateUser(long id, string username, string password, string email, string phone, Role role)
