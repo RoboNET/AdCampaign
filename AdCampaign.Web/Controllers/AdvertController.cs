@@ -70,7 +70,7 @@ namespace AdCampaign.Controllers
                 return View(dto);
             }
 
-            if (!CheckFIleExtension(dto.PrimaryImage.FileName) || !CheckFIleExtension(dto.SecondaryImage.FileName))
+            if (!CheckFileExtension(dto.PrimaryImage?.FileName) || !CheckFileExtension(dto.SecondaryImage?.FileName))
             {
                 ViewData["Errors"] = new Error[]
                     {new("Расширение файла должно быть .jpg, .jpeg или .png", "400")};
@@ -135,7 +135,7 @@ namespace AdCampaign.Controllers
                 return View(dto);
             }
 
-            if (!CheckFIleExtension(dto.PrimaryImage.FileName) || !CheckFIleExtension(dto.SecondaryImage.FileName))
+            if (!CheckFileExtension(dto.PrimaryImage?.FileName) || !CheckFileExtension(dto.SecondaryImage?.FileName))
             {
                 ViewData["Errors"] = new Error[]
                     {new("Расширение файла должно быть .jpg, .jpeg или .png", "400")};
@@ -208,8 +208,11 @@ namespace AdCampaign.Controllers
             return View(result.Unwrap().AdvertStatistics);
         }
 
-        bool CheckFIleExtension(string name)
+        bool CheckFileExtension(string? name)
         {
+            if (string.IsNullOrEmpty(name))
+                return true;
+            
             var extension = Path.GetExtension(name);
             if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
             {
