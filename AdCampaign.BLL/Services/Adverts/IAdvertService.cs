@@ -15,6 +15,11 @@ namespace AdCampaign.BLL.Services.Adverts
         Task<Result<IEnumerable<ShowAdvertDto>>> GetAdvertsToShow(CancellationToken ct);
 
         /// <summary>
+        /// Увеличить счетчик статистики рекламы
+        /// </summary>
+        Task IncrementAdvertsStats(long id, AdvertStatisticType statisticType);
+        
+        /// <summary>
         /// Получить капмпанию
         /// </summary>
         Task<Result<Advert>> Get(long userId, long id);
