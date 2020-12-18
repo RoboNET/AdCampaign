@@ -1,31 +1,60 @@
-﻿using System.Linq;
+#nullable enable
+using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using AdCampaign.Authetication;
 using AdCampaign.BLL.Services.Adverts;
 using AdCampaign.BLL.Services.Adverts.DTO;
 using AdCampaign.Common;
 using AdCampaign.DAL.Entities;
+using AdCampaign.DAL.Repositories.Adverts;
 using AdCampaign.Extensions;
 using AdCampaign.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdCampaign.Controllers
 {
+    public record AdvertViewModel(long Id, string Name, bool IsActive, RequestType RequestType, long OwnerId,
+        string OwnerName);
+
+
+    [Authorize]
     public class AdvertController : Controller
     {
+        private readonly IAdvertRepository _repository;
         private readonly IAdvertService _service;
 
-        public AdvertController(IAdvertService service)
+        public AdvertController(IAdvertRepository repository, IAdvertService service)
         {
+            _repository = repository;
             _service = service;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var filter = new GetAdvertsParams
+            {
+                UserEmail = User.GetRole() == Role.Advertiser ? User.GetEmail() : null
+            };
+
+            IEnumerable<Advert> advertResponses = await _repository.Get(filter);
+            return View(advertResponses.Select(a =>
+                new AdvertViewModel(a.Id, a.Name, !a.IsBlocked, a.RequestType, a.OwnerId, a.Owner.Name)));
         }
 
+        public async Task<IActionResult> Delete(long id)
+        {
+            var res = await _service.Delete(id, User.GetEmail(), User.GetRole());
+            if (!res.Ok)
+            {
+                return Forbid();
+            }
+
+            return RedirectToAction("Index");
+        }
+        
         [HttpGet]
         public async Task<IActionResult> Create()
         {

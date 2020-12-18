@@ -20,6 +20,13 @@ namespace AdCampaign.Authetication
             return principal.FindFirst(ClaimTypes.Name)!.Value;
         }
 
+        public static string GetEmail(this ClaimsPrincipal principal)
+        {
+            AssertAuthentication(principal);
+
+            return principal.FindFirst(ClaimTypes.Email)!.Value;
+        }
+
         public static Role GetRole(this ClaimsPrincipal principal)
         {
             AssertAuthentication(principal);

@@ -16,7 +16,7 @@ namespace AdCampaign.DAL.Repositories.Adverts
         {
             this.context = context;
         }
-        
+
         public async Task<IEnumerable<Advert>> Get(GetAdvertsParams advertParams)
         {
             IQueryable<Advert> query = context.Adverts
@@ -25,6 +25,7 @@ namespace AdCampaign.DAL.Repositories.Adverts
                 .Include(x => x.BlockedBy)
                 .Include(x => x.Owner);
 
+            AddClause(advertParams.UserEmail, x => x.Owner.Email == advertParams.UserEmail);
             AddClause(advertParams.IsBlocked, x => x.IsBlocked == advertParams.IsBlocked);
             AddClause(advertParams.IsVisible, x => x.IsVisible == advertParams.IsVisible);
             AddClause(advertParams.OwnerId, x => x.OwnerId == advertParams.OwnerId);

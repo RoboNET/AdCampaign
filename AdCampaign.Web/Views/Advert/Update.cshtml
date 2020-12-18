@@ -37,12 +37,12 @@
             </div>
             <div class="form-group">
                 <label for="ImpressingTimeFrom">Время начала показа рекламы</label>
-                <input type="time" class="form-control" disabled="@(Model?.ImpressingAlways ?? false)" asp-for="ImpressingTimeFrom" id="ImpressingTimeFrom" name="ImpressingTimeFrom" value="@Model?.ImpressingTimeFrom?.ToString("hh:mm")"/>
+                <input type="time" class="form-control" disabled="@(Model?.ImpressingAlways ?? false)" asp-for="ImpressingTimeFrom" id="ImpressingTimeFrom" name="ImpressingTimeFrom" value="@Model?.ImpressingTimeFrom?.ToString(@"hh\:mm")"/>
                 <span asp-validation-for="ImpressingTimeFrom" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label for="ImpressingTimeTo">Время окончания показа рекламы</label>
-                <input type="time" class="form-control" disabled="@(Model?.ImpressingAlways ?? false)" asp-for="ImpressingTimeTo" id="ImpressingTimeTo" name="ImpressingTimeTo" value="@Model?.ImpressingTimeTo?.ToString("hh:mm")"/>
+                <input type="time" class="form-control" disabled="@(Model?.ImpressingAlways ?? false)" asp-for="ImpressingTimeTo" id="ImpressingTimeTo" name="ImpressingTimeTo" value="@Model?.ImpressingTimeTo?.ToString(@"hh\:mm")"/>
                 <span asp-validation-for="ImpressingTimeTo" class="text-danger"></span>
             </div>
 
@@ -81,7 +81,7 @@
 
             </div>
 
-            <button type="submit" class="btn btn-primary">Создать</button>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
         </form>
     </div>
 </div>
