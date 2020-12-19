@@ -5,13 +5,13 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <h1 class="col-12">Список рекламных кампаний</h1>
+        <h2 class="col-12">Список рекламных кампаний</h2>
     </div>
     @if (User.IsAdvertiser())
     {
         <a asp-controller="Advert" asp-action="Create" class="btn btn-primary" style="margin-bottom: 7px">Добавить рекламную кампанию</a>        
     }
-    <div class="row justify-content-center">
+    <div class="row justify-content-center table-responsive-lg">
         <table class="col-12 table">
             <tr>
                 <th>Название кампании</th>
@@ -20,8 +20,7 @@
                 {
                     <th>Владелец</th>
                 }
-                <th>Активна</th>
-                <th>Заблокирована</th>
+                <th>Статус</th>
                 <th>Данные для заполнения</th>
                 <th>Действия</th>
             </tr>
@@ -39,18 +38,25 @@
                             </td>
                         }
                         <td>
-                            <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert.IsActive">
+                             @if (@advert.IsActive)
+                             {
+                                 <div class="alert alert-success m-0 pt-1 pb-1">Активна</div>
+                             }
+                             @if (@advert.IsBlocked)
+                             {
+                                 <div class="alert alert-danger m-0 pt-1 pb-1">Заблокирована</div>
+                             }
                         </td>
-                         <td>
-                             <input type="checkbox" onclick="this.checked=!this.checked;" checked="@advert.IsBlocked"></td>
-                         <td>
+                        <td>
                             @(advert.RequestType switch{RequestType.Email => "Email", RequestType.Phone=> "Телефон", _=> "Email и телефон"})
                         </td>
                         <td>
-                            @Html.ActionLink("Заявки", actionName: "Index", "Application", new {advertId = advert.Id})
-                            @Html.ActionLink("Статистика", actionName: "Statistic", new {id = @advert.Id})
-                            @Html.ActionLink("Редактировать", actionName: "Update", new {id = @advert.Id})
-                            @Html.ActionLink("Удалить", actionName: "Delete", routeValues: new {@advert.Id})
+                            <div class="btn-group">
+                                <a asp-controller="Application" asp-action="Index" asp-route-advertId="@advert.Id" class="btn btn-secondary">Заявки</a>
+                                <a asp-action="Statistic" asp-route-id="@advert.Id" class="btn btn-secondary">Статистика</a>
+                                <a asp-action="Update" asp-route-id="@advert.Id" class="btn btn-primary">Редактировать</a>
+                                <a asp-action="Delete" asp-route-id="@advert.Id" class="btn btn-danger">Удалить</a>
+                            </div>
                         </td>
                     </tr>
                 }

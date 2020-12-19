@@ -10,11 +10,14 @@
         {
             var item = Model[0];
             <div class="col-12 d-none d-lg-flex justify-content-center" data-toggle="collapse" href="#collapseExample@(item.Id)" onclick="sendClickEvent('@(item.Id)')">
-                <img class="img-fluid" style="height: 250px" src="@Url.Action("Get", "Files", new {id = item.PrimaryImageId})"/>
+                <img class="img-fluid" style="height: 300px" src="@Url.Action("Get", "Files", new {id = item.PrimaryImageId})"/>
             </div>
             <div class="collapse position-absolute" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px;">
-                @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
-
+                <div class="card p-2" style="height: 300px; border-radius: 0;">
+                    <div class="w-50">
+                    @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
+                    </div>
+                </div>
             </div>
         }
         else
@@ -41,7 +44,7 @@
                 if (!placeholderDisplayed)
                 {
                     placeholderDisplayed = true;
-                    <div class="col-12 col-lg-4 pt-4 @if (itemIndex == 0) {@("d-lg-none")}">
+                    <div class="col-12 col-lg-4 mt-4 @if (itemIndex == 0) {@("d-lg-none")}">
                         <div class="jumbotron jumbotron-fluid position-relative mb-0"
                              style="height: 250px">
                             <div class="container">
@@ -56,15 +59,17 @@
             else
             {
                 var item = Model[itemIndex];
-                <div class="col-12 col-lg-4 pt-4 position-relative @if (itemIndex == 0) {@("d-lg-none")}">
+                <div class="col-12 col-lg-4 mt-4 position-relative @if (itemIndex == 0) {@("d-lg-none")}">
                     <img class="w-100"
                          data-toggle="collapse"
                          href="#collapseExample@(item.Id)"
                          style="height: 250px"
                          onclick="sendClickEvent('@(item.Id)')"
                          src="@Url.Action("Get", "Files", new {id = item.SecondaryImageId})"/>
-                    <div class="collapse position-absolute" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px; top: 24px">
-                        @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
+                    <div class="collapse position-absolute" id="collapseExample@(item.Id)" style="width: calc(100% - 30px); right: 15px; top: 0">
+                        <div class="card p-2" style="height: 250px; border-radius: 0;">
+                            @Html.Partial("FillingFormView", new CreateApplicationViewModel() {AdvertId = item.Id, RequestType = item.RequestType})
+                        </div>
                     </div>
                 </div>
             }

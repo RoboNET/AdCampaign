@@ -6,36 +6,38 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <h1 class="col-12">Список пользователей</h1>
+        <h2 class="col-12">Список пользователей</h2>
     </div>
     <a asp-controller="User" asp-action="Create" class="btn btn-primary" style="margin-bottom: 7px">Добавить пользователя</a>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Имя</th>
-            <th scope="col">Роль</th>
-            <th scope="col">Email</th>
-            <th scope="col">Телефон</th>
-            <th scope="col">Действия</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var user in Model.Users)
-        {
+    <div class="table-responsive-lg">
+        <table class="table">
+            <thead>
             <tr>
-                <th scope="row">@user.Name</th>
-                <td>@UserRoles.Localize(user.Role)</td>
-                <td>@user.Email</td>
-                <td>@user.Phone</td>
-                <td>@Html.ActionLink("Редактировать", "Edit", new {user.Id})</td>
-                <td>
-                    <form method="post" asp-controller="User" asp-action="Delete" class="form-inline my-2 my-lg-0">
-                        <input type="hidden" name="id" value="@user.Id">
-                        <button type="submit" class="btn btn-primary">Удалить</button>
-                    </form>
-                </td>
+                <th scope="col">Имя</th>
+                <th scope="col">Роль</th>
+                <th scope="col">Email</th>
+                <th scope="col">Телефон</th>
+                <th scope="col">Действия</th>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <th scope="row">@user.Name</th>
+                    <td>@UserRoles.Localize(user.Role)</td>
+                    <td>@user.Email</td>
+                    <td>@user.Phone</td>
+                    <td>@Html.ActionLink("Редактировать", "Edit", new {user.Id})</td>
+                    <td>
+                        <form method="post" asp-controller="User" asp-action="Delete" class="form-inline my-2 my-lg-0">
+                            <input type="hidden" name="id" value="@user.Id">
+                            <button type="submit" class="btn btn-primary">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
