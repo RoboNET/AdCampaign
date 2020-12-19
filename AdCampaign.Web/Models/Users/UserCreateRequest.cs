@@ -5,7 +5,7 @@ using AdCampaign.DAL.Entities;
 
 namespace AdCampaign.Models.Users
 {
-    public class UserCreateRequest : IValidatableObject
+    public class UserCreateRequest
     {
         [Required(ErrorMessage = Constants.FieldRequired)]
         public string Name { get; set; }
@@ -25,9 +25,5 @@ namespace AdCampaign.Models.Users
         [RegularExpression(@"^[A-Za-z0-9]+$", ErrorMessage = "Пароль должен содержать латинские буквы и цифры")]
         public string Password { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            return new List<ValidationResult>();
-        }
     }
 }

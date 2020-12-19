@@ -60,14 +60,18 @@ namespace AdCampaign.BLL.Services.Adverts
             if (advert == null)
                 return new Error("Кампания не найдена", "campaign-not-found");
 
-            if(CanAdvertAccessByRole(role) || UserIsOwner(advert.Owner, userId))
+            if (CanAdvertAccessByRole(role) || UserIsOwner(advert.Owner, userId))
                 return advert;
-            
+
             return new Error("У вас нет прав на просмотр", "403");
         }
 
-        public async Task<Result<Advert>> Create(long userId, AdvertDto dto, File primaryImage, File secondaryImage)
+        public async Task<Result<Advert>> Create(long userId, Role role, AdvertDto dto, File primaryImage,
+            File secondaryImage)
         {
+            if (role != Role.Advertiser)
+                return new Error("У вас нет прав на создание кампании", "403");
+            
             var primaryCreated = primaryImage != null
                 ? await _fileRepository.Create(primaryImage.Name, primaryImage.Content)
                 : null;
@@ -101,13 +105,14 @@ namespace AdCampaign.BLL.Services.Adverts
             return await _advertRepository.Insert(advert);
         }
 
-        public async Task<Result<Advert>> Update(long userId, Role role, AdvertDto dto, File primaryImage, File secondaryImage)
+        public async Task<Result<Advert>> Update(long userId, Role role, AdvertDto dto, File primaryImage,
+            File secondaryImage)
         {
             var advert = await _advertRepository.Get(dto.Id);
             if (advert == null)
                 return new Error("Кампания не найдена", "campaign-not-found");
 
-            if(!CanAdvertAccessByRole(role) && !UserIsOwner(advert.Owner, userId))
+            if (!CanAdvertAccessByRole(role) && !UserIsOwner(advert.Owner, userId))
                 return new Error("У вас нет прав на изменение", "403");
 
             if (primaryImage != null)

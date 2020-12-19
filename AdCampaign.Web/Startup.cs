@@ -41,7 +41,10 @@ namespace AdCampaign
             services.AddScoped<AuthenticationService>();
             services.AddScoped<IFileRepository, FileRepository>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => { options.LoginPath = "/Auth"; });
+                .AddCookie(options => { 
+                    options.LoginPath = "/Auth";
+                    options.AccessDeniedPath = "/Auth/AccessDenied";
+                });
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = ".Cookies";

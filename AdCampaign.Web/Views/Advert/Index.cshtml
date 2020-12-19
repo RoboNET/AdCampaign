@@ -7,7 +7,10 @@
     <div class="row justify-content-center">
         <h1 class="col-12">Список рекламных кампаний</h1>
     </div>
-    <a asp-controller="Advert" asp-action="Create" class="btn btn-primary" style="margin-bottom: 7px">Добавить рекламную кампанию</a>
+    @if (User.IsAdvertiser())
+    {
+        <a asp-controller="Advert" asp-action="Create" class="btn btn-primary" style="margin-bottom: 7px">Добавить рекламную кампанию</a>        
+    }
     <div class="row justify-content-center">
         <table class="col-12 table">
             <tr>
