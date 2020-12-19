@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using AdCampaign.Attributes;
 using AdCampaign.DAL.Entities;
 
 namespace AdCampaign.Models
@@ -9,11 +10,11 @@ namespace AdCampaign.Models
     {
         public long AdvertId { get; set; }
 
-        [Phone(ErrorMessage = "Неверный формат телефона")]
+        [PhoneValidation]
         [RequiredIf("RequestType", RequestType.Phone, Constants.FieldRequired)]
         public string Phone { get; set; }
 
-        [EmailAddress(ErrorMessage = "Неверный формат электронной почты")]
+        [EmailValidation]
         [RequiredIf("RequestType", RequestType.Email, Constants.FieldRequired)]
         public string Email { get; set; }
 
