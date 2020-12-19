@@ -14,6 +14,10 @@ namespace AdCampaign.Models
         [Required(ErrorMessage = Constants.FieldRequired)]
         public bool IsVisible { get; set; }
 
+        public long? PrimaryImageId { get; set; }
+        
+        public long? SecondaryImageId { get; set; }
+
         public IFormFile PrimaryImage { get; set; }
 
         public IFormFile SecondaryImage { get; set; }

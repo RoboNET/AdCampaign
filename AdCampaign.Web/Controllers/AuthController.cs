@@ -19,6 +19,11 @@ namespace AdCampaign.Controllers
         {
             return View();
         }
+        
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Index(string username, string password, string returnUrl)

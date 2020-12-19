@@ -51,6 +51,14 @@ namespace AdCampaign.Authetication
             return role == Role.Moderator;
         }
 
+        public static bool IsAdvertiser(this ClaimsPrincipal principal)
+        {
+            AssertAuthentication(principal);
+
+            var role = GetRole(principal);
+            return role == Role.Advertiser;
+        }
+        
         public static bool IsAdministratorOrModerator(this ClaimsPrincipal principal)
         {
             AssertAuthentication(principal);

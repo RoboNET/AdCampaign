@@ -20,7 +20,7 @@ namespace AdCampaign.Controllers
     public record AdvertViewModel(long Id, string Name, bool IsActive, RequestType RequestType, long OwnerId,
         string OwnerName, bool IsBlocked);
 
-    
+
     [Authorize]
     public class AdvertController : Controller
     {
@@ -57,12 +57,14 @@ namespace AdCampaign.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Advertiser")]
         public async Task<IActionResult> Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Advertiser")]
         public async Task<IActionResult> Create(CreateFileRequestModel dto)
         {
             if (!ModelState.IsValid)
@@ -77,7 +79,7 @@ namespace AdCampaign.Controllers
                 return View(dto);
             }
 
-            var created = await _service.Create(User.GetId(), new AdvertDto()
+            var created = await _service.Create(User.GetId(), User.GetRole(), new AdvertDto()
             {
                 Name = dto.Name,
                 RequestType = dto.RequestType,
@@ -123,7 +125,9 @@ namespace AdCampaign.Controllers
                 ImpressingDateTo = result.ImpressingDateTo,
                 ImpressingTimeFrom = result.ImpressingTimeFrom,
                 ImpressingTimeTo = result.ImpressingTimeTo,
-                ImpressingAlways = result.ImpressingAlways
+                ImpressingAlways = result.ImpressingAlways,
+                PrimaryImageId = result.PrimaryImageId,
+                SecondaryImageId = result.SecondaryImageId
             });
         }
 
@@ -174,11 +178,14 @@ namespace AdCampaign.Controllers
                 ImpressingDateTo = result.ImpressingDateTo,
                 ImpressingTimeFrom = result.ImpressingTimeFrom,
                 ImpressingTimeTo = result.ImpressingTimeTo,
-                ImpressingAlways = dto.ImpressingAlways
+                ImpressingAlways = dto.ImpressingAlways,
+                PrimaryImageId = result.PrimaryImageId,
+                SecondaryImageId = result.SecondaryImageId
             });
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<IActionResult> ChangeBlock(long id, bool block)
         {
             var result = await _service.ChangeBlock(User.GetId(), User.GetRole(), id, block);
@@ -212,7 +219,7 @@ namespace AdCampaign.Controllers
         {
             if (string.IsNullOrEmpty(name))
                 return true;
-            
+
             var extension = Path.GetExtension(name);
             if (extension != ".jpg" && extension != ".jpeg" && extension != ".png")
             {
