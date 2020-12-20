@@ -25,7 +25,8 @@ namespace AdCampaign.DAL.Repositories.Adverts
             AddClause(advertParams.IsBlocked, x => x.IsBlocked == advertParams.IsBlocked);
             AddClause(advertParams.IsVisible, x => x.IsVisible == advertParams.IsVisible);
             AddClause(advertParams.OwnerId, x => x.OwnerId == advertParams.OwnerId);
-
+            AddClause(advertParams.IsOwnerBlocked, x => x.Owner.IsBlocked == advertParams.IsOwnerBlocked);
+            
             AddClause(advertParams.ImpressingDate, x => x.ImpressingDateFrom <= advertParams.ImpressingDate);
             AddClause(advertParams.ImpressingDate,
                 x => x.ImpressingDateTo + TimeSpan.FromDays(1) >= advertParams.ImpressingDate);
