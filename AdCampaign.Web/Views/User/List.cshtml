@@ -17,6 +17,7 @@
                 <th scope="col">Роль</th>
                 <th scope="col">Email</th>
                 <th scope="col">Телефон</th>
+                <th scope="col">Телефон</th>
                 <th scope="col">Действия</th>
             </tr>
             </thead>
@@ -28,6 +29,16 @@
                     <td>@UserRoles.Localize(user.Role)</td>
                     <td>@user.Email</td>
                     <td>@user.Phone</td>
+                    <td>
+                        @if (@user.IsBlocked)
+                        {
+                            <div class="alert alert-danger m-0 pt-1 pb-1">Заблокирован</div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-success m-0 pt-1 pb-1">Активен</div>
+                        }
+                    </td>
                     <td>@Html.ActionLink("Редактировать", "Edit", new {user.Id})</td>
                     <td>
                         <form method="post" asp-controller="User" asp-action="Delete" class="form-inline my-2 my-lg-0">
