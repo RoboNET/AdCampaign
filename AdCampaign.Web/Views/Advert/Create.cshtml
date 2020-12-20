@@ -68,7 +68,9 @@
                 </label>
                 <span asp-validation-for="ImpressingAlways" class="text-danger"></span>
             </div>
-
+             <div class="form-group">
+                <p id="totalTime" ></p>
+             </div>
             <div class="form-group">
 
                 <label for="RequestType">Тип запрашиваемых данных</label>
@@ -82,10 +84,33 @@
 </div>
 
 @section Scripts {
+
     <script>
-                $('#ImpressingAlways').change(function () {
-                    $('#ImpressingTimeFrom').attr('disabled', this.checked); 
-                    $('#ImpressingTimeTo').attr('disabled', this.checked);
-                })                              
+                let impAlwaysField = $('#ImpressingAlways');
+                let totalTimeField = $('#totalTime');
+                let fromDateField = $('#ImpressingDateFrom');
+                let fromTimeField = $('#ImpressingTimeFrom');
+                let toDateField = $('#ImpressingDateTo');
+                let toTimeField = $('#ImpressingTimeTo');
+
+                impAlwaysField.change(function () {
+                    fromTimeField.attr('disabled', this.checked);
+                    toTimeField.attr('disabled', this.checked);
+                })
+
+                fromDateField.change(ShowTotalTime);
+                fromTimeField.change(ShowTotalTime);
+                toDateField.change(ShowTotalTime);
+                toTimeField.change(ShowTotalTime);
+                impAlwaysField.change(ShowTotalTime);
+
+                ShowTotalTime();
+
+                function ShowTotalTime() {
+                    const totalTime = GetAdvertTotalTime(fromDateField.val(), toDateField.val(), fromTimeField.val(),
+                                            toTimeField.val(), !impAlwaysField.is(":checked"));
+                    if(totalTime)
+                      totalTimeField.text("Общее время показа составляет: " + totalTime + "h");
+                }
     </script>
 }
