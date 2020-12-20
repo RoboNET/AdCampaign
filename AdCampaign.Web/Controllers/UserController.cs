@@ -105,7 +105,7 @@ namespace AdCampaign.Controllers
             if (!await CanChangeBlockingStatus(id))
             {
                 ViewData["Errors"] = "Операция запрещена";
-                return View();
+                return RedirectToAction("Edit", "User", new {id});
             } 
             
             await _userService.BlockUser(id, User.GetId());
@@ -118,7 +118,8 @@ namespace AdCampaign.Controllers
             if (!await CanChangeBlockingStatus(id))
             {
                 ViewData["Errors"] = "Операция запрещена";
-                return View();
+                return RedirectToAction("Edit", "User", new {id});
+
             }
             
             await _userService.UnBlockUser(id);
