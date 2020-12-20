@@ -33,6 +33,7 @@ namespace AdCampaign.BLL.Services.Adverts
             var adverts = await _advertRepository.Get(new GetAdvertsParams
             {
                 IsBlocked = false,
+                IsOwnerBlocked = false,
                 IsVisible = true,
                 ImpressingDate = DateTime.UtcNow,
                 ImpressingTime = DateTime.UtcNow.TimeOfDay,
