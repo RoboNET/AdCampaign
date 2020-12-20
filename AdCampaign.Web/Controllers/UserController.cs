@@ -104,7 +104,7 @@ namespace AdCampaign.Controllers
         {
             if (!await CanChangeBlockingStatus(id))
             {
-                ViewData["Errors"] = "Операция запрещена";
+                ViewData["Errors"] = new[]{ new Error("Операция запрещена", "403")};
                 return RedirectToAction("Edit", "User", new {id});
             } 
             
@@ -117,7 +117,7 @@ namespace AdCampaign.Controllers
         {
             if (!await CanChangeBlockingStatus(id))
             {
-                ViewData["Errors"] = "Операция запрещена";
+                ViewData["Errors"] = new[]{ new Error("Операция запрещена", "403")};
                 return RedirectToAction("Edit", "User", new {id});
 
             }
