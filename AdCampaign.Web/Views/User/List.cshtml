@@ -1,9 +1,20 @@
 @using AdCampaign.Models.Users
+@using AdCampaign.Common
 @model AdCampaign.Models.Users.UserListViewModel
 @{
     ViewData["Title"] = "Список пользователей";
 }
-
+@if (ViewData["Errors"] is Error[] errors)
+{
+    foreach (var error in errors)
+    {
+        <div class="row justify-content-center">
+            <div class="alert alert-danger mt-5" role="alert">
+                @error.Message
+            </div>
+        </div>
+    }
+}
 <div class="container">
     <div class="row justify-content-center">
         <h2 class="col-12">Список пользователей</h2>

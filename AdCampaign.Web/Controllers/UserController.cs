@@ -105,7 +105,17 @@ namespace AdCampaign.Controllers
             if (!await CanChangeBlockingStatus(id))
             {
                 ViewData["Errors"] = new[]{ new Error("Операция запрещена", "403")};
-                return RedirectToAction("Edit", "User", new {id});
+
+                var user = await _userService.Get(id);
+                return View("Edit", new UserEditRequest
+                {
+                    Email = user.Email,
+                    Name = user.Name,
+                    Phone = user.Phone,
+                    Role = user.Role,
+                    Id = user.Id,
+                    IsActive = !user.IsBlocked
+                });
             } 
             
             await _userService.BlockUser(id, User.GetId());
@@ -118,8 +128,16 @@ namespace AdCampaign.Controllers
             if (!await CanChangeBlockingStatus(id))
             {
                 ViewData["Errors"] = new[]{ new Error("Операция запрещена", "403")};
-                return RedirectToAction("Edit", "User", new {id});
-
+                var user = await _userService.Get(id);
+                return View("Edit", new UserEditRequest
+                {
+                    Email = user.Email,
+                    Name = user.Name,
+                    Phone = user.Phone,
+                    Role = user.Role,
+                    Id = user.Id,
+                    IsActive = !user.IsBlocked
+                });
             }
             
             await _userService.UnBlockUser(id);
@@ -131,6 +149,16 @@ namespace AdCampaign.Controllers
         {
             if (await CheckRoles(id))
                 return NotFound();
+
+            if (User.GetId() == id)
+            {
+                ViewData["Errors"] = new[]{ new Error("Операция запрещена", "403")};
+                var users = await _userService.GetUsers(User.GetRole() == Role.Moderator);
+                return View("List", new UserListViewModel
+                {
+                    Users = users
+                });
+            }
             
             await _userService.Delete(id);
             return RedirectToAction("List", "User");
