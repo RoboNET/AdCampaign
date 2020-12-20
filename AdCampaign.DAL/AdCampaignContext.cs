@@ -19,14 +19,14 @@ namespace AdCampaign.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasMany(user => user.Adverts).WithOne(advert => advert.Owner);
-            modelBuilder.Entity<User>().HasOne(user => user.BlockedBy).WithOne();
+            modelBuilder.Entity<User>().HasOne(user => user.BlockedBy).WithMany();
 
             modelBuilder.Entity<Advert>().HasMany(advert => advert.AdvertStatistics)
                 .WithOne(statistic => statistic.Advert);
             modelBuilder.Entity<Advert>().HasMany(advert => advert.Applications)
                 .WithOne(application => application.Advert);
             modelBuilder.Entity<Advert>().HasOne(advert => advert.BlockedBy)
-                .WithOne();
+                .WithMany();
 
             base.OnModelCreating(modelBuilder);
         }
