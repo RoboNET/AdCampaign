@@ -102,8 +102,11 @@ namespace AdCampaign.Controllers
         [HttpPost("User/block")]
         public async Task<IActionResult> Block(long id)
         {
-            if (await CheckRoles(id))
-                return NotFound();
+            if (!await CanChangeBlockingStatus(id))
+            {
+                ViewData["Errors"] = "Операция запрещена";
+                return View();
+            } 
             
             await _userService.BlockUser(id, User.GetId());
             return RedirectToAction("Edit", "User", new {id});
@@ -112,8 +115,11 @@ namespace AdCampaign.Controllers
         [HttpPost("User/unblock")]
         public async Task<IActionResult> UnBlock(long id)
         {
-            if (await CheckRoles(id))
-                return NotFound();
+            if (!await CanChangeBlockingStatus(id))
+            {
+                ViewData["Errors"] = "Операция запрещена";
+                return View();
+            }
             
             await _userService.UnBlockUser(id);
             return RedirectToAction("Edit", "User", new {id});
@@ -129,6 +135,21 @@ namespace AdCampaign.Controllers
             return RedirectToAction("List", "User");
         }
 
+        private async Task<bool> CanChangeBlockingStatus(long editableUserId)
+        {
+            var editableUser = await _userService.Get(editableUserId);
+            if (editableUserId == User.GetId())
+                return false;
+
+            if (!User.IsAdministrator() && editableUser.Role == Role.Administrator)
+                return false;
+
+            if (!User.IsAdministratorOrModerator())
+                return false;
+
+            return true;
+        }
+        
         private async Task<bool> CheckRoles(long editableUserId)
         {
             var editableUser = await _userService.Get(editableUserId);
