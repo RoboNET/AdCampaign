@@ -13,6 +13,8 @@ namespace AdCampaign.DAL.Repositories.Adverts
         
         public long? OwnerId { get; set; }
 
+        public bool? IsOwnerBlocked { get; set; }
+
         public DateTime? ImpressingDate { get; set; }
 
         public TimeSpan? ImpressingTime { get; set; }
